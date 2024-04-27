@@ -1,0 +1,38 @@
+name: Heroku Deployment
+
+on:
+  workflow_run:
+    workflows: ["Node.js CI"]
+    types:
+      - completed
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo "First workflow was a success"
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Heroku
+        run: echo "$HEROKU_API_KEY" | docker login -u _ --password-stdin registry.heroku.com
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t registry.heroku.com/sevens-social-fe/web .
+                       
+      - name: Docker Push
+        run:  docker push registry.heroku.com/sevens-social-fe/web
+
+      - name: Release to Heroku
+        run: heroku container:release web --app sevens-social-fe
+
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
