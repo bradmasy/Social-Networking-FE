@@ -1,0 +1,48 @@
+@import "../../global-styles/borders.scss";
+@import "../../global-styles/mixins.scss";
+@import "../../global-styles/spacing.scss";
+@import "../../global-styles/colors.scss";
+
+.ss-form-container {
+  @include flex-column-justify-align(auto, auto, start, center);
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.ss-form__input-container {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  gap: 15px;
+  padding: 15px;
+}
+
+.ss-form__label {
+  color: $main-blue;
+  letter-spacing: 2px;
+  font-weight: 100;
+}
+
+.ss-form__input {
+  @include flex-column-justify-align(auto, 80%, center, center);
+
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  font-family: "lexend";
+  padding: 5px;
+  font-weight: 200;
+  text-align: center;
+}
+.ss-form__input:after {
+  border-radius: 4px;
+  outline: none;
+}
+
+.textarea-input {
+  @include flex-column-justify-align(auto, 80%, center, center);
+  min-height: 75px;
+}
+
+.ss-form-container__submit-button{
+    @include flex-column-justify-align(100px, 100%, center, center);
+
+}

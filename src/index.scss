@@ -1,0 +1,27 @@
+@import "./global-styles/colors.scss";
+@import "./global-styles/fonts.scss";
+
+html {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $main-background;
+  font-family: "lexend";
+  font-weight: 100;
+  color:white;
+  justify-content: start;
+  align-items: center;
+  overflow: hidden auto;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height:auto;//100%;// 95%;
+  width: 100%;//95%;
+  margin: 0;
+  padding: 0;
+}

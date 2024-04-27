@@ -1,0 +1,89 @@
+@import "./media-queries.scss";
+@import "./borders.scss";
+@import "./spacing.scss";
+@import "./sizing.scss";
+@import "./fonts.scss";
+
+@mixin flex-row($height, $width) {
+  display: flex;
+  height: $height;
+  width: $width;
+}
+
+@mixin flex-row-justify($height, $width, $justify) {
+  display: flex;
+  justify-content: $justify;
+  height: $height;
+  width: $width;
+}
+
+@mixin flex-row-justify-align($height, $width, $justify, $align) {
+  display: flex;
+  justify-content: $justify;
+  height: $height;
+  width: $width;
+  align-items: $align;
+}
+
+@mixin flex-column($height, $width) {
+  display: flex;
+  flex-direction: column;
+  height: $height;
+  width: $width;
+}
+
+@mixin flex-column-justify($height, $width, $justify) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  height: $height;
+  width: $width;
+}
+
+@mixin flex-column-justify-align($height, $width, $justify, $align) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  height: $height;
+  align-items: $align;
+
+  width: $width;
+}
+
+@mixin font-styling($color, $size, $weight, $spacing) {
+  font-family: "lexend";
+  color: $color;
+  font-size: $size;
+  font-weight: $weight;
+  letter-spacing: $spacing;
+}
+
+@mixin border-styles($color, $thickness, $radius) {
+  border: solid $color $thickness;
+  border-radius: $radius;
+}
+
+@mixin input-styles($radius, $height, $width) {
+  border-radius: $radius;
+  height: $height;
+  width: $width;
+  text-align: center;
+  border: none;
+  outline: none;
+}
+
+@mixin button-styles($height, $width) {
+  @include font-styling($main-blue, 1em, $font-md, 0);
+  @include border-styles($main-blue, $border-sm, $radius-lg);
+  background-color: $main-background;
+  width: $width;
+  height: $height;
+  transition: 0.5s ease-in-out;
+}
+
+@mixin button-styles-basic() {
+  @include font-styling($main-blue, 1em, $font-md, 0);
+  @include border-styles($main-blue, $border-sm, $radius-lg);
+  background-color: $main-background;
+  transition: 0.5s ease-in-out;
+}

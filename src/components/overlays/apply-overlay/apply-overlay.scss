@@ -1,0 +1,59 @@
+@import "../../../global-styles/mixins.scss";
+@import "../../../global-styles/colors.scss";
+
+.ss-apply-overlay {
+  @include flex-column-justify-align(50%, 30%, start, center);
+
+  display: none;
+  position: absolute;
+  //   min-width: 500px;
+  //   min-height: 500px;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $main-blue;
+  opacity: 90%;
+  border-radius: 8px;
+  padding:14px;
+}
+
+.display-overlay{
+  display:flex;
+}
+
+.ss-apply-overlay__close-container {
+  @include flex-row-justify-align(auto, 100%, flex-end, center);
+  // padding: 10px;
+  img {
+    transition: 0.25s ease-in-out;
+  }
+  img:hover {
+    cursor: pointer;
+    scale: 1.05;
+  }
+}
+
+.ss-apply-overlay__content {
+  @include flex-row-justify-align(60%, 80%, center, center);
+  padding: 50px 0px;
+  p {
+    color: black;
+    font-weight: 200;
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .ss-apply-overlay {
+    position: absolute;
+    min-width: 300px;
+    height: 300px;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $main-blue;
+    opacity: 80%;
+  }
+}

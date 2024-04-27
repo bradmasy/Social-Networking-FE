@@ -1,0 +1,17 @@
+@import "../../global-styles/borders.scss";
+@import "../../global-styles/mixins.scss";
+@import "../../global-styles/spacing.scss";
+@import "../../global-styles/colors.scss";
+
+.ss-button-container {
+  font-family: "lexend";
+  border-radius: 16px;
+  padding: 8px 16px;
+  border: none;
+  transition: 0.25s ease-in-out;
+}
+
+.ss-button-container:hover {
+    cursor: pointer;
+    background-color: $main-blue;
+}

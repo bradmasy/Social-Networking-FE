@@ -1,0 +1,19 @@
+@import "../../global-styles/borders.scss";
+@import "../../global-styles/mixins.scss";
+@import "../../global-styles/spacing.scss";
+
+.ss-about__main-content {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  border: solid red 1px;
+}
+
+.ss-about__main-content__main {
+  @include flex-column-justify-align(100%, 100%, center, center);
+
+  border: solid blue 1px;
+}
+.ss-about__main-content__main__ad-copy-container {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  border: solid yellow 1px;
+  letter-spacing: $letter-md;
+}
