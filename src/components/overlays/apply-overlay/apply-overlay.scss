@@ -12,7 +12,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: $main-blue;
   opacity: 90%;
   border-radius: 8px;
   padding:14px;
@@ -20,6 +19,13 @@
 
 .display-overlay{
   display:flex;
+  background-color: $main-blue;
+
+}
+
+.display-error{
+  display: flex;
+  background-color: lightcoral!important;
 }
 
 .ss-apply-overlay__close-container {

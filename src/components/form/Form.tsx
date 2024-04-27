@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import "./form.scss";
 import { Button } from "../button/Button";
+import { ValidationService } from "../../services/validation/ValidationService";
 
-interface FormData {
+export interface FormData {
     name: string | null;
     artist: string | null;
     social: string | null;
@@ -18,6 +19,7 @@ interface FormData {
     q7: string | null;
 }
 
+
 interface Input {
     name: string;
     type: string;
@@ -31,12 +33,10 @@ interface SelectOption {
 
 interface FormProps{
     setDisplay:React.Dispatch<React.SetStateAction<boolean>>;
-
+    sendFormData:React.Dispatch<React.SetStateAction<FormData>>;
 }
-export const Form: React.FC<FormProps> = ({setDisplay}) => {
-    // const overlay:HTMLElement = useRef(document.querySelector('.ss-apply-overlay'))as HTMLElement;
-    const overlay = useRef(null);
 
+export const Form: React.FC<FormProps> = ({setDisplay,sendFormData}) => {
 
     const [formData, setFormData] = useState<FormData>({
         name: null,
@@ -61,14 +61,11 @@ export const Form: React.FC<FormProps> = ({setDisplay}) => {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(formData);
-        console.log(overlay)
-        setDisplay(true)
-        // if(overlay){
-        //     console.log('here')
-        //     overlay.style.display ="flex";
-        // }
 
+        // send the form data if it is valid
+        if(ValidationService.validateForm(formData)){
+            sendFormData(formData);
+        }
     };
 
     const inputs: Input[] = [

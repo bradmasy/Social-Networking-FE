@@ -7,10 +7,11 @@ import { Home } from "../../../pages";
 
 interface AppOverlayProps {
     display: boolean;
+    errorDisplay:boolean;
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display }) => {
+export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display,errorDisplay}) => {
     const appOverlay = useRef(null);
     const navigate = useNavigate()
 
@@ -56,16 +57,24 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display }) => {
             <span><br /></span>
         </>
     )
+
+    const errorMessage = (
+        <>
+            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
+            <span>PLEASE TRY AGAIN LATER.<br /></span>
+            <span><br /></span>
+        </>
+    );
     return (
         <>
-            <div className={`ss-apply-overlay ${display ? 'display-overlay' : ''}`} ref={appOverlay}>
+            <div className={`ss-apply-overlay ${display ? 'display-overlay' : ''} ${errorDisplay ? 'display-error' : ''}`} ref={appOverlay}>
                 <div className="ss-apply-overlay__close-container">
                     <img src={xButton} alt="x-button" onClick={exitAndRedirect}>
                     </img>
                 </div>
                 <div className="ss-apply-overlay__content">
                     <p>
-                        {thankYouMessage}
+                    {errorDisplay ? errorMessage : thankYouMessage}
                     </p>
                 </div>
             </div>
