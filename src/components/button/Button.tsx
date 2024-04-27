@@ -2,14 +2,16 @@ import './button.scss';
 
 interface ButtonProps {
     text: string;
+    id?: string;
     type: "submit" | "reset" | "button";
+    click?: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 
 }
 
-export const Button: React.FC<ButtonProps> = ({ text, type }) => {
+export const Button: React.FC<ButtonProps> = ({ text, type, id,click }) => {
     return (
         <>
-            <button className="ss-button-container" type={type}>{text}</button>
+            <button onClick={click} id={id} className="ss-button-container" type={type}>{text}</button>
 
         </>
     )

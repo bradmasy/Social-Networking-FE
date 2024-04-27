@@ -154,7 +154,7 @@ export const Form: React.FC<FormProps> = ({setDisplay,sendFormData}) => {
         },
         {
             name: "PORT STANLEY BEACH HOUSE",
-            value: 4
+            value: 2
         }
     ]
 
