@@ -40,9 +40,32 @@
 .textarea-input {
   @include flex-column-justify-align(auto, 80%, center, center);
   min-height: 75px;
+  position: relative;
 }
 
-.ss-form-container__submit-button{
-    @include flex-column-justify-align(100px, 100%, center, center);
+.ss-form-container__submit-button {
+  @include flex-column-justify-align(100px, 100%, center, center);
+}
 
+.ss-input-container__icon {
+  @include flex-column-justify-align(auto, 80%, center, center);
+
+  position: relative;
+  // display: inline-block;
+  input{
+    @include flex-column-justify-align(auto, 100%, center, center);
+
+  }
+}
+
+.ss-icon {
+  @include flex-column-justify-align(30px, 30px, center, center);
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  right:8px;
+}
+
+.ss-icon:hover{
+  cursor: pointer;
 }

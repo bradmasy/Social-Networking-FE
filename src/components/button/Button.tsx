@@ -1,6 +1,6 @@
 import './button.scss';
 
-interface ButtonProps {
+export interface ButtonProps {
     text: string;
     id?: string;
     type: "submit" | "reset" | "button";
@@ -8,7 +8,7 @@ interface ButtonProps {
 
 }
 
-export const Button: React.FC<ButtonProps> = ({ text, type, id,click }) => {
+export const Button: React.FC<ButtonProps> = ({ text, type, id, click }) => {
     return (
         <>
             <button onClick={click} id={id} className="ss-button-container" type={type}>{text}</button>

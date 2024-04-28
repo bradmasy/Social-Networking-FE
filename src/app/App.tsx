@@ -1,12 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { About, Application, Home, Payment } from '../pages/index'
-import { ApiService } from '../services/api/ApiService';
-
-import './App.scss';
+import { About, Application, Home, Payment, Signup } from '../pages/index'
 import { ApiServiceProvider } from '../contexts/ApiServiceContext';
+import './App.scss';
 
 function App() {
+
 
   return (
     <div className="App">
@@ -17,6 +16,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/apply" element={<Application />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </Router>
       </ApiServiceProvider>

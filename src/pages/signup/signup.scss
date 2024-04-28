@@ -1,0 +1,20 @@
+@import "../../global-styles/index.scss";
+
+.ss-signup-container {
+  @include flex-column-justify-align(100%, 100%, center, center);
+}
+.ss-signup-container__message {
+  @include flex-column-justify-align(100%, 80%, center, center);
+  padding: 50px;
+  letter-spacing: $letter-xsm;
+}
+.highlight {
+  font-weight: 200;
+  color: $main-blue;
+}
+
+@media screen and (max-width: 800px) {
+  .ss-signup-container__message {
+    padding: 0px;
+  }
+}

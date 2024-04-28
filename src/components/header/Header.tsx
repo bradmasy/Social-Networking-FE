@@ -1,5 +1,5 @@
 import './header.scss';
-import logoImg from '../../../src/assets/images/ss-logo.png'
+import logoImg from '../../../src/assets/images/ss-logo.png';
 
 export const Header: React.FC = () => {
     return (

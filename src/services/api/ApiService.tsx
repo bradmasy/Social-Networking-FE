@@ -20,6 +20,7 @@ export class ApiService {
         return headers;
     };
 
+    // login - signup
     login = (data: { [key: string]: string }): Promise<any> => {
         const headers = this.createHeader();
         const body = { username: data.username, password: data.password };
@@ -27,6 +28,13 @@ export class ApiService {
         return axios.post(`${API_BASE_URL}/login`, body, { headers });
     };
 
+    signup = (data: { [key: string]: string }): Promise<any> => {
+        console.log(data)
+        const body = {...data};
+        return axios.post(`${API_BASE_URL}/signup`, body);
+
+    }
+    // locations
     get_locations = (): Promise<any> => {
         const headers = this.createHeader();
 
