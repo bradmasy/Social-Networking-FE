@@ -44,3 +44,33 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
+
+
+# SEVENS-SOCIAL-FRONT-END
+
+## ADDING ELEMENTS TO THE PROJECT
+
+### ADDING A COMPONENT
+- make a new directory under <b>components</b> directory with the name of the component
+- add a file for the component with a .tsx extension and a .scss for the component for the stylings
+- in the .scss import the index.scss file from the global-styles directory to access variables and mixins etc
+- export the component from the components directory index.tsx file to access globally
+
+### ADDING A PAGE
+- same process as component but under the <b>pages directory</b>
+
+
+## DEPLOYMENT
+- Deployments are done through heroku
+- github actions is in the process of being configured but not set yet.
+
+### TO BUILD MANUALLY FOR HEROKU
+
+- heroku container:login
+- docker build -t registry.heroku.com/sevens-social-fe/web . 
+- docker push registry.heroku.com/sevens-social-fe/web 
+- heroku container:release web --app sevens-social-fe 
+   

@@ -1,16 +1,23 @@
-import React, { ReactNode } from 'react'
-import {useSelector} from "react-redux"
-import {Navigate, useLocation} from "react-router-dom"
+// import React, { ComponentProps, FC, ReactNode } from 'react';
+// import { Route, Navigate, useLocation } from 'react-router-dom';
+// import { Payment } from '../pages'; // Assuming Payment component is correctly imported
+// import { AuthorizationService } from '../services/authorization/AuthorizationService';
+// interface User {
+//   // Define your user object structure here
+// }
 
-const ProtectedRoute = ({children}:{ children: ReactNode }) => {
-    const user = useSelector((state:any) => state.user);
-    let location = useLocation();
+// const withAuth = <Component extends React.ComponentType<any>>(Component: Component) => {
+//   return (props: ComponentProps<Component>) => {
+//     const location = useLocation();
+//     const authService = new AuthorizationService();
+//     console.log('here');
+//     if (!authService.isAuthenticated()) {
+//       return <Navigate to="/login" replace state={{ from: location }} />;
+//     }
 
-    if(!user.state.isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location}} replace />
-    }
- return children
+//     return <Component {...props} />; // Pass props to wrapped component
+//   };
+// };
 
-};
-
-export default ProtectedRoute;
+// export default withAuth;
+// // export default ProtectedRoute;
