@@ -1,0 +1,14 @@
+@import "../../global-styles/index.scss";
+
+.ss-login-container {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  padding: 50px 0px;
+  p {
+    font-size: 1.5em;
+    letter-spacing: $letter-xsm;
+  }
+}
+
+.highlight {
+  color: $main-blue;
+}

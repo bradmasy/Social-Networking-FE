@@ -21,7 +21,8 @@ const AuthorizationContext = createContext<IAuthContext>(initialValue)
 const AuthProvider = ({ children }: AuthProps) => {
 
     const [authenticated, setAuthenticated] = useState(initialValue.authenticated);
-    const navigate = useNavigate();
+
+
 
     return (
         <AuthorizationContext.Provider value={{ authenticated, setAuthenticated }}>

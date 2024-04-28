@@ -122,17 +122,15 @@ export const Application: React.FC = () => {
         if (ValidationService.validateForm(formData)) {
 
             apiService.apply(formData).then((res: any) => {
-                console.log(res)
                 setDisplayOverlay(true);
             }).catch((error: Error) => {
                 setDisplayOverlayError(true);
-                console.log(error)
             })
         }
 
     }, [formData])
 
- 
+
     return (
         <>
             <ApplyOverlay setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />

@@ -30,7 +30,7 @@ export class ApiService {
 
     signup = (data: { [key: string]: string }): Promise<any> => {
         console.log(data)
-        const body = {...data};
+        const body = { ...data };
         return axios.post(`${API_BASE_URL}/signup`, body);
 
     }
