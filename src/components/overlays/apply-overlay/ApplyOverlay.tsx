@@ -1,17 +1,25 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
 import xButton from "../../../../src/assets/images/icons/x-button-50.png";
 import "./apply-overlay.scss";
 import { Home } from "../../../pages";
+import { Button } from "../../button/Button";
 
 interface AppOverlayProps {
     display: boolean;
-    errorDisplay:boolean;
+    errorDisplay: boolean;
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+    successMessage: JSX.Element;
+    errorMessage: JSX.Element;
+    navigateOnClose?: string;
 }
 
-export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display,errorDisplay}) => {
+const errorButtonStyles: React.CSSProperties ={
+    backgroundColor:"lightcoral",
+    border:"solid black 1px",
+}
+
+export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "" }) => {
     const appOverlay = useRef(null);
     const navigate = useNavigate()
 
@@ -44,27 +52,14 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display,errorDisplay})
     }, []);
 
     const exitAndRedirect = () => {
-        navigate('/');
+        navigate(`/${navigateOnClose}`);
     }
 
+    const refresh = () => {
+        window.location.reload();
 
-    const thankYouMessage = (
-        <>
-            <span>THANK YOU FOR YOUR APPLICATION<br /></span>
-            <span>SEVENS SOCIAL WILL <br /></span>
-            <span>CAREFULLY REVIEW IT <br /></span>
-            <span> AND REACH OUT TO YOU SOON<br /></span>
-            <span><br /></span>
-        </>
-    )
+    }
 
-    const errorMessage = (
-        <>
-            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
-            <span>PLEASE TRY AGAIN LATER.<br /></span>
-            <span><br /></span>
-        </>
-    );
     return (
         <>
             <div className={`ss-apply-overlay ${display ? 'display-overlay' : ''} ${errorDisplay ? 'display-error' : ''}`} ref={appOverlay}>
@@ -74,9 +69,16 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display,errorDisplay})
                 </div>
                 <div className="ss-apply-overlay__content">
                     <p>
-                    {errorDisplay ? errorMessage : thankYouMessage}
+                        {errorDisplay ? errorMessage : successMessage}
                     </p>
                 </div>
+                {
+                    errorDisplay && (
+                        <div>
+                            <Button styles={errorButtonStyles} text="REFRESH" type="button" click={refresh} />
+                        </div>
+                    )
+                }
             </div>
         </>
     )

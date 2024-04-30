@@ -1,11 +1,10 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Header } from "../../components";
 import { Input } from "../../components/form/Form";
 import "./signup.scss";
 import { ButtonProps } from "../../components/button/Button";
 import { ApplyOverlay } from "../../components/overlays/apply-overlay/ApplyOverlay";
 import { ValidationService } from "../../services/validation/ValidationService";
-import { ApiService } from "../../services/api/ApiService";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import iconImage from '../../assets/images/icons/view-100.png';
 
@@ -17,15 +16,13 @@ export const Signup: React.FC = () => {
     const [displayOverlay, setDisplayOverlay] = useState(false);
 
     useEffect(() => {
-        console.log(formData)
         if (ValidationService.validateForm(formData)) {
-            console.log(formData);
             apiService.signup(formData)
                 .then((response: any) => {
-                    console.log(response)
+                    setDisplayOverlay(true)
                 })
                 .catch((error: Error) => {
-                    console.log(error)
+                    setDisplayOverlayError(true);
                 })
         }
     }, [formData])
@@ -45,6 +42,10 @@ export const Signup: React.FC = () => {
             name: 'phone_number',
             type: 'tel',
             label: 'PHONE NUMBER'
+        }, {
+            name: 'social',
+            type: 'text',
+            label: 'SOCIAL LINK'
         },
         {
             name: 'username',
@@ -88,20 +89,37 @@ export const Signup: React.FC = () => {
             <span>THANK YOU<br /></span>
             <br />
             <span className="highlight">- SEVENS SOCIAL MANAGEMENT -<br /></span>
-
         </>
     )
 
+    const successMessage = (
+        <>
+            <span>THANK YOU FOR YOUR APPLICATION<br /></span>
+            <span>SEVENS SOCIAL WILL <br /></span>
+            <span>CAREFULLY REVIEW IT <br /></span>
+            <span> AND REACH OUT TO YOU SOON<br /></span>
+            <span><br /></span>
+        </>
+    )
+
+    const errorMessage = (
+        <>
+            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
+            <span>PLEASE TRY AGAIN LATER.<br /></span>
+            <span><br /></span>
+        </>
+    );
+
     return (
         <>
-            <ApplyOverlay setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
+            <ApplyOverlay errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
             <Header />
             <div className="ss-signup-container">
                 <div className="ss-signup-container__message">
                     {message}
                 </div>
             </div>
-            <Form buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} setDisplay={setDisplayOverlay} />
+            <Form buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
         </>
     )
 }

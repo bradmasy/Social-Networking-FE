@@ -1,36 +1,27 @@
-@import "../../global-styles/borders.scss";
-@import "../../global-styles/mixins.scss";
-@import "../../global-styles/spacing.scss";
-@import "../../global-styles/colors.scss";
-
+@import "../../global-styles/index.scss";
 
 .ss-application__main-content {
   @include flex-column-justify-align(100%, 100%, start, center);
-//   border: solid red 1px;
 }
 
 .ss-application__main-content__main {
   @include flex-column-justify-align(100%, 100%, center, center);
-
-//   border: solid blue 1px;
 }
+
 .ss-application__main-content__main__ad-copy-container {
   @include flex-column-justify-align(100%, 100%, center, center);
-//   border: solid yellow 1px;
   font-size: 2em;
   letter-spacing: $letter-md;
 }
 
-.ss-application__form-dialogue{
-    font-size: .75em;
-    color:$main-blue;
+.ss-application__form-dialogue {
+  font-size: 0.75em;
+  color: $main-blue;
 }
-
 
 @media screen and (max-width: 800px) {
   .ss-application__main-content {
     @include flex-column-justify-align(100%, 100%, start, center);
-    // border: solid red 1px;
   }
 
   .ss-application__main-content__main {
@@ -39,7 +30,6 @@
 
   .ss-application__main-content__main__ad-copy-container {
     @include flex-column-justify-align(100%, 100%, center, center);
-    // border: solid purple 1px;
     font-size: 1em;
     letter-spacing: $letter-md;
   }

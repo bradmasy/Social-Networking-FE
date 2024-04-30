@@ -1,12 +1,10 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import "./form.scss";
 import { Button, ButtonProps } from "../button/Button";
-import { ValidationService } from "../../services/validation/ValidationService";
 
 export interface FormData {
     [key: string]: string | null;
 }
-
 
 export interface Input {
     name: string;
@@ -23,14 +21,13 @@ export interface SelectOption {
 
 
 interface FormProps {
-    setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
     sendFormData: React.Dispatch<React.SetStateAction<FormData>>;
     formInputs: Input[];
     selectInputs?: SelectOption[];
     buttonProps: ButtonProps;
 }
 
-export const Form: React.FC<FormProps> = ({ setDisplay, sendFormData, formInputs, selectInputs, buttonProps }) => {
+export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInputs, buttonProps }) => {
     const initialFormData: FormData = {};
 
     formInputs.forEach(input => {

@@ -1,42 +1,39 @@
 import { useEffect, useState } from "react";
-import { Button, Header } from "../../components";
+import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
-import "./payment.scss";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
+import env from "react-dotenv";
+import "./payment.scss";
 
+const TIMEOUT_TO_LOAD = 2000;
 
 export const Payment: React.FC = () => {
+
     const apiService = useApiService();
-    const [locationId, setLocationId] = useState("");
-    const [appId, setAppId] = useState("");
+
     const [amount, setAmount] = useState("");
     const [loaded, setLoaded] = useState(false);
-    const [cardNonce, setCardNonce] = useState("");
+    const [display, setDisplay] = useState(false);
+    const [errorDisplay, setErrorDisplay] = useState(false);
 
     useEffect(() => {
-        apiService.get_square_credentials()
-            .then((response) => {
-                console.log(response)
-                const data = response.data;
-                setAppId(data['authData']['square']['sandboxAppId'])
-                setLocationId(data['authData']['location']['id'])
-                setLoaded(true)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-        // api for square creds
-        // const payments = Square.payments('sandbox-sq0idb-RT3u-HhCpNdbMiGg5aXuVg', 'TC4Z3ZEBKRXRH');
-        // const appId = credentials['authData']['square']['sandboxAppId'];
-        // const locationId = credentials['authData']['location']['id'];
+        setTimeout(() => {
+
+            setLoaded(true)
+
+        }, TIMEOUT_TO_LOAD)
+
     }, [])
 
     const heading = (
         <>
             <span>MAKE A PAYMENT BY FILLING OUT<br /></span>
             <span> THE INFORMATION BELOW AND CLICKING <br /></span>
-            <span className="highlight">PAY</span>
+            <span className="highlight">PAY<br /><br /></span>
+            <span className="tool-tip">IF THE CARD FORM DOES NOT LOAD, PLEASE TRY REFRESHING THE PAGE<br /></span>
+            <span className="tool-tip">THANK YOU<br /></span>
+            <span className="highlight tool-tip">- SEVENS SOCIAL -</span>
         </>
     )
 
@@ -45,17 +42,45 @@ export const Payment: React.FC = () => {
         setAmount(feeAmount);
     }
 
-    const getOrderData = () => {
-        console.log('hello')
+    const updateAmount = (moneyAmount: string) => {
+        const formattedAmount = moneyAmount.charAt(0) === '$' ? moneyAmount : '$' + moneyAmount;
+
+        setAmount(formattedAmount);
     }
 
-    const handleCardNonceResponse = (nonce: string) => {
-        console.log("Card nonce:", nonce);
-        setCardNonce(nonce);
-        // Here you can perform further actions with the card nonce, such as sending it to your server
-    };
+    /**
+     * Converts the user input into the values that square expects for the API call.
+     * Square is expecting a value in the lowest denominator of a currency, by default we accept CAD so currently this function 
+     * converts the users input into cents and returns the amount passed into cents
+     * 
+     * ie: 100 is $1 and 277.00 is 27700, also 227 is 27700
+     * 
+     * @returns the value converted for the API call.
+     */
+    const processAmount = (): string => {
+        const conversionFactor = 100; // square payments values accept cents, amount:100 === $1
+        const parsedAmount = amount.charAt(0) === '$' ? amount.slice(1,) : amount;
+        const totalAmountInCents = parsedAmount.includes('.') ? parseInt(parsedAmount.slice(0, parsedAmount.indexOf('.'))) * conversionFactor + parseInt(parsedAmount.slice(parsedAmount.indexOf('.') + 1,)) : parseInt(parsedAmount) * conversionFactor;
+        return totalAmountInCents.toString();
+
+
+    }
+
+    const successMessage = (
+        <><span>PAYMENT SUCCESSFUL</span>
+        </>
+    )
+
+    const errorMessage = (
+        <><span>
+            PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN
+        </span>
+        </>
+    )
+
     return (
         <>
+            <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
             <Header />
             {loaded ? (
                 <>
@@ -76,78 +101,46 @@ export const Payment: React.FC = () => {
                                 </div>
                                 <div className="ss-payments-container__user-information__input-container">
                                     <label>AMOUNT</label>
-                                    <input name="amount" type="text" value={amount} onChange={(e) => setAmount(e.target.value)}></input>
+                                    <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
                                 </div>
                             </div>
 
                             <PaymentForm
-                                applicationId={appId}
+                                // applicationId={`${env.SQUARE_PROD_APP_ID}`}
+                                applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    console.log('here')
-                                    console.log(token)
+                                    const totalMoneyConverted = processAmount();
                                     const body = {
-                                        token:token["token"],
-                                        amount:`${amount.slice(1,)}`
+                                        token: token["token"],
+                                        amount: totalMoneyConverted
                                     }
-                                    console.log(body)
+                                  
                                     apiService.make_payment(body)
-                                    .then((response) => {
-                                        console.log(response.data)
-                                    })
-                                    .catch((error) => {
-                                        console.log(error)
-                                    })
-                                    // const response = await fetch("/api/pay", {
-                                    //     method: "POST",
-                                    //     headers: {
-                                    //         "Content-type": "application/json",
-                                    //     },
-                                    //     body: JSON.stringify({
-                                    //         sourceId: token.token,
-                                    //     }),
-                                    // });
-                                    // console.log(await response.json());
+                                        .then((response) => {
+                                            setDisplay(true);
+                                            console.log(response.data)
+                                        })
+                                        .catch((error) => {
+                                            setErrorDisplay(error)
+
+                                        })
                                 }}
-
-
-                                // createVerificationDetails={() => ({
-                                //     amount: `${amount}`,
-                                //     billingContact: {
-                                //         addressLines: ['123 Main Street', 'Apartment 1'],
-                                //         familyName: 'Doe',
-                                //         givenName: 'John',
-                                //         countryCode: 'CAN',
-                                //         city: 'London',
-                                //     },
-                                //     currencyCode: 'CAD',
-                                //     intent: 'CHARGE',
-                                // })}
-                                locationId={locationId}
-                                // createPaymentRequest={() => ({
-                                //     total: {
-                                //         label: "Total",
-                                //         amount: `${amount}`,
-                                //     },
-                                //     countryCode: "US",
-                                //     currencyCode: "USD",
-                                // })}
-
-
+                                locationId={`${env.SQUARE_LOCATION_ID_DUNDAS}`}
                             >
-                                <CreditCard 
-                                 buttonProps={{
-                                    css: {
-                                      backgroundColor: "#50B2CA",
-                                      fontSize: "14px",
-                                      color: "#fff",
-                                      transition:"0.5s ease-in-out",
-                                      "&:hover": {
-                                        scale:'1.05'
-                                        // backgroundColor: "#530f16",
-                                      },
-                                    },
-                                  }}
+                                <CreditCard
+                                    buttonProps={{
+                                        css: {
+                                            backgroundColor: "#50B2CA",
+                                            fontSize: "14px",
+                                            color: "#fff",
+                                            transition: "0.5s ease-in-out",
+                                            "&:hover": {
+                                                scale: '1.05'
+
+                                            },
+                                        },
+                                    }}
                                 />
                             </PaymentForm>
                         </main>

@@ -128,12 +128,29 @@ export const Application: React.FC = () => {
             })
         }
 
-    }, [formData])
+    }, [apiService, formData])
 
+    const errorMessage = (
+        <>
+            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
+            <span>PLEASE TRY AGAIN LATER.<br /></span>
+            <span><br /></span>
+        </>
+    );
+
+    const successMessage = (
+        <>
+            <span>THANK YOU FOR YOUR APPLICATION<br /></span>
+            <span>SEVENS SOCIAL WILL <br /></span>
+            <span>CAREFULLY REVIEW IT <br /></span>
+            <span> AND REACH OUT TO YOU SOON<br /></span>
+            <span><br /></span>
+        </>
+    )
 
     return (
         <>
-            <ApplyOverlay setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
+            <ApplyOverlay errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
             <Header />
             <section className="ss-application__main-content">
                 <main className='ss-application__main-content__main'>
@@ -147,7 +164,7 @@ export const Application: React.FC = () => {
                             {formDialogue}
                         </p>
                     </div>
-                    <Form buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} setDisplay={setDisplayOverlay} />
+                    <Form buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
                 </main>
             </section>
         </>
