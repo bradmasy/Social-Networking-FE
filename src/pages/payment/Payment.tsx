@@ -16,15 +16,36 @@ export const Payment: React.FC = () => {
     const [loaded, setLoaded] = useState(false);
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
+    const [initializeCard, setInitializeCard] = useState(false);
 
     useEffect(() => {
-        setTimeout(() => {
+        async function initializeSquare() {
+            console.log(window.Square);
 
-            setLoaded(true)
+            if (window.Square && !initializeCard) {
+                console.log('here');
+                setInitializeCard(true);
 
-        }, TIMEOUT_TO_LOAD)
+                const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
+                setTimeout(async () => {
+                    const card = await payments.card();
+                    await card.attach('#card-container');
 
-    }, [])
+                }, TIMEOUT_TO_LOAD)
+
+                const cardButton = document.getElementById('card-button');
+                if (cardButton) {
+                    setLoaded(true);
+                    cardButton.addEventListener('click', async () => {
+                        const statusContainer = document.getElementById('payment-status-container');
+                    });
+                }
+            }
+        }
+
+        initializeSquare();
+
+    }, []);
 
     const heading = (
         <>
@@ -80,32 +101,38 @@ export const Payment: React.FC = () => {
 
     return (
         <>
-            <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
-            <Header />
-            {loaded ? (
-                <>
-                    <section className="ss-payments-container fade-in">
-                        <div className="ss-payments-container__heading">
-                            <p>
-                                {heading}
-                            </p>
-                        </div>
-                        <main className="ss-payments-container__payment-information">
-                            <div className="ss-payments-container__user-information">
-                                <div className="ss-payments-container__user-information__pay-membership">
-                                    <Button click={adedMembershipFeeToOrder} text="PAY MEMBERSHIP FEE" type="button" />
-                                </div>
-                                <div className="ss-payments-container__user-information__input-container">
-                                    <label>FULL NAME</label>
-                                    <input name="name" type="text"></input>
-                                </div>
-                                <div className="ss-payments-container__user-information__input-container">
-                                    <label>AMOUNT</label>
-                                    <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
-                                </div>
-                            </div>
 
-                            <PaymentForm
+            <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
+
+            <Header />
+
+            <section className="ss-payments-container fade-in">
+                <div className="ss-payments-container__heading">
+                    <p>
+                        {heading}
+                    </p>
+                </div>
+                <main className="ss-payments-container__payment-information">
+                    <div className="ss-payments-container__user-information">
+                        <div className="ss-payments-container__user-information__pay-membership">
+                            <Button click={adedMembershipFeeToOrder} text="PAY MEMBERSHIP FEE" type="button" />
+                        </div>
+                        <div className="ss-payments-container__user-information__input-container">
+                            <label>FULL NAME</label>
+                            <input name="name" type="text"></input>
+                        </div>
+                        <div className="ss-payments-container__user-information__input-container">
+                            <label>AMOUNT</label>
+                            <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
+                        </div>
+                    </div>
+
+                    <div id="payment-form">
+                        <div id="payment-status-container"></div>
+                        <div id="card-container"></div>
+                        <button id="card-button" type="button">Pay</button>
+                    </div>
+                    {/* <PaymentForm
                                 // applicationId={`${env.SQUARE_PROD_APP_ID}`}
                                 applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
 
@@ -142,12 +169,10 @@ export const Payment: React.FC = () => {
                                         },
                                     }}
                                 />
-                            </PaymentForm>
-                        </main>
-                    </section>
-                </>
-            ) : <LoadingOverlay />
-            }
+                            </PaymentForm> */}
+                </main>
+            </section>
         </>
     )
+
 }
