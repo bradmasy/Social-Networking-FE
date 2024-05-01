@@ -2,10 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
-import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
 import env from "react-dotenv";
-import { RefObject } from 'react';
-
 import "./payment.scss";
 
 const TIMEOUT_TO_LOAD = 2000;
@@ -21,66 +18,64 @@ export const Payment: React.FC = () => {
     const [initializeCard, setInitializeCard] = useState(false);
     const paymentStatusContainerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        async function initializeSquare() {
-            console.log(window.Square);
+    // useEffect(() => {
+    //     async function initializeSquare() {
+    //         console.log(window.Square);
 
-            if (window.Square && !initializeCard) {
-                setInitializeCard(true);
-                const paymentCard = `<><>`
-                const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
-                console.log(payments)
-                // we wait to ensure that payments has come in, in order to get the card and mount it.
-                const card = await payments.card();
-                console.log(card)
-                await card.attach(paymentCard);
-                // await card.attach('#card-container');
+    //         if (window.Square && !initializeCard) {
+    //             setInitializeCard(true);
+    //             const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
 
+    //             // we wait to ensure that payments has come in, in order to get the card and mount it.
+    //             setTimeout(async () => {
+    //                 const card = await payments.card();
+    //                 await card.attach('#card-container');
 
-                const cardButton = document.getElementById('card-button');
-                if (cardButton) {
-                    setLoaded(true);
-                    cardButton.addEventListener('click', async () => {
+    //                 const cardButton = document.getElementById('card-button');
+    //                 if (cardButton) {
+    //                     setLoaded(true);
+    //                     cardButton.addEventListener('click', async () => {
 
-                        try {
-                            const result = await card.tokenize();
+    //                         try {
+    //                             const result = await card.tokenize();
 
-                            if (result.status === 'OK') {
+    //                             if (result.status === 'OK') {
 
-                                if (paymentStatusContainerRef.current) {
-                                    paymentStatusContainerRef.current.classList.remove("error");
+    //                                 if (paymentStatusContainerRef.current) {
+    //                                     paymentStatusContainerRef.current.classList.remove("error");
 
-                                    paymentStatusContainerRef.current.classList.add("success");
-                                    paymentStatusContainerRef.current.innerHTML = "Payment Successful";
-                                }
+    //                                     paymentStatusContainerRef.current.classList.add("success");
+    //                                     paymentStatusContainerRef.current.innerHTML = "Payment Successful";
+    //                                 }
 
-                            } else {
-                                let errorMessage = `Tokenization failed with status: ${result.status}`;
-                                if (result.errors) {
-                                    errorMessage += ` and errors: ${JSON.stringify(
-                                        result.errors
-                                    )}`;
-                                }
+    //                             } else {
+    //                                 let errorMessage = `Tokenization failed with status: ${result.status}`;
+    //                                 if (result.errors) {
+    //                                     errorMessage += ` and errors: ${JSON.stringify(
+    //                                         result.errors
+    //                                     )}`;
+    //                                 }
 
-                                throw new Error(errorMessage);
-                            }
-                        } catch (e) {
-                            console.error(e);
-                            if (paymentStatusContainerRef.current) {
-                                paymentStatusContainerRef.current.classList.remove("success");
+    //                                 throw new Error(errorMessage);
+    //                             }
+    //                         } catch (e) {
+    //                             console.error(e);
+    //                             if (paymentStatusContainerRef.current) {
+    //                                 paymentStatusContainerRef.current.classList.remove("success");
 
-                                paymentStatusContainerRef.current.classList.add("error");
-                                paymentStatusContainerRef.current.innerHTML = "Payment Failed";
-                            }
-                        }
-                    });
-                }
-            }
-        }
+    //                                 paymentStatusContainerRef.current.classList.add("error");
+    //                                 paymentStatusContainerRef.current.innerHTML = "Payment Failed";
+    //                             }
+    //                         }
+    //                     });
+    //                 }
+    //             }, TIMEOUT_TO_LOAD)
+    //         }
+    //     }
 
-        initializeSquare();
+    //     initializeSquare();
 
-    }, []);
+    // }, []);
 
 
     const heading = (
@@ -137,9 +132,7 @@ export const Payment: React.FC = () => {
         <>
 
             <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
-
             <Header />
-
             <section className="ss-payments-container fade-in">
                 <div className="ss-payments-container__heading">
                     <p>
@@ -160,8 +153,8 @@ export const Payment: React.FC = () => {
                             <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
                         </div>
                     </div>
-
-                    {/* <div id="payment-form">
+{/* 
+                    <div id="payment-form">
                         <div id="payment-status-container" ref={paymentStatusContainerRef}></div>
                         <div id="card-container"></div>
                         <button id="card-button" type="button">Pay</button>
