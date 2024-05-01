@@ -10,6 +10,9 @@ const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     return component;
 }
 
+
+
+
 export const Routes = () => {
 
     return (

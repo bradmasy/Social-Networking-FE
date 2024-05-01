@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
 import env from "react-dotenv";
+import { RefObject } from 'react';
+
 import "./payment.scss";
 
 const TIMEOUT_TO_LOAD = 2000;
@@ -17,27 +19,60 @@ export const Payment: React.FC = () => {
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [initializeCard, setInitializeCard] = useState(false);
+    const paymentStatusContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function initializeSquare() {
             console.log(window.Square);
 
             if (window.Square && !initializeCard) {
-                console.log('here');
                 setInitializeCard(true);
-
+                const paymentCard = `<><>`
                 const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
-                setTimeout(async () => {
-                    const card = await payments.card();
-                    await card.attach('#card-container');
+                console.log(payments)
+                // we wait to ensure that payments has come in, in order to get the card and mount it.
+                const card = await payments.card();
+                console.log(card)
+                await card.attach(paymentCard);
+                // await card.attach('#card-container');
 
-                }, TIMEOUT_TO_LOAD)
 
                 const cardButton = document.getElementById('card-button');
                 if (cardButton) {
                     setLoaded(true);
                     cardButton.addEventListener('click', async () => {
-                        const statusContainer = document.getElementById('payment-status-container');
+
+                        try {
+                            const result = await card.tokenize();
+
+                            if (result.status === 'OK') {
+
+                                if (paymentStatusContainerRef.current) {
+                                    paymentStatusContainerRef.current.classList.remove("error");
+
+                                    paymentStatusContainerRef.current.classList.add("success");
+                                    paymentStatusContainerRef.current.innerHTML = "Payment Successful";
+                                }
+
+                            } else {
+                                let errorMessage = `Tokenization failed with status: ${result.status}`;
+                                if (result.errors) {
+                                    errorMessage += ` and errors: ${JSON.stringify(
+                                        result.errors
+                                    )}`;
+                                }
+
+                                throw new Error(errorMessage);
+                            }
+                        } catch (e) {
+                            console.error(e);
+                            if (paymentStatusContainerRef.current) {
+                                paymentStatusContainerRef.current.classList.remove("success");
+
+                                paymentStatusContainerRef.current.classList.add("error");
+                                paymentStatusContainerRef.current.innerHTML = "Payment Failed";
+                            }
+                        }
                     });
                 }
             }
@@ -46,6 +81,7 @@ export const Payment: React.FC = () => {
         initializeSquare();
 
     }, []);
+
 
     const heading = (
         <>
@@ -83,8 +119,6 @@ export const Payment: React.FC = () => {
         const parsedAmount = amount.charAt(0) === '$' ? amount.slice(1,) : amount;
         const totalAmountInCents = parsedAmount.includes('.') ? parseInt(parsedAmount.slice(0, parsedAmount.indexOf('.'))) * conversionFactor + parseInt(parsedAmount.slice(parsedAmount.indexOf('.') + 1,)) : parseInt(parsedAmount) * conversionFactor;
         return totalAmountInCents.toString();
-
-
     }
 
     const successMessage = (
@@ -127,49 +161,49 @@ export const Payment: React.FC = () => {
                         </div>
                     </div>
 
-                    <div id="payment-form">
-                        <div id="payment-status-container"></div>
+                    {/* <div id="payment-form">
+                        <div id="payment-status-container" ref={paymentStatusContainerRef}></div>
                         <div id="card-container"></div>
                         <button id="card-button" type="button">Pay</button>
-                    </div>
-                    {/* <PaymentForm
-                                // applicationId={`${env.SQUARE_PROD_APP_ID}`}
-                                applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
+                    </div> */}
+                    <PaymentForm
+                        // applicationId={`${env.SQUARE_PROD_APP_ID}`}
+                        applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
 
-                                cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    const totalMoneyConverted = processAmount();
-                                    const body = {
-                                        token: token["token"],
-                                        amount: totalMoneyConverted
-                                    }
-                                  
-                                    apiService.make_payment(body)
-                                        .then((response) => {
-                                            setDisplay(true);
-                                            console.log(response.data)
-                                        })
-                                        .catch((error) => {
-                                            setErrorDisplay(error)
+                        cardTokenizeResponseReceived={async (token: any, buyer: any) => {
+                            const totalMoneyConverted = processAmount();
+                            const body = {
+                                token: token["token"],
+                                amount: totalMoneyConverted
+                            }
 
-                                        })
-                                }}
-                                locationId={`${env.SQUARE_LOCATION_ID_DUNDAS}`}
-                            >
-                                <CreditCard
-                                    buttonProps={{
-                                        css: {
-                                            backgroundColor: "#50B2CA",
-                                            fontSize: "14px",
-                                            color: "#fff",
-                                            transition: "0.5s ease-in-out",
-                                            "&:hover": {
-                                                scale: '1.05'
+                            apiService.make_payment(body)
+                                .then((response) => {
+                                    setDisplay(true);
+                                    console.log(response.data)
+                                })
+                                .catch((error) => {
+                                    setErrorDisplay(error)
 
-                                            },
-                                        },
-                                    }}
-                                />
-                            </PaymentForm> */}
+                                })
+                        }}
+                        locationId={`${env.SQUARE_LOCATION_ID_DUNDAS}`}
+                    >
+                        <CreditCard
+                            buttonProps={{
+                                css: {
+                                    backgroundColor: "#50B2CA",
+                                    fontSize: "14px",
+                                    color: "#fff",
+                                    transition: "0.5s ease-in-out",
+                                    "&:hover": {
+                                        scale: '1.05'
+
+                                    },
+                                },
+                            }}
+                        />
+                    </PaymentForm>
                 </main>
             </section>
         </>

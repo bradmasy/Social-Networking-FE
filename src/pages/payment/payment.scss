@@ -8,6 +8,7 @@
 .ss-payments-container {
   @include flex-column-justify-align(100%, 100%, center, center);
   transition: 1s ease-in-out;
+
 }
 
 .ss-payments-container__heading {
@@ -57,6 +58,34 @@
   font-weight: bold;
 }
 
-.tool-tip{
-  font-size: .5em;
+.tool-tip {
+  font-size: 0.5em;
+}
+
+#card-button {
+  width: 100%;
+  padding:15px 0px;
+  border:none;
+  border-radius: 4px;
+  background-color: rgb(80, 178, 202);
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  transition: all 0.5s ease-in-out 0s;
+}
+
+#card-button:hover{
+  scale:1.05;
+  cursor: pointer;
+}
+
+.success{
+  font-family: "lexend";
+  color:green;
+  font-weight: 200;
+}
+
+.error{
+  font-family: "lexend";
+  color:red;
+  font-weight: 200;
 }
