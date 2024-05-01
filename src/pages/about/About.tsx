@@ -5,10 +5,10 @@ export const About: React.FC = () => {
 
     const mainCopy = (
         <>
-            <span>GET EXCLUSIVE ACCESS<br/></span>
-            <span>TO STUDIO BOOKINGS<br/></span>
-            <span>PANELS, EVENTS<br/></span>
-            <span>& MORE.</span>
+            <span>A COLLABORATIVE<br /></span>
+            <span>HUB FOR INDUSTRY<br /></span>
+            <span>LEADING CREATIVES<br /></span>
+            <a href="/apply" className="highlight">CLICK HERE TO LEARN MORE & APPLY</a>
         </>
     );
     return (
@@ -16,7 +16,7 @@ export const About: React.FC = () => {
             <Header />
             <section className="ss-about__main-content">
                 <main className='ss-about__main-content__main'>
-                   
+                    {mainCopy}
                 </main>
             </section>
         </>
