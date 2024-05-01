@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
@@ -16,66 +16,151 @@ export const Payment: React.FC = () => {
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [initializeCard, setInitializeCard] = useState(false);
+    const [layoutLoaded, setLayoutLoaded] = useState(false)
     const paymentStatusContainerRef = useRef<HTMLDivElement>(null);
 
-    // useEffect(() => {
-    //     async function initializeSquare() {
-    //         console.log(window.Square);
 
-    //         if (window.Square && !initializeCard) {
-    //             setInitializeCard(true);
-    //             const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
+    useEffect(() => {
+        console.log('hello use effect');
 
-    //             // we wait to ensure that payments has come in, in order to get the card and mount it.
-    //             setTimeout(async () => {
-    //                 const card = await payments.card();
-    //                 await card.attach('#card-container');
+        async function initializeSquare() {
+            if (window.Square && !initializeCard) {
+                setInitializeCard(true);
+                const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
 
-    //                 const cardButton = document.getElementById('card-button');
-    //                 if (cardButton) {
-    //                     setLoaded(true);
-    //                     cardButton.addEventListener('click', async () => {
+                // Function to attach Square card to the card container element
+                const attachSquareCard = async () => {
+                    const cardElement = document.getElementById("card-container");
+                    if (cardElement) {
+                        const card = await payments.card();
+                        console.log(card);
+                        await card.attach('#card-container');
+                        const cardButton = document.getElementById('card-button');
 
-    //                         try {
-    //                             const result = await card.tokenize();
+                        if (cardButton) {
+                            setLoaded(true);
+                            cardButton.addEventListener('click', async () => {
+                                try {
+                                    const result = await card.tokenize();
 
-    //                             if (result.status === 'OK') {
+                                    if (result.status === 'OK') {
+                                        if (paymentStatusContainerRef.current) {
+                                            paymentStatusContainerRef.current.classList.remove("error");
+                                            paymentStatusContainerRef.current.classList.add("success");
+                                            paymentStatusContainerRef.current.innerHTML = "Payment Successful";
+                                        }
+                                    } else {
+                                        let errorMessage = `Tokenization failed with status: ${result.status}`;
+                                        if (result.errors) {
+                                            errorMessage += ` and errors: ${JSON.stringify(result.errors)}`;
+                                        }
+                                        throw new Error(errorMessage);
+                                    }
+                                } catch (e) {
+                                    console.error(e);
+                                    if (paymentStatusContainerRef.current) {
+                                        paymentStatusContainerRef.current.classList.remove("success");
+                                        paymentStatusContainerRef.current.classList.add("error");
+                                        paymentStatusContainerRef.current.innerHTML = "Payment Failed";
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        // If card container element is not found, wait for changes in the DOM
+                        const observer = new MutationObserver((mutationsList) => {
+                            console.log('observer');
 
-    //                                 if (paymentStatusContainerRef.current) {
-    //                                     paymentStatusContainerRef.current.classList.remove("error");
+                            for (let mutation of mutationsList) {
+                                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                    // Card container element has been added to the DOM
+                                    attachSquareCard();
+                                    observer.disconnect(); // Stop observing
+                                    break;
+                                }
+                            }
+                        });
+                        observer.observe(document, { subtree: true, childList: true });
+                    }
+                };
 
-    //                                     paymentStatusContainerRef.current.classList.add("success");
-    //                                     paymentStatusContainerRef.current.innerHTML = "Payment Successful";
-    //                                 }
+                attachSquareCard();
+            }
+        }
 
-    //                             } else {
-    //                                 let errorMessage = `Tokenization failed with status: ${result.status}`;
-    //                                 if (result.errors) {
-    //                                     errorMessage += ` and errors: ${JSON.stringify(
-    //                                         result.errors
-    //                                     )}`;
-    //                                 }
+        initializeSquare();
+    }, []);
 
-    //                                 throw new Error(errorMessage);
-    //                             }
-    //                         } catch (e) {
-    //                             console.error(e);
-    //                             if (paymentStatusContainerRef.current) {
-    //                                 paymentStatusContainerRef.current.classList.remove("success");
+    useLayoutEffect(() => {
+        console.log('hello layout effect')
+        setLayoutLoaded(true);
+        // async function initializeSquare() {
 
-    //                                 paymentStatusContainerRef.current.classList.add("error");
-    //                                 paymentStatusContainerRef.current.innerHTML = "Payment Failed";
-    //                             }
-    //                         }
-    //                     });
-    //                 }
-    //             }, TIMEOUT_TO_LOAD)
-    //         }
-    //     }
+        //     console.log(window.Square);
 
-    //     initializeSquare();
+        //     if (window.Square && !initializeCard) {
+        //         console.log('here')
+        //         setInitializeCard(true);
+        //         const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
 
-    // }, []);
+        //         // we wait to ensure that payments has come in, in order to get the card and mount it.
+
+        //         const card = await payments.card();
+        //         console.log(card)
+        //         await card.attach('#card-container');
+
+        //         const cardButton = document.getElementById('card-button');
+        //         if (cardButton) {
+        //             setLoaded(true);
+        //             cardButton.addEventListener('click', async () => {
+
+        //                 try {
+        //                     const result = await card.tokenize();
+
+        //                     if (result.status === 'OK') {
+
+        //                         if (paymentStatusContainerRef.current) {
+        //                             paymentStatusContainerRef.current.classList.remove("error");
+
+        //                             paymentStatusContainerRef.current.classList.add("success");
+        //                             paymentStatusContainerRef.current.innerHTML = "Payment Successful";
+        //                         }
+
+        //                     } else {
+        //                         let errorMessage = `Tokenization failed with status: ${result.status}`;
+        //                         if (result.errors) {
+        //                             errorMessage += ` and errors: ${JSON.stringify(
+        //                                 result.errors
+        //                             )}`;
+        //                         }
+
+        //                         throw new Error(errorMessage);
+        //                     }
+        //                 } catch (e) {
+        //                     console.error(e);
+        //                     if (paymentStatusContainerRef.current) {
+        //                         paymentStatusContainerRef.current.classList.remove("success");
+
+        //                         paymentStatusContainerRef.current.classList.add("error");
+        //                         paymentStatusContainerRef.current.innerHTML = "Payment Failed";
+        //                     }
+        //                 }
+        //             });
+        //         }
+        //     }
+        // }
+
+
+
+    }, []);
+
+    const bindSquare = () => {
+        console.log('binding again')
+        const script = document.createElement('script');
+        script.src = 'https://sandbox.web.squarecdn.com/v1/square.js';
+        script.onload = bindSquare; // Call bindSquare function after script is loaded
+        document.head.appendChild(script);
+    }
 
 
     const heading = (
@@ -153,13 +238,13 @@ export const Payment: React.FC = () => {
                             <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
                         </div>
                     </div>
-{/* 
+
                     <div id="payment-form">
                         <div id="payment-status-container" ref={paymentStatusContainerRef}></div>
                         <div id="card-container"></div>
                         <button id="card-button" type="button">Pay</button>
-                    </div> */}
-                    <PaymentForm
+                    </div>
+                    {/* <PaymentForm
                         // applicationId={`${env.SQUARE_PROD_APP_ID}`}
                         applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
 
@@ -196,7 +281,7 @@ export const Payment: React.FC = () => {
                                 },
                             }}
                         />
-                    </PaymentForm>
+                    </PaymentForm> */}
                 </main>
             </section>
         </>
