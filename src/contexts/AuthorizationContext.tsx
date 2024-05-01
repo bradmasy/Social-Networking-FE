@@ -42,6 +42,22 @@ const AuthProvider = ({ children }: AuthProps) => {
         return false;
     }
 
+    // useEffect(() => {
+    //     console.log("checking auth")
+    //     console.log(authenticated)
+    //     // const token = Cookies.get("token")
+    //     // const userId = Cookies.get("userId");
+    //     const token = localStorage.getItem("token");
+    //     const userId = localStorage.getItem("userId");
+    //     // const token = localStorage.getItem('authToken');
+    //     console.log(token)
+    //     console.log(userId)
+    //     if (token) {
+    //         setAuthenticated(true);
+    //     }
+
+    // }, []);
+
     const setAuthenticationToken = (data: { [key: string]: string }) => {
         const expiration = new Date(Date.now() + 3600 * 1000);
         // localStorage.setItem("token", data["Token"]);

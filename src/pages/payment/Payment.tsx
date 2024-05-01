@@ -16,12 +16,11 @@ export const Payment: React.FC = () => {
     const [loaded, setLoaded] = useState(false);
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
+    const [enableButton, setEnableButton] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
-
             setLoaded(true)
-
         }, TIMEOUT_TO_LOAD)
 
     }, [])
@@ -44,7 +43,6 @@ export const Payment: React.FC = () => {
 
     const updateAmount = (moneyAmount: string) => {
         const formattedAmount = moneyAmount.charAt(0) === '$' ? moneyAmount : '$' + moneyAmount;
-
         setAmount(formattedAmount);
     }
 
@@ -62,8 +60,6 @@ export const Payment: React.FC = () => {
         const parsedAmount = amount.charAt(0) === '$' ? amount.slice(1,) : amount;
         const totalAmountInCents = parsedAmount.includes('.') ? parseInt(parsedAmount.slice(0, parsedAmount.indexOf('.'))) * conversionFactor + parseInt(parsedAmount.slice(parsedAmount.indexOf('.') + 1,)) : parseInt(parsedAmount) * conversionFactor;
         return totalAmountInCents.toString();
-
-
     }
 
     const successMessage = (
@@ -106,8 +102,8 @@ export const Payment: React.FC = () => {
                             </div>
 
                             <PaymentForm
-                                // applicationId={`${env.SQUARE_PROD_APP_ID}`}
-                                applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
+                                applicationId={`${env.SQUARE_PROD_APP_ID}`}
+                                // applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
                                     const totalMoneyConverted = processAmount();
@@ -115,17 +111,22 @@ export const Payment: React.FC = () => {
                                         token: token["token"],
                                         amount: totalMoneyConverted
                                     }
-                                  
+
+                                    // disable the button while the transaction is occuring...
+                                    setEnableButton(true);
+
                                     apiService.make_payment(body)
                                         .then((response) => {
                                             setDisplay(true);
-                                            console.log(response.data)
                                         })
                                         .catch((error) => {
                                             setErrorDisplay(error)
-
+                                        })
+                                        .finally(() => {
+                                            setEnableButton(false);
                                         })
                                 }}
+
                                 locationId={`${env.SQUARE_LOCATION_ID_DUNDAS}`}
                             >
                                 <CreditCard
@@ -140,6 +141,7 @@ export const Payment: React.FC = () => {
 
                                             },
                                         },
+                                        isLoading: enableButton
                                     }}
                                 />
                             </PaymentForm>

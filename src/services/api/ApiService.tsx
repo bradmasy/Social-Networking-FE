@@ -1,21 +1,33 @@
 import axios from "axios";
+import Cookies from 'js-cookie';
 
-// const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
+// const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export class ApiService {
+    retrieveAuth = (): boolean => {
+        const token = Cookies.get("token")
 
-    //    private session;
+        if (token) {
+            return true;
+        }
+        return false;
+    }
+    getToken = (): string => {
+        const token = Cookies.get("token");
+        return token || "";
+    }
+
 
     createHeader = () => {
-        const headers = {
+        const headers: { [key: string]: string } = {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': 'http://localhost:4200', // or specific origin as needed
         };
 
-        // if (this.session.isLive()) {
-        //   headers['Authorization'] = `token ${this.session.getToken()}`;
-        // }
+        if (this.retrieveAuth()) {
+            headers['Authorization'] = `token ${this.getToken()}`;
+        }
 
         return headers;
     };
@@ -29,7 +41,6 @@ export class ApiService {
     };
 
     signup = (data: { [key: string]: string }): Promise<any> => {
-        console.log(data)
         const body = { ...data };
         return axios.post(`${API_BASE_URL}/signup`, body);
 

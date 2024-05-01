@@ -42,7 +42,6 @@ export const Login: React.FC = () => {
     useEffect(() => {
 
         if (ValidationService.validateForm(formData)) {
-            console.log(formData);
             apiService.login(formData)
                 .then((response) => {
                     setAuthenticationToken(response["data"])
@@ -51,8 +50,7 @@ export const Login: React.FC = () => {
 
                 })
                 .catch((error: Error) => {
-
-                    console.log(error)
+                    console.error(error)
                 })
         }
     }, [formData])

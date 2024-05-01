@@ -14,13 +14,13 @@ interface AppOverlayProps {
     navigateOnClose?: string;
 }
 
-const errorButtonStyles: React.CSSProperties ={
-    backgroundColor:"lightcoral",
-    border:"solid black 1px",
+const errorButtonStyles: React.CSSProperties = {
+    backgroundColor: "lightcoral",
+    border: "solid black 1px",
 }
 
 export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "" }) => {
-    const appOverlay = useRef(null);
+    const appOverlay = useRef<HTMLDivElement>(null);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -41,6 +41,7 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
         adjustOverlayPosition();
 
         const overlay = document.querySelector('.ss-apply-overlay') as HTMLElement;
+
         if (overlay) {
             overlay.style.visibility = 'visible';
         }
@@ -57,14 +58,19 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
 
     const refresh = () => {
         window.location.reload();
+    }
 
+    const closeOverlay = () => {
+        if (appOverlay.current) {
+            appOverlay.current.style.display = "none";
+        }
     }
 
     return (
         <>
             <div className={`ss-apply-overlay ${display ? 'display-overlay' : ''} ${errorDisplay ? 'display-error' : ''}`} ref={appOverlay}>
                 <div className="ss-apply-overlay__close-container">
-                    <img src={xButton} alt="x-button" onClick={exitAndRedirect}>
+                    <img src={xButton} alt="x-button" onClick={closeOverlay}>
                     </img>
                 </div>
                 <div className="ss-apply-overlay__content">

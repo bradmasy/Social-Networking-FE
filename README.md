@@ -73,4 +73,14 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - docker build -t registry.heroku.com/sevens-social-fe/web . 
 - docker push registry.heroku.com/sevens-social-fe/web 
 - heroku container:release web --app sevens-social-fe 
+
+
+
+## SQUARE
+
+### PRODUCTION
+- uncomment in index.html in the public folder the production js file
+- uncomment in the payments.tsx file the production app id from the env
+
+### SANDBOX
    
