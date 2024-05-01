@@ -17,6 +17,7 @@ export const Payment: React.FC = () => {
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [initializeCard, setInitializeCard] = useState(false);
     const [layoutLoaded, setLayoutLoaded] = useState(false)
+    const [scriptLoaded,setScriptLoaded] = useState(false)
     const paymentStatusContainerRef = useRef<HTMLDivElement>(null);
 
 
@@ -27,16 +28,15 @@ export const Payment: React.FC = () => {
             if (window.Square && !initializeCard) {
                 setInitializeCard(true);
                 const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
-
                 // Function to attach Square card to the card container element
                 const attachSquareCard = async () => {
                     const cardElement = document.getElementById("card-container");
+                    
                     if (cardElement) {
                         const card = await payments.card();
-                        console.log(card);
                         await card.attach('#card-container');
                         const cardButton = document.getElementById('card-button');
-
+                        
                         if (cardButton) {
                             setLoaded(true);
                             cardButton.addEventListener('click', async () => {
@@ -86,82 +86,36 @@ export const Payment: React.FC = () => {
 
                 attachSquareCard();
             }
+            else{
+                bindSquare()
+            }
         }
 
         initializeSquare();
-    }, []);
+    }, [scriptLoaded]);
 
-    useLayoutEffect(() => {
-        console.log('hello layout effect')
-        setLayoutLoaded(true);
-        // async function initializeSquare() {
-
-        //     console.log(window.Square);
-
-        //     if (window.Square && !initializeCard) {
-        //         console.log('here')
-        //         setInitializeCard(true);
-        //         const payments = window.Square.payments(env.SQUARE_SANDBOX_PROD_APP_ID, env.SQUARE_LOCATION_ID_DUNDAS);
-
-        //         // we wait to ensure that payments has come in, in order to get the card and mount it.
-
-        //         const card = await payments.card();
-        //         console.log(card)
-        //         await card.attach('#card-container');
-
-        //         const cardButton = document.getElementById('card-button');
-        //         if (cardButton) {
-        //             setLoaded(true);
-        //             cardButton.addEventListener('click', async () => {
-
-        //                 try {
-        //                     const result = await card.tokenize();
-
-        //                     if (result.status === 'OK') {
-
-        //                         if (paymentStatusContainerRef.current) {
-        //                             paymentStatusContainerRef.current.classList.remove("error");
-
-        //                             paymentStatusContainerRef.current.classList.add("success");
-        //                             paymentStatusContainerRef.current.innerHTML = "Payment Successful";
-        //                         }
-
-        //                     } else {
-        //                         let errorMessage = `Tokenization failed with status: ${result.status}`;
-        //                         if (result.errors) {
-        //                             errorMessage += ` and errors: ${JSON.stringify(
-        //                                 result.errors
-        //                             )}`;
-        //                         }
-
-        //                         throw new Error(errorMessage);
-        //                     }
-        //                 } catch (e) {
-        //                     console.error(e);
-        //                     if (paymentStatusContainerRef.current) {
-        //                         paymentStatusContainerRef.current.classList.remove("success");
-
-        //                         paymentStatusContainerRef.current.classList.add("error");
-        //                         paymentStatusContainerRef.current.innerHTML = "Payment Failed";
-        //                     }
-        //                 }
-        //             });
-        //         }
-        //     }
-        // }
-
-
-
-    }, []);
 
     const bindSquare = () => {
-        console.log('binding again')
+        console.log('Binding Square script...');
+        const existingScript = document.getElementById('square-script');
+        if (existingScript) {
+            document.head.removeChild(existingScript); // Remove existing script
+        }
         const script = document.createElement('script');
         script.src = 'https://sandbox.web.squarecdn.com/v1/square.js';
-        script.onload = bindSquare; // Call bindSquare function after script is loaded
+        script.id = 'square-script'; // Set ID for identification
+        script.onload = () => {
+            console.log('Square script loaded successfully');
+            // Add your ini tialization logic here
+            setScriptLoaded(true)
+        };
+        script.onerror = (error) => {
+            console.error('Error loading Square script:', error);
+            // Retry loading the Square script after a delay
+            setTimeout(bindSquare, 5000); // Retry after 5 seconds (adjust as needed)
+        };
         document.head.appendChild(script);
-    }
-
+    };
 
     const heading = (
         <>
