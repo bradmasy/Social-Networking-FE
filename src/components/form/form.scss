@@ -49,9 +49,8 @@
 
 .ss-input-container__icon {
   @include flex-column-justify-align(auto, 80%, center, center);
-
   position: relative;
-  // display: inline-block;
+  
   input{
     @include flex-column-justify-align(auto, 100%, center, center);
 

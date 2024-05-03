@@ -85,7 +85,7 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
 
                                 <input
                                     type={input.type}
-                                    className="ss-form__input"
+                                    className={`ss-form__input ${input.type === 'textarea' ? 'textarea-input' : ''}`}
                                     onChange={(event) => handleChange(event, input.name)}
                                 />
 

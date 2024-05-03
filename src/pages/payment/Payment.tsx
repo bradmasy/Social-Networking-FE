@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
@@ -17,13 +17,55 @@ export const Payment: React.FC = () => {
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [enableButton, setEnableButton] = useState(false);
+    const [appId, setAppId] = useState('');
+    const [locationId, setLocationId] = useState('');
+    const [errorMessage, setErrorMessage] = useState((<><span>PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN</span></>))
 
     useEffect(() => {
-        setTimeout(() => {
-            setLoaded(true)
-        }, TIMEOUT_TO_LOAD)
+
+        // const getCredentials = async () => {
+        //     await apiService.get_square_credentials()
+        //         .then((response: any) => {
+        //             console.log(response);
+        //             const data = response.data;
+        //             setAppId(data['authData']['square']['productionAppId'])
+
+        //             // setAppId(data['authData']['square']['sandboxAppId'])
+        //             setLocationId(data['authData']['location']['id'])
+        //             setLoaded(true)
+        //         })
+        //         .catch((error: Error) => {
+        //             console.error(error)
+        //         })
+        // }
+
+        // getCredentials();
+
 
     }, [])
+
+    useLayoutEffect(() => {
+        const getCredentials = async () => {
+            await apiService.get_square_credentials()
+                .then((response: any) => {
+                    const data = response.data;
+                    setAppId(data['authData']['square']['productionAppId'])
+
+                    // setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
+                    setLocationId(data['authData']['location']['id'])
+                    setLoaded(true)
+                })
+                .catch((error: Error) => {
+                    const errorMessage = error.message || "An error occurred";     
+                    setErrorMessage(<><span>{errorMessage}</span></>);
+                    setErrorDisplay(true)
+                    console.error(error)
+                })
+        }
+
+        getCredentials();
+
+    })
 
     const heading = (
         <>
@@ -42,7 +84,9 @@ export const Payment: React.FC = () => {
     }
 
     const updateAmount = (moneyAmount: string) => {
-        const formattedAmount = moneyAmount.charAt(0) === '$' ? moneyAmount : '$' + moneyAmount;
+        const trimmedAmount = moneyAmount.replace(/^\$+/, '');
+        // Add a dollar sign only if the trimmed amount is not empty
+        const formattedAmount = trimmedAmount ? '$' + trimmedAmount : '';
         setAmount(formattedAmount);
     }
 
@@ -67,12 +111,12 @@ export const Payment: React.FC = () => {
         </>
     )
 
-    const errorMessage = (
-        <><span>
-            PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN
-        </span>
-        </>
-    )
+    // const errorMessage = (
+    //     <><span>
+    //         PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN
+    //     </span>
+    //     </>
+    // )
 
     return (
         <>
@@ -102,8 +146,8 @@ export const Payment: React.FC = () => {
                             </div>
 
                             <PaymentForm
-                                applicationId={`${env.SQUARE_PROD_APP_ID}`}
-                                // applicationId={`${env.SQUARE_SANDBOX_PROD_APP_ID}`}
+                                applicationId={appId}
+                                // applicationId={`${env.SQUARE_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
                                     const totalMoneyConverted = processAmount();
@@ -127,7 +171,9 @@ export const Payment: React.FC = () => {
                                         })
                                 }}
 
-                                locationId={`${env.SQUARE_LOCATION_ID_DUNDAS}`}
+
+                                locationId={locationId}
+
                             >
                                 <CreditCard
                                     buttonProps={{
@@ -145,6 +191,7 @@ export const Payment: React.FC = () => {
                                     }}
                                 />
                             </PaymentForm>
+
                         </main>
                     </section>
                 </>
