@@ -84,3 +84,15 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### SANDBOX
    
+## AUTHORIZATION
+
+### SETTING COOKIES
+
+- example 
+Cookies.set('token', data["Token"], {
+            expires: expiration,
+            // path: "/",
+            // secure: true,
+            // HttpOnly: true,
+            SameSite: "Lax"
+        })

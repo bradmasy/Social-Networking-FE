@@ -1,12 +1,12 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Header } from "../../components";
 import { ApplyOverlay } from "../../components/overlays/apply-overlay/ApplyOverlay";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { ValidationService } from "../../services/validation/ValidationService";
 import { Input, SelectOption } from "../../components/form/Form";
-import './application.scss';
 import { ButtonProps } from "../../components/button/Button";
-import { object } from "square/dist/types/schema";
+import './application.scss';
+
 
 export const Application: React.FC = () => {
 
@@ -158,11 +158,11 @@ export const Application: React.FC = () => {
 
     return (
         <>
-            <ApplyOverlay 
-                errorMessage={errorMessage} 
-                successMessage={successMessage} 
-                setDisplay={setDisplayOverlay} 
-                errorDisplay={displayOverlayError} 
+            <ApplyOverlay
+                errorMessage={errorMessage}
+                successMessage={successMessage}
+                setDisplay={setDisplayOverlay}
+                errorDisplay={displayOverlayError}
                 display={displayOverlay}
             />
             <Header />
