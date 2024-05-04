@@ -10,9 +10,10 @@
 }
 
 .ss-form__input-container {
-  @include flex-column-justify-align(auto, 100%, start, center);
+  @include flex-column-justify-align(auto, 60%, start, center);
   gap: 15px;
   padding: 15px;
+
 }
 
 .ss-form__label {
@@ -31,6 +32,11 @@
   padding: 5px;
   font-weight: 200;
   text-align: center;
+
+  option{
+    text-align: center;
+    justify-content: center;
+  }
 }
 .ss-form__input:after {
   border-radius: 4px;
@@ -67,4 +73,19 @@
 
 .ss-icon:hover{
   cursor: pointer;
+}
+
+
+@media screen and (max-width: 800px) {
+  .ss-form-container {
+    @include flex-column-justify-align(auto, auto, start, center);
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+
+  .ss-form__input-container {
+    @include flex-column-justify-align(auto, 100%, start, center);
+    gap: 15px;
+    padding: 15px;
+  }
 }

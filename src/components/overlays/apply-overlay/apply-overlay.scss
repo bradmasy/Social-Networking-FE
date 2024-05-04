@@ -41,8 +41,7 @@
 }
 
 .ss-apply-overlay__content {
-  @include flex-row-justify-align(60%, 80%, center, center);
-
+  @include flex-row-justify-align(auto, 100%, center, center);
   p {
     color: black;
     font-weight: 300;
