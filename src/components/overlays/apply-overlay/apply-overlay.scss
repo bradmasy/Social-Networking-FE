@@ -12,28 +12,28 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 90%;
+  opacity: 95%;
   border-radius: 8px;
-  padding:14px;
+  padding: 14px;
 }
 
-.display-overlay{
-  display:flex;
-  background-color: $main-blue;
-
-}
-
-.display-error{
+.display-overlay {
   display: flex;
-  background-color: lightcoral!important;
+  background-color: $main-blue;
+}
+
+.display-error {
+  display: flex;
+  background-color: lightcoral !important;
 }
 
 .ss-apply-overlay__close-container {
   @include flex-row-justify-align(auto, 100%, flex-end, center);
-  // padding: 10px;
+
   img {
     transition: 0.25s ease-in-out;
   }
+
   img:hover {
     cursor: pointer;
     scale: 1.05;
@@ -41,11 +41,10 @@
 }
 
 .ss-apply-overlay__content {
-  @include flex-row-justify-align(60%, 80%, center, center);
-  padding: 50px 0px;
+  @include flex-row-justify-align(auto, 100%, center, center);
   p {
     color: black;
-    font-weight: 200;
+    font-weight: 300;
     font-size: 1.5em;
   }
 }

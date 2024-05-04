@@ -1,11 +1,12 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Header } from "../../components";
 import { ApplyOverlay } from "../../components/overlays/apply-overlay/ApplyOverlay";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { ValidationService } from "../../services/validation/ValidationService";
 import { Input, SelectOption } from "../../components/form/Form";
-import './application.scss';
 import { ButtonProps } from "../../components/button/Button";
+import './application.scss';
+
 
 export const Application: React.FC = () => {
 
@@ -14,6 +15,12 @@ export const Application: React.FC = () => {
     const [displayOverlay, setDisplayOverlay] = useState(false);
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
     const [formData, sendFormData] = useState({});
+    const [errorMessage, setErrorMessage] = useState(
+        <>
+            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
+            <span>PLEASE TRY AGAIN LATER.<br /></span>
+            <span><br /></span>
+        </>)
 
     const mainCopy = (
         <>
@@ -119,24 +126,25 @@ export const Application: React.FC = () => {
 
 
     useEffect(() => {
-        if (ValidationService.validateForm(formData)) {
-
-            apiService.apply(formData).then((res: any) => {
-                setDisplayOverlay(true);
-            }).catch((error: Error) => {
+        if (Object.keys(formData).length !== 0) {
+            if (ValidationService.validateForm(formData)) {
+                apiService.apply(formData).then((res: any) => {
+                    setDisplayOverlay(true);
+                }).catch((error: Error) => {
+                    setDisplayOverlayError(true);
+                })
+            }
+            else {
+                setErrorMessage(
+                    <>
+                        <span>PLEASE FILL OUT EACH FIELD<br /></span>
+                        <span>IN THE FORM AND RE-SUBMIT<br /></span>
+                    </>)
                 setDisplayOverlayError(true);
-            })
+            }
         }
 
-    }, [apiService, formData])
-
-    const errorMessage = (
-        <>
-            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
-            <span>PLEASE TRY AGAIN LATER.<br /></span>
-            <span><br /></span>
-        </>
-    );
+    }, [apiService, formData, displayOverlayError])
 
     const successMessage = (
         <>
@@ -150,7 +158,13 @@ export const Application: React.FC = () => {
 
     return (
         <>
-            <ApplyOverlay errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
+            <ApplyOverlay
+                errorMessage={errorMessage}
+                successMessage={successMessage}
+                setDisplay={setDisplayOverlay}
+                errorDisplay={displayOverlayError}
+                display={displayOverlay}
+            />
             <Header />
             <section className="ss-application__main-content">
                 <main className='ss-application__main-content__main'>

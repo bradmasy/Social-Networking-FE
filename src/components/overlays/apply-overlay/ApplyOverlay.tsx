@@ -1,9 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import xButton from "../../../../src/assets/images/icons/x-button-50.png";
-import "./apply-overlay.scss";
-import { Home } from "../../../pages";
 import { Button } from "../../button/Button";
+import "./apply-overlay.scss";
 
 interface AppOverlayProps {
     display: boolean;
@@ -51,10 +50,6 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
             window.removeEventListener('scroll', adjustOverlayPosition);
         };
     }, []);
-
-    const exitAndRedirect = () => {
-        navigate(`/${navigateOnClose}`);
-    }
 
     const refresh = () => {
         window.location.reload();

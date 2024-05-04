@@ -1,5 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ReactNode, createContext, useContext, useState } from "react";
 import Cookies from 'js-cookie';
 
 type AuthProps = {
@@ -32,50 +31,24 @@ const AuthProvider = ({ children }: AuthProps) => {
     const retrieveAuth = (): boolean => {
         const token = Cookies.get("token")
         const userId = Cookies.get("userId");
-        // const token = localStorage.getItem("token");
-        // const userId = localStorage.getItem("userId");
 
         if (token) {
-            // setAuthenticated(true);
             return true;
         }
         return false;
     }
 
-    // useEffect(() => {
-    //     console.log("checking auth")
-    //     console.log(authenticated)
-    //     // const token = Cookies.get("token")
-    //     // const userId = Cookies.get("userId");
-    //     const token = localStorage.getItem("token");
-    //     const userId = localStorage.getItem("userId");
-    //     // const token = localStorage.getItem('authToken');
-    //     console.log(token)
-    //     console.log(userId)
-    //     if (token) {
-    //         setAuthenticated(true);
-    //     }
-
-    // }, []);
-
     const setAuthenticationToken = (data: { [key: string]: string }) => {
         const expiration = new Date(Date.now() + 3600 * 1000);
-        // localStorage.setItem("token", data["Token"]);
-        // localStorage.setItem("userId", data["UserId"]);
+
 
         Cookies.set('token', data["Token"], {
             expires: expiration,
-            // path: "/",
-            // secure: true,
-            // HttpOnly: true,
             SameSite: "Lax"
         })
 
         Cookies.set('userId', data["UserId"], {
             expires: expiration,
-            // path: "/",
-            // secure: true,
-            // HttpOnly: true,
             SameSite: "Lax"
         })
     }

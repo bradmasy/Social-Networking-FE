@@ -50,10 +50,11 @@ export const Login: React.FC = () => {
 
                 })
                 .catch((error: Error) => {
+                    setDisplayOverlayError(true);
                     console.error(error)
                 })
         }
-    }, [formData])
+    }, [formData, apiService, navigate, setAuthenticated, setAuthenticationToken]);
 
     const message = (
         <>

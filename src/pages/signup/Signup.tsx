@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Form, Header } from "../../components";
 import { Input } from "../../components/form/Form";
-import "./signup.scss";
 import { ButtonProps } from "../../components/button/Button";
 import { ApplyOverlay } from "../../components/overlays/apply-overlay/ApplyOverlay";
 import { ValidationService } from "../../services/validation/ValidationService";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import iconImage from '../../assets/images/icons/view-100.png';
+import "./signup.scss";
 
 export const Signup: React.FC = () => {
     const apiService = useApiService()
@@ -25,7 +25,7 @@ export const Signup: React.FC = () => {
                     setDisplayOverlayError(true);
                 })
         }
-    }, [formData])
+    }, [apiService, formData])
 
     const inputs: Input[] = [
         {
