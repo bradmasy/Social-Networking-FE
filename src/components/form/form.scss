@@ -5,6 +5,7 @@
 
 .ss-form-container {
   @include flex-column-justify-align(auto, auto, start, center);
+  min-width: 500px;
   padding: 25px;
   margin-bottom: 25px;
 }
@@ -81,6 +82,7 @@
     @include flex-column-justify-align(auto, auto, start, center);
     padding: 25px;
     margin-bottom: 25px;
+    min-width: 0px;
   }
 
   .ss-form__input-container {

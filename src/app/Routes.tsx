@@ -1,6 +1,7 @@
 import { useAuth } from "../contexts/AuthorizationContext"
 import { Routes as Router, Route, Navigate } from "react-router-dom";
 import { About, Application, Home, Payment, Signup, Login } from '../pages/index'
+import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 
 const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
@@ -21,7 +22,7 @@ export const Routes = () => {
             {/* <Route path="/payment" element={authenticated ? <Payment /> : <Navigate to="/" replace />} /> */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-
+            <Route path="/industry-invite" element={<IndustryInvite />} />
         </Router>
     )
 }

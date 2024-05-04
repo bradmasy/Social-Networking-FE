@@ -1,0 +1,40 @@
+@import "../../global-styles/index.scss";
+
+.ss-industry-invite{
+    @include flex-column-justify-align(auto,100%,center,center);
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+
+}
+
+.password-message{
+    font-size: 1.5em;
+    letter-spacing: 4px;
+}
+
+.ss-industry-invite__password-message{
+    @include flex-column-justify-align(auto,100%,center,center);
+    padding: 50px 0px;
+
+}
+
+.ss-industry-invite__password-input{
+    @include flex-column-justify-align(auto,100%,center,center);
+    padding:50px;
+}
+
+.ss-industry-invite__password-input-field{
+    @include flex-column-justify-align(auto,100%,center,center);
+    font-family: "lexend";
+    text-align: center;
+    border:none;
+    outline: none;
+    border-radius: $input;
+}
+
+.ss-industry-invite__password-input__button{
+    @include flex-column-justify-align(auto,auto,center,center);
+    padding:25px;
+}
