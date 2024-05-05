@@ -1,14 +1,47 @@
-import { useState } from "react";
-import { Header } from "../../components"
+import { useEffect, useState } from "react";
+import { ApplyOverlay, Header } from "../../components"
 import { Form } from "../../components/index";
 import { ButtonProps } from "../../components/button/Button";
 import { Input } from "../../components/form/Form";
 import passwordIcon from "../../assets/images/icons/view-50.png";
+import { ValidationService } from "../../services";
+import { useApiService } from "../../contexts/ApiServiceContext";
+import { useAuth } from "../../contexts/AuthorizationContext";
+import { useNavigate } from "react-router-dom";
+
 
 import "./industry-invite.scss";
 
+
 export const IndustryInvite: React.FC = () => {
+    const apiService = useApiService();
+    const auth = useAuth();
+    const navigate = useNavigate();
+
     const [formData, sendFormData] = useState({});
+    const [display, setDisplay] = useState(false);
+    const [errorDisplay, setErrorDisplay] = useState(false);
+
+    useEffect(() => {
+        if (ValidationService.validateForm(formData)) {
+
+            apiService.industryInvite(formData)
+                .then((response: any) => {
+                    if (response.status === 200) {
+                        const passcode = response.data.data.password;
+                        auth.setIndustryAuth(passcode);
+
+                        navigate("/signup")
+                    }
+                })
+                .catch((error: Error) => {
+
+                    sendFormData({}); // reset the form data so they can re-submit0
+                    setErrorDisplay(true);
+                })
+        }
+
+    }, [apiService, auth, errorDisplay, formData, navigate])
 
     const industry = (
         <>
@@ -37,13 +70,26 @@ export const IndustryInvite: React.FC = () => {
         type: "submit",
         text: "ENTER"
     }
+
+    const successMessage = (
+        <>
+            <span>SUCCESS</span>
+        </>
+    )
+
+    const errorMessage = (
+        <>
+            <span>ERROR</span>
+        </>
+    )
     return (
         <>
+            <ApplyOverlay display={display} errorDisplay={errorDisplay} errorMessage={errorMessage} setDisplay={setErrorDisplay} />
             <Header />
             <section className="ss-industry-invite">
-            <div className="ss-industry-invite__password-message">
-                        {industry}
-                    </div>
+                <div className="ss-industry-invite__password-message">
+                    {industry}
+                </div>
                 <Form
                     formInputs={formInputs}
                     sendFormData={sendFormData}

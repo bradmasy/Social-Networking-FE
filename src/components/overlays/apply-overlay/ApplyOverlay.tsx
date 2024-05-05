@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import xButton from "../../../../src/assets/images/icons/x-button-50.png";
 import { Button } from "../../button/Button";
 import "./apply-overlay.scss";
@@ -8,8 +7,8 @@ interface AppOverlayProps {
     display: boolean;
     errorDisplay: boolean;
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
-    successMessage: JSX.Element;
-    errorMessage: JSX.Element;
+    successMessage?: JSX.Element;
+    errorMessage?: JSX.Element;
     navigateOnClose?: string;
 }
 
@@ -18,9 +17,8 @@ const errorButtonStyles: React.CSSProperties = {
     border: "solid black 1px",
 }
 
-export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "" }) => {
+export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "", setDisplay }) => {
     const appOverlay = useRef<HTMLDivElement>(null);
-    const navigate = useNavigate()
 
     useEffect(() => {
         const adjustOverlayPosition = () => {
@@ -56,9 +54,12 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
     }
 
     const closeOverlay = () => {
-        if (appOverlay.current) {
-            appOverlay.current.style.display = "none";
-        }
+
+        // removing the classes will toggle the display of the error and success messages
+
+        appOverlay.current?.classList.remove('display-overlay')
+        appOverlay.current?.classList.remove('display-error')
+        setDisplay(false);
     }
 
     return (

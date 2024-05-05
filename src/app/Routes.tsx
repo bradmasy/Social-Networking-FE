@@ -11,6 +11,15 @@ const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     return component;
 }
 
+
+const IndustryRoute = ({ component }: { component: JSX.Element }) => {
+    const auth = useAuth();
+
+    if (!auth.retrieveIndustry()) return <Navigate to="/" replace />;
+
+    return component;
+}
+
 export const Routes = () => {
 
     return (
@@ -20,7 +29,7 @@ export const Routes = () => {
             <Route path="/apply" element={<Application />} />
             <Route path="/payment" element={<PrivateRoutes component={<Payment />} />} />
             {/* <Route path="/payment" element={authenticated ? <Payment /> : <Navigate to="/" replace />} /> */}
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<IndustryRoute component={<Signup />} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/industry-invite" element={<IndustryInvite />} />
         </Router>

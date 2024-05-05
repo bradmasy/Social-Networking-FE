@@ -6,7 +6,6 @@ export interface ButtonProps {
     type: "submit" | "reset" | "button";
     click?: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     styles?: React.CSSProperties;
-
 }
 
 export const Button: React.FC<ButtonProps> = ({ text, type, id, click, styles }) => {

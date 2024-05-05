@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Button, ButtonProps } from "../button/Button";
 import "./form.scss";
+import { Button, ButtonProps } from "../button/Button";
 
 export interface FormData {
     [key: string]: string | null;

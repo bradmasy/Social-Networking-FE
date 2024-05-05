@@ -56,7 +56,7 @@ export const Payment: React.FC = () => {
                     setLoaded(true)
                 })
                 .catch((error: Error) => {
-                    const errorMessage = error.message || "An error occurred";     
+                    const errorMessage = error.message || "An error occurred";
                     setErrorMessage(<><span>{errorMessage}</span></>);
                     setErrorDisplay(true)
                     console.error(error)

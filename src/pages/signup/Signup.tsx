@@ -110,6 +110,7 @@ export const Signup: React.FC = () => {
         </>
     );
 
+    
     return (
         <>
             <ApplyOverlay errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />

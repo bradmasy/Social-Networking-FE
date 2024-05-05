@@ -11,7 +11,7 @@ export class ApiService {
         if (token) {
             return true;
         }
-        
+
         return false;
     }
     getToken = (): string => {
@@ -128,5 +128,11 @@ export class ApiService {
     authorizeOauth = () => {
         return axios.post(`${API_BASE_URL}/payment-oauth`, { headers: this.createHeader() })
 
+    }
+
+    // INDUSTRY
+
+    industryInvite = (industryPassword: { [key: string]: string }) => {
+        return axios.post(`${API_BASE_URL}/industry-passcode`, industryPassword, { headers: this.createHeader() })
     }
 }
