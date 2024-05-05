@@ -37,7 +37,6 @@ const AuthProvider = ({ children }: AuthProps) => {
 
     const retrieveAuth = (): boolean => {
         const token = Cookies.get("token")
-        const userId = Cookies.get("userId");
 
         if (token) {
             // authenticate token

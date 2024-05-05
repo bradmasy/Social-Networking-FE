@@ -3,10 +3,7 @@ import { ApplyOverlay, Button, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
-import env from "react-dotenv";
 import "./payment.scss";
-
-const TIMEOUT_TO_LOAD = 2000;
 
 export const Payment: React.FC = () => {
 

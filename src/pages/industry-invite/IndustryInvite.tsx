@@ -71,17 +71,12 @@ export const IndustryInvite: React.FC = () => {
         text: "ENTER"
     }
 
-    const successMessage = (
-        <>
-            <span>SUCCESS</span>
-        </>
-    )
-
     const errorMessage = (
         <>
             <span>ERROR</span>
         </>
     )
+    
     return (
         <>
             <ApplyOverlay display={display} errorDisplay={errorDisplay} errorMessage={errorMessage} setDisplay={setErrorDisplay} />
