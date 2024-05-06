@@ -1,0 +1,16 @@
+
+@import "../../global-styles/index.scss";
+
+.ss-anchor{
+    @include flex-row-justify-align(auto,auto,center,center);
+    font-family: 'lexend';
+    color:$main-blue;
+    text-decoration: none;
+    padding:$anchor-padding-lg;
+    font-weight: $anchor-ft-wgt;
+    transition: $anchor-transition-time ease-in-out;
+}
+
+.ss-anchor:hover {
+    opacity: $anchor-opacity;
+}

@@ -81,14 +81,13 @@ const AuthProvider = ({ children }: AuthProps) => {
         try {
             const body = { passcode: token };
             const response = await apiService.industryInvite(body);
-
+            
             if (response.status === 200) {
                 return true;
             } else {
                 return false; 
             }
         } catch (error) {
-            console.error("Error:", error);
             return false; 
         }
     };
