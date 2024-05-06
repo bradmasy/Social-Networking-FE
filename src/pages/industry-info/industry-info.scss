@@ -108,7 +108,6 @@
   }
   .ss-industry-info__welcome {
     @include flex-column-justify-align(calc(100vh - 150px), 100%, start, center);
-    border: solid red 1px;
     
   }
 
