@@ -6,7 +6,6 @@ import { Anchor, Header } from "../../components/index";
 import cardImg from "../../assets/images/card-black.png";
 
 import "./industry-info.scss";
-import { object } from "square/dist/types/schema";
 
 
 interface IndustryAttribute {
