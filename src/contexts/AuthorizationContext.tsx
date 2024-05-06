@@ -13,7 +13,10 @@ type IAuthContext = {
     setIndustryAuth: (data: string) => void;
     logout: () => void;
     retrieveAuth: () => boolean;
-    retrieveIndustry: () => Promise<boolean>;
+    // retrieveIndustry: () => Promise<boolean>;
+    retrieveIndustry: () => boolean;
+
+    
 }
 
 const initialValue = {
@@ -23,7 +26,9 @@ const initialValue = {
     setIndustryAuth: () => { },
     logout: () => { },
     retrieveAuth: () => false,
-    retrieveIndustry: () => Promise.resolve(false)
+    // retrieveIndustry: () => Promise.resolve(false)
+    retrieveIndustry: () => false
+
 }
 
 
@@ -75,22 +80,34 @@ const AuthProvider = ({ children }: AuthProps) => {
         })
     }
 
-    const retrieveIndustry = async () => {
-        const token = Cookies.get("IAuth") ?? "";
+    // const retrieveIndustry = async () => {
+    //     const token = Cookies.get("IAuth") ?? "";
 
-        try {
-            const body = { passcode: token };
-            const response = await apiService.industryInvite(body);
+    //     try {
+    //         const body = { passcode: token };
+    //         const response = await apiService.industryInvite(body);
             
-            if (response.status === 200) {
-                return true;
-            } else {
-                return false; 
-            }
-        } catch (error) {
-            return false; 
+    //         if (response.status === 200) {
+    //             return true;
+    //         } else {
+    //             return false; 
+    //         }
+    //     } catch (error) {
+    //         return false; 
+    //     }
+    // };
+
+    const retrieveIndustry =  () => {
+        const token = Cookies.get("IAuth")
+
+        if (token) {
+            // authenticate token
+
+            return true;
         }
-    };
+
+        return false;
+    }
 
     return (
         <AuthorizationContext.Provider value={{ authenticated, setAuthenticated, setAuthenticationToken, logout, retrieveAuth, retrieveIndustry, setIndustryAuth }}>

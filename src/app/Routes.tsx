@@ -3,7 +3,6 @@ import { Routes as Router, Route, Navigate } from "react-router-dom";
 import { About, Application, Home, Payment, Signup, Login } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
-import { useEffect, useState } from "react";
 
 const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
@@ -16,47 +15,11 @@ const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
 
 const IndustryRoute = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
-    const [hasPermission, setHasPermission] = useState(false); // <-- initially undefined
+    console.log(!auth.retrieveIndustry())
+    if (!auth.retrieveIndustry()) return <Navigate to="/" replace />;
 
-    useEffect(() => {
-        console.log('effect')
-        auth.retrieveIndustry()
-            .then((res) => {
-                console.log(res)
-                setHasPermission(res);
-            })
-            .catch((err) => {
-                setHasPermission(false)
-            })
-
-    }, [])
-
-    if (hasPermission === undefined) {
-        return null;
-    }
-
-    return hasPermission ? component : <Navigate to="/" replace />;
+    return component;
 }
-// const checkIndustry = async () => {
-//     try {
-//         const isIndustry = await auth.retrieveIndustry();
-//         console.log("Retrieve Industry:", isIndustry);
-
-//         if (!isIndustry) {
-//             console.log('Redirecting to login');
-//             return <Navigate to="/" replace />;
-//         } else {
-//             console.log('Continuing to industry route');
-//             return component;
-//         }
-//     } catch (error) {
-//         console.error("Error checking industry:", error);
-//         return <Navigate to="/" replace />;
-//     }
-// };
-
-// return checkIndustry();
-//};
 
 export const Routes = () => {
 
