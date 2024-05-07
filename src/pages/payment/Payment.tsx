@@ -21,7 +21,6 @@ export const Payment: React.FC = () => {
 
 
     const handleCheckBoxChange = (isChecked: boolean) => {
-        console.log(isChecked)
         setIsChecked(isChecked);
         // Do something with the isChecked value
     };

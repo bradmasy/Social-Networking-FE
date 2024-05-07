@@ -23,7 +23,6 @@ export const Signup: React.FC = () => {
         if (ValidationService.validateForm(formData)) {
             apiService.signup(formData)
                 .then((response: any) => {
-                    console.log(response.data["token"])
                     authService.setAuthenticationToken(response.data)
                     navigate('/payment')
                 })
