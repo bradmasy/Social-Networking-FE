@@ -15,7 +15,7 @@ const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
 
 const IndustryRoute = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
-    console.log(!auth.retrieveIndustry())
+    console.log()
     if (!auth.retrieveIndustry()) return <Navigate to="/" replace />;
 
     return component;

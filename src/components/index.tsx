@@ -1,5 +1,6 @@
-export { Header } from "./header/Header";
-export { Form } from "./form/Form";
-export { Button } from "./button/Button";
-export { Anchor } from "./anchor/Anchor";
+export * from "./header/Header";
+export * from "./form/Form";
+export * from "./button/Button";
+export * from "./anchor/Anchor";
+export * from "./checkbox/CheckBox";
 export * from "./overlays/index";

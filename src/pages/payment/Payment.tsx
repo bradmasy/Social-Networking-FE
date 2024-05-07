@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { ApplyOverlay, Button, Header } from "../../components";
+import { ApplyOverlay, Button, CheckBox, CheckBoxProps, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
@@ -17,29 +17,14 @@ export const Payment: React.FC = () => {
     const [appId, setAppId] = useState('');
     const [locationId, setLocationId] = useState('');
     const [errorMessage, setErrorMessage] = useState((<><span>PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN</span></>))
-
-    useEffect(() => {
-
-        // const getCredentials = async () => {
-        //     await apiService.get_square_credentials()
-        //         .then((response: any) => {
-        //             console.log(response);
-        //             const data = response.data;
-        //             setAppId(data['authData']['square']['productionAppId'])
-
-        //             // setAppId(data['authData']['square']['sandboxAppId'])
-        //             setLocationId(data['authData']['location']['id'])
-        //             setLoaded(true)
-        //         })
-        //         .catch((error: Error) => {
-        //             console.error(error)
-        //         })
-        // }
-
-        // getCredentials();
+    const [isChecked, setIsChecked] = useState(false);
 
 
-    }, [])
+    const handleCheckBoxChange = (isChecked: boolean) => {
+        console.log(isChecked)
+        setIsChecked(isChecked);
+        // Do something with the isChecked value
+    };
 
     useLayoutEffect(() => {
         const getCredentials = async () => {
@@ -115,6 +100,11 @@ export const Payment: React.FC = () => {
     //     </>
     // )
 
+    const checkboxProps: CheckBoxProps = {
+        label: "PAY MEMBERSHIP ($277.00)",
+        onChange: handleCheckBoxChange
+    }
+
     return (
         <>
             <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
@@ -130,16 +120,17 @@ export const Payment: React.FC = () => {
                         <main className="ss-payments-container__payment-information">
                             <div className="ss-payments-container__user-information">
                                 <div className="ss-payments-container__user-information__pay-membership">
-                                    <Button click={adedMembershipFeeToOrder} text="PAY MEMBERSHIP FEE" type="button" />
+                                    {/* <Button click={adedMembershipFeeToOrder} text="PAY MEMBERSHIP FEE" type="button" /> */}
+                                    <CheckBox {...checkboxProps} />
                                 </div>
                                 <div className="ss-payments-container__user-information__input-container">
-                                    <label>FULL NAME</label>
+                                    <label>NAME ON CARD</label>
                                     <input name="name" type="text"></input>
                                 </div>
-                                <div className="ss-payments-container__user-information__input-container">
+                                {/* <div className="ss-payments-container__user-information__input-container">
                                     <label>AMOUNT</label>
                                     <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
-                                </div>
+                                </div> */}
                             </div>
 
                             <PaymentForm
@@ -147,25 +138,36 @@ export const Payment: React.FC = () => {
                                 // applicationId={`${env.SQUARE_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    const totalMoneyConverted = processAmount();
-                                    const body = {
-                                        token: token["token"],
-                                        amount: totalMoneyConverted
+                                    if (isChecked) {
+                                        setAmount("$277");
+
+                                        const totalMoneyConverted = processAmount();
+
+                                        const body = {
+                                            token: token["token"],
+                                            amount: totalMoneyConverted
+                                        }
+
+                                        // disable the button while the transaction is occuring...
+                                        setEnableButton(true);
+
+                                        apiService.make_payment(body)
+                                            .then((response) => {
+                                                setDisplay(true);
+                                            })
+                                            .catch((error) => {
+                                                setErrorDisplay(error)
+                                            })
+                                            .finally(() => {
+                                                setEnableButton(false);
+                                            })
+                                    } else {
+                                        
+                                        setErrorDisplay(true)
+
                                     }
 
-                                    // disable the button while the transaction is occuring...
-                                    setEnableButton(true);
 
-                                    apiService.make_payment(body)
-                                        .then((response) => {
-                                            setDisplay(true);
-                                        })
-                                        .catch((error) => {
-                                            setErrorDisplay(error)
-                                        })
-                                        .finally(() => {
-                                            setEnableButton(false);
-                                        })
                                 }}
 
 

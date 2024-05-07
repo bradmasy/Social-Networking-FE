@@ -40,6 +40,7 @@ const AuthProvider = ({ children }: AuthProps) => {
     const [authenticated, setAuthenticated] = useState(initialValue.authenticated);
     const apiService = useApiService();
 
+    
     const retrieveAuth = (): boolean => {
         const token = Cookies.get("token")
 

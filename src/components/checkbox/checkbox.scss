@@ -1,0 +1,21 @@
+@import "../../global-styles/index.scss";
+
+.ss-checkbox{
+    @include flex-column-justify-align(auto,auto,center,center);
+    padding:15px;
+    background-color: $main-blue;
+    color:white;
+    border-radius: 8px;
+    gap :5px;
+
+}
+
+.ss-checkbox__checkbox-container{
+    @include flex-row-justify-align(auto,auto,space-between,center);
+    gap:5px;
+
+}
+
+.ss-checkbox__copy{
+    font-size: .5em;
+}

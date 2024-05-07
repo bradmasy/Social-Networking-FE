@@ -7,9 +7,13 @@ import { ValidationService } from "../../services/validation/ValidationService";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import iconImage from '../../assets/images/icons/view-100.png';
 import "./signup.scss";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthorizationContext";
 
 export const Signup: React.FC = () => {
     const apiService = useApiService()
+    const authService = useAuth();
+    const navigate = useNavigate();
 
     const [formData, sendFormData] = useState({});
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
@@ -19,7 +23,9 @@ export const Signup: React.FC = () => {
         if (ValidationService.validateForm(formData)) {
             apiService.signup(formData)
                 .then((response: any) => {
-                    setDisplayOverlay(true)
+                    console.log(response.data["token"])
+                    authService.setAuthenticationToken(response.data)
+                    navigate('/payment')
                 })
                 .catch((error: Error) => {
                     setDisplayOverlayError(true);
@@ -92,15 +98,25 @@ export const Signup: React.FC = () => {
         </>
     )
 
-    const successMessage = (
-        <>
-            <span>THANK YOU FOR YOUR APPLICATION<br /></span>
-            <span>SEVENS SOCIAL WILL <br /></span>
-            <span>CAREFULLY REVIEW IT <br /></span>
-            <span> AND REACH OUT TO YOU SOON<br /></span>
-            <span><br /></span>
-        </>
-    )
+    // const successMessage = (
+    //     <>
+    //         <span>THANK YOU FOR YOUR APPLICATION<br /></span>
+    //         <span>SEVENS SOCIAL WILL <br /></span>
+    //         <span>CAREFULLY REVIEW IT <br /></span>
+    //         <span> AND REACH OUT TO YOU SOON<br /></span>
+    //         <span><br /></span>
+    //     </>
+    // )
+
+    // const successMessage = (
+    //     <>
+    //         <span>SIGNUP SUCCESSFUL<br /></span>
+    //         <span>PLEASE NAVIGATE TO LOGIN <br /></span>
+    //         <span>TO LOGIN INTO YOUR ACCOUNT<br /></span>
+    //         <span><br /></span>
+    //     </>
+   //)
+
 
     const errorMessage = (
         <>
@@ -113,7 +129,7 @@ export const Signup: React.FC = () => {
     
     return (
         <>
-            <ApplyOverlay errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
+            <ApplyOverlay errorMessage={errorMessage}  setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
             <Header />
             <div className="ss-signup-container">
                 <div className="ss-signup-container__message">
