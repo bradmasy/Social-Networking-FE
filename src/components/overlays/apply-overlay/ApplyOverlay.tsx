@@ -1,23 +1,18 @@
 import { useEffect, useRef } from "react";
 import xButton from "../../../../src/assets/images/icons/x-button-50.png";
-import { Button } from "../../button/Button";
 import "./apply-overlay.scss";
 
 interface AppOverlayProps {
     display: boolean;
     errorDisplay: boolean;
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+    setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>;
     successMessage?: JSX.Element;
     errorMessage?: JSX.Element;
     navigateOnClose?: string;
 }
 
-const errorButtonStyles: React.CSSProperties = {
-    backgroundColor: "lightcoral",
-    border: "solid black 1px",
-}
-
-export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "", setDisplay }) => {
+export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay, successMessage, errorMessage, navigateOnClose = "", setDisplay, setErrorDisplay }) => {
     const appOverlay = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -49,10 +44,6 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
         };
     }, []);
 
-    const refresh = () => {
-        window.location.reload();
-    }
-
     const closeOverlay = () => {
 
         // removing the classes will toggle the display of the error and success messages
@@ -60,6 +51,7 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
         appOverlay.current?.classList.remove('display-overlay')
         appOverlay.current?.classList.remove('display-error')
         setDisplay(false);
+        setErrorDisplay(false);
     }
 
     return (
@@ -70,17 +62,11 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
                     </img>
                 </div>
                 <div className="ss-apply-overlay__content">
-                    <p>
+                    <div>
                         {errorDisplay ? errorMessage : successMessage}
-                    </p>
+                    </div>
                 </div>
-                {
-                    errorDisplay && (
-                        <div>
-                            <Button styles={errorButtonStyles} text="REFRESH" type="button" click={refresh} />
-                        </div>
-                    )
-                }
+
             </div>
         </>
     )

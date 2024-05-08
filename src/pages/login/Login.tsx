@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ButtonProps } from "../../components/button/Button";
 import { Input } from "../../components/form/Form";
-import { Header } from "../../components/index";
+import { Header, Spinner } from "../../components/index";
 import { Form, ApplyOverlay } from "../../components/index";
 import eyeIcon from "../../assets/images/icons/view-100.png";
 import { ValidationService } from "../../services";
@@ -17,6 +17,13 @@ export const Login: React.FC = () => {
     const [formData, sendFormData] = useState({});
     const [displayOverlay, setDisplayOverlay] = useState(false);
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(
+        <>
+            <div>ERROR LOGGING IN</div>
+            <div>PLEASE TRY AGAIN</div>
+        </>
+    )
 
     const navigate = useNavigate();
 
@@ -40,19 +47,36 @@ export const Login: React.FC = () => {
 
 
     useEffect(() => {
+        const fieldsWritten = Object.keys(formData).length;
+        if (fieldsWritten > 0) {
+            if (ValidationService.validateForm(formData)) {
+                setLoading(true)
+                apiService.login(formData)
+                    .then((response) => {
+                        setAuthenticationToken(response["data"])
+                        setAuthenticated(true)
+                        navigate("/payment")
+                    })
+                    .catch((error: Error) => {
+                        sendFormData({});
+                        setErrorMessage(<>
 
-        if (ValidationService.validateForm(formData)) {
-            apiService.login(formData)
-                .then((response) => {
-                    setAuthenticationToken(response["data"])
-                    setAuthenticated(true)
-                    navigate("/payment")
+                            <div>INVALID CREDENTIALS</div>
+                            <div>PLEASE TRY AGAIN</div>
 
-                })
-                .catch((error: Error) => {
-                    setDisplayOverlayError(true);
-                    console.error(error)
-                })
+                        </>)
+                        setDisplayOverlayError(true);
+                        console.error(error)
+                    })
+            } else {
+                setErrorMessage(<>
+                    <div>PLEASE FILL IN ALL </div>
+                    <div> FIELDS OF THE FORM</div>
+
+                </>)
+                sendFormData({});
+                setDisplayOverlayError(true);
+            }
         }
     }, [formData, apiService, navigate, setAuthenticated, setAuthenticationToken]);
 
@@ -75,17 +99,17 @@ export const Login: React.FC = () => {
         </>
     )
 
-    const errorMessage = (
-        <>
-            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
-            <span>PLEASE TRY AGAIN LATER.<br /></span>
-            <span><br /></span>
-        </>
-    );
-
     return (
         <>
-            <ApplyOverlay navigateOnClose={"/login"} errorMessage={errorMessage} successMessage={successMessage} setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
+            <Spinner display={loading} />
+            <ApplyOverlay
+                navigateOnClose={"/login"}
+                errorMessage={errorMessage}
+                successMessage={successMessage}
+                setDisplay={setDisplayOverlay}
+                errorDisplay={displayOverlayError}
+                display={displayOverlay}
+                setErrorDisplay={setDisplayOverlayError} />
             <Header />
             <div className="ss-login-container">
                 <p>

@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-import { ApplyOverlay, Button, CheckBox, CheckBoxProps, Header } from "../../components";
+import { useLayoutEffect, useState } from "react";
+import { ApplyOverlay, CheckBox, CheckBoxProps, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
@@ -59,17 +59,10 @@ export const Payment: React.FC = () => {
         </>
     )
 
-    const adedMembershipFeeToOrder = () => {
-        const feeAmount = '$277';
-        setAmount(feeAmount);
-    }
-
-    const updateAmount = (moneyAmount: string) => {
-        const trimmedAmount = moneyAmount.replace(/^\$+/, '');
-        // Add a dollar sign only if the trimmed amount is not empty
-        const formattedAmount = trimmedAmount ? '$' + trimmedAmount : '';
-        setAmount(formattedAmount);
-    }
+    // const adedMembershipFeeToOrder = () => {
+    //     const feeAmount = '$277';
+    //     setAmount(feeAmount);
+    // }
 
     /**
      * Converts the user input into the values that square expects for the API call.
@@ -92,13 +85,6 @@ export const Payment: React.FC = () => {
         </>
     )
 
-    // const errorMessage = (
-    //     <><span>
-    //         PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN
-    //     </span>
-    //     </>
-    // )
-
     const checkboxProps: CheckBoxProps = {
         label: "PAY MEMBERSHIP ($277.00)",
         onChange: handleCheckBoxChange
@@ -106,7 +92,15 @@ export const Payment: React.FC = () => {
 
     return (
         <>
-            <ApplyOverlay display={display} setDisplay={setDisplay} errorDisplay={errorDisplay} successMessage={successMessage} errorMessage={errorMessage} navigateOnClose="payment" />
+            <ApplyOverlay
+                display={display}
+                setDisplay={setDisplay}
+                errorDisplay={errorDisplay}
+                successMessage={successMessage}
+                errorMessage={errorMessage}
+                navigateOnClose="payment"
+                setErrorDisplay={setErrorDisplay}
+            />
             <Header />
             {loaded ? (
                 <>
@@ -138,6 +132,7 @@ export const Payment: React.FC = () => {
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
                                     if (isChecked) {
+                                        setLoaded(true)
                                         setAmount("$277");
 
                                         const totalMoneyConverted = processAmount();
@@ -161,7 +156,7 @@ export const Payment: React.FC = () => {
                                                 setEnableButton(false);
                                             })
                                     } else {
-                                        
+
                                         setErrorDisplay(true)
 
                                     }

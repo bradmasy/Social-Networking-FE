@@ -4,3 +4,6 @@ export { Application } from "./application/Application";
 export { Payment } from "./payment/Payment";
 export { Signup } from "./signup/Signup";
 export { Login } from "./login/Login";
+export { PaymentSuccess } from "./payment-success/PaymentSuccess";
+export { IndustryInfo } from "./industry-info/IndustryInfo";
+export { IndustryInvite } from "./industry-invite/IndustryInvite";

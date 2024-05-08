@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Header } from "../../components";
+import { Form, Header, Spinner } from "../../components";
 import { Input } from "../../components/form/Form";
 import { ButtonProps } from "../../components/button/Button";
 import { ApplyOverlay } from "../../components/overlays/apply-overlay/ApplyOverlay";
@@ -18,19 +18,56 @@ export const Signup: React.FC = () => {
     const [formData, sendFormData] = useState({});
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
     const [displayOverlay, setDisplayOverlay] = useState(false);
-
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(
+        <>
+            <div>PLEASE FILL OUT</div>
+            <div>ALL FIELDS IN</div>
+            <div>THE FORM BEFORE</div>
+            <div>SUBMITTING</div>
+        </>
+    )
     useEffect(() => {
-        if (ValidationService.validateForm(formData)) {
-            apiService.signup(formData)
-                .then((response: any) => {
-                    authService.setAuthenticationToken(response.data)
-                    navigate('/payment')
-                })
-                .catch((error: Error) => {
-                    setDisplayOverlayError(true);
-                })
+        const fieldsWritten = Object.keys(formData).length;
+
+        if (fieldsWritten > 0) {
+            if (ValidationService.validateForm(formData)) {
+                setLoading(true);
+                apiService.signup(formData)
+                    .then((response: any) => {
+                        authService.setAuthenticationToken(response.data)
+                        navigate('/payment')
+                    })
+                    .catch((err: { [key: string]: any }) => {
+                        setErrorMessage(
+                            <>
+                                <p>{err.response.data.error}</p>
+                                <p>{err.response.data.message}</p>
+
+                            </>
+                        );
+
+                        sendFormData({});
+                        setLoading(false);
+                        setDisplayOverlayError(true);
+                    })
+            } else {
+                sendFormData({});
+                setErrorMessage(
+                    <>
+                        <div>PLEASE FILL OUT</div>
+                        <div>ALL FIELDS IN</div>
+                        <div>THE FORM BEFORE</div>
+                        <div>SUBMITTING</div>
+                    </>
+                )
+                setDisplayOverlayError(true);
+            }
         }
-    }, [apiService, formData])
+
+
+
+    }, [apiService, authService, formData, navigate])
 
     const inputs: Input[] = [
         {
@@ -97,45 +134,24 @@ export const Signup: React.FC = () => {
         </>
     )
 
-    // const successMessage = (
-    //     <>
-    //         <span>THANK YOU FOR YOUR APPLICATION<br /></span>
-    //         <span>SEVENS SOCIAL WILL <br /></span>
-    //         <span>CAREFULLY REVIEW IT <br /></span>
-    //         <span> AND REACH OUT TO YOU SOON<br /></span>
-    //         <span><br /></span>
-    //     </>
-    // )
-
-    // const successMessage = (
-    //     <>
-    //         <span>SIGNUP SUCCESSFUL<br /></span>
-    //         <span>PLEASE NAVIGATE TO LOGIN <br /></span>
-    //         <span>TO LOGIN INTO YOUR ACCOUNT<br /></span>
-    //         <span><br /></span>
-    //     </>
-   //)
-
-
-    const errorMessage = (
-        <>
-            <span>AN ERROR OCCURED WHILE SUBMITTING YOUR APPLICATION<br /></span>
-            <span>PLEASE TRY AGAIN LATER.<br /></span>
-            <span><br /></span>
-        </>
-    );
-
-    
     return (
         <>
-            <ApplyOverlay errorMessage={errorMessage}  setDisplay={setDisplayOverlay} errorDisplay={displayOverlayError} display={displayOverlay} />
-            <Header />
-            <div className="ss-signup-container">
-                <div className="ss-signup-container__message">
-                    {message}
+            <div className="fade-in">
+                <Spinner display={loading} />
+                <ApplyOverlay
+                    errorMessage={errorMessage}
+                    setDisplay={setDisplayOverlay}
+                    errorDisplay={displayOverlayError}
+                    display={displayOverlay}
+                    setErrorDisplay={setDisplayOverlayError} />
+                <Header />
+                <div className="ss-signup-container">
+                    <div className="ss-signup-container__message">
+                        {message}
+                    </div>
                 </div>
+                <Form buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
             </div>
-            <Form buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
         </>
     )
 }

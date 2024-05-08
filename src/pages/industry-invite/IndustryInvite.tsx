@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ApplyOverlay, Header } from "../../components"
+import { ApplyOverlay, Header, Spinner } from "../../components"
 import { Form } from "../../components/index";
 import { ButtonProps } from "../../components/button/Button";
 import { Input } from "../../components/form/Form";
@@ -21,10 +21,11 @@ export const IndustryInvite: React.FC = () => {
     const [formData, sendFormData] = useState({});
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (ValidationService.validateForm(formData)) {
-
+            setLoading(true)
             apiService.industryInvite(formData)
                 .then((response: any) => {
                     if (response.status === 200) {
@@ -35,6 +36,7 @@ export const IndustryInvite: React.FC = () => {
                     }
                 })
                 .catch((error: Error) => {
+                    setLoading(false)
 
                     sendFormData({}); // reset the form data so they can re-submit0
                     setErrorDisplay(true);
@@ -73,13 +75,24 @@ export const IndustryInvite: React.FC = () => {
 
     const errorMessage = (
         <>
-            <span>ERROR</span>
+            <div>ERROR</div>
+            <div>INVALID PASSCODE</div>
+            <div>ENSURE THE CODE IS CORRECT</div>
+            <div>AND TRY AGAIN</div>
+
         </>
     )
-    
+
     return (
         <>
-            <ApplyOverlay display={display} errorDisplay={errorDisplay} errorMessage={errorMessage} setDisplay={setErrorDisplay} />
+            <Spinner display={loading} />
+            <ApplyOverlay 
+                display={display} 
+                errorDisplay={errorDisplay} 
+                errorMessage={errorMessage} 
+                setDisplay={setDisplay}
+                setErrorDisplay={setErrorDisplay} 
+                />
             <Header />
             <section className="ss-industry-invite">
                 <div className="ss-industry-invite__password-message">

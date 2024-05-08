@@ -2,13 +2,16 @@
 @import "../../../global-styles/colors.scss";
 
 .ss-apply-overlay {
-  @include flex-column-justify-align(50%, 30%, start, center);
-
+  @include flex-column-justify-align(auto, auto, start, center);
+  padding:50px;
   display: none;
   position: absolute;
-  //   min-width: 500px;
-  //   min-height: 500px;
+  color:black;
   z-index: 1;
+  font-weight: 300;
+  font-size: 1.5em;
+  min-height: 300px;
+  min-width: 300px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -42,23 +45,25 @@
 
 .ss-apply-overlay__content {
   @include flex-row-justify-align(auto, 100%, center, center);
-  p {
-    color: black;
-    font-weight: 300;
-    font-size: 1.5em;
-  }
+  padding:50px 0px;
+
 }
 
 @media screen and (max-width: 800px) {
   .ss-apply-overlay {
     position: absolute;
     min-width: 300px;
-    height: 300px;
+
     z-index: 1;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: $main-blue;
     opacity: 80%;
+  }
+
+  .ss-apply-overlay__content {
+    padding:25px 0px;
+  
   }
 }

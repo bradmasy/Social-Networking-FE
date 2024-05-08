@@ -164,6 +164,7 @@ export const Application: React.FC = () => {
                 setDisplay={setDisplayOverlay}
                 errorDisplay={displayOverlayError}
                 display={displayOverlay}
+                setErrorDisplay={setDisplayOverlayError}
             />
             <Header />
             <section className="ss-application__main-content">

@@ -1,0 +1,40 @@
+@import "../../global-styles/index.scss";
+
+.ss-payment-success{
+@include flex-column-justify-align(calc(100vh - 150px),auto,center,center);
+position: relative;
+// font-size: 2em;
+// top: 50%;
+// left: 50%;
+// transform: translate(-50%, -50%);
+}
+
+.ss-payment-success__container{
+    @include flex-column-justify-align(auto,auto,center,center);
+position: absolute;
+font-size: 2em;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+.ss-payment-highlight{
+    color:$main-blue;
+}
+
+.ss-payment-success__redirect{
+    padding:20px 0px;
+}
+
+.ss-payment-padding{
+    padding:20px 0px;
+}
+
+
+@media screen and (max-width:800px) {
+    .ss-payment-success__container{
+       
+    font-size: 1.5em;
+ 
+    }
+}

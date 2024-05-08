@@ -1,0 +1,21 @@
+@import "../../global-styles/index.scss";
+
+  .ss-spinner {
+    display: none;
+    top: calc(50%);
+    left: calc(50% - 60px);
+    position: fixed;
+    height: 120px;
+    width: 120px;
+    border: solid 3px;
+    border-color: $main-blue transparent $main-blue transparent;
+    z-index: 1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    translate: (calc(-50% - 60px),calc(-50% - 60px));
+  }
+
+
+.display-spinner {
+  display: block !important;
+}
