@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
                     .then((response) => {
                         setAuthenticationToken(response["data"])
                         setAuthenticated(true)
-                        navigate("/payment")
+                        navigate("/user-dashboard")
                     })
                     .catch((error: Error) => {
                         sendFormData({});

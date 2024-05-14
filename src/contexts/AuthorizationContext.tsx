@@ -33,7 +33,7 @@ const initialValue = {
 
 
 const AuthorizationContext = createContext<IAuthContext>(initialValue)
-const expiration = new Date(Date.now() + 3600 * 1000);
+const expiration = new Date(Date.now() + 3600 * 24000);
 
 const AuthProvider = ({ children }: AuthProps) => {
 

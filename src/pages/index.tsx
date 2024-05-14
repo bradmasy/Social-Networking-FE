@@ -7,3 +7,4 @@ export { Login } from "./login/Login";
 export { PaymentSuccess } from "./payment-success/PaymentSuccess";
 export { IndustryInfo } from "./industry-info/IndustryInfo";
 export { IndustryInvite } from "./industry-invite/IndustryInvite";
+export { UserDashboard } from "./user-dashboard/UserDashboard";

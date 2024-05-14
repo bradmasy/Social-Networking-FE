@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
-// const API_BASE_URL = 'http://127.0.0.1:8000';
+// const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export class ApiService {
     retrieveAuth = (): boolean => {
@@ -32,7 +32,12 @@ export class ApiService {
 
         return headers;
     };
-
+    // USER
+    get_user_data = (): Promise<any> => {
+        const headers = this.createHeader();
+        console.log(headers)
+        return axios.get(`${API_BASE_URL}/users`, { headers });
+    };
     // login - signup
     login = (data: { [key: string]: string }): Promise<any> => {
         const headers = this.createHeader();
