@@ -5,6 +5,7 @@ import { useApiService } from "../../contexts/ApiServiceContext";
 import cardImg from "../../assets/images/card-black.png";
 
 import "./user-dashboard.scss";
+import { useNavigate } from "react-router-dom";
 
 export interface Plan {
     id: string;
@@ -41,6 +42,8 @@ export const MEMBERSHIP = "membership";
 export const UserDashboard: React.FC = () => {
 
     const apiService = useApiService();
+    const navigate = useNavigate();
+
     const [userdata, setUserData] = useState<{ [key: string]: string }>({}
     );
     const [membership, SetMembership] = useState<{ [key: string]: string }>({})
@@ -95,12 +98,16 @@ export const UserDashboard: React.FC = () => {
         // padding: "2px 10px"
     }
 
+    const editPassword = () => {
+        navigate("/edit?type=password")
+    }
 
     function formatKey(key: string): string {
         const words = key.split(/(?=[A-Z])/);
         const formattedKey = words.join(' ').toLowerCase();
         return formattedKey.charAt(0).toUpperCase() + formattedKey.slice(1).toUpperCase();
     }
+
     return (
         <>
             <Header />
@@ -153,7 +160,7 @@ export const UserDashboard: React.FC = () => {
 
                                             </div>
                                             <div className="ss-user-dashboard__edit-password">
-                                                <Button text="EDIT PASSWORD" type="button" />
+                                                <Button text="EDIT PASSWORD" type="button" click={editPassword}/>
                                             </div>
                                         </div>
                                     </div>

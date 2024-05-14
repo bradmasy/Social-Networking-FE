@@ -1,0 +1,13 @@
+@import "../../global-styles/index.scss";
+
+.ss-edit-container{
+    @include flex-column-justify-align(calc(100vh - 150px), 100%,center,center);
+ 
+}
+
+.ss-edit-container__main{
+    @include flex-column-justify-align(auto,100%,center,center);
+    font-size: 2em;
+    letter-spacing: 4px;
+
+}

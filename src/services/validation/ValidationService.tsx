@@ -40,11 +40,19 @@ export class ValidationService {
         return true;
     }
 
-    static validateNumberOfFields =(formData: any): boolean => {
-    if (Object.keys(FormData).length < SIGNUP_FIELDS) {
-        return false;
+    static validateNumberOfFields = (formData: any): boolean => {
+        if (Object.keys(FormData).length < SIGNUP_FIELDS) {
+            return false;
+        }
+
+        return true;
     }
 
-    return true;
-}
+    static validatePasswordChange = (formData: any): boolean => {
+        if (formData["retype-password"] != formData["new-password"]) {
+            return false;
+        }
+
+        return true;
+    }
 }

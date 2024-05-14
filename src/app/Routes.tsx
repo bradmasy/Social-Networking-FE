@@ -3,6 +3,7 @@ import { Routes as Router, Route, Navigate } from "react-router-dom";
 import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
+import { Edit } from "../pages/edit/Edit";
 
 const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
@@ -34,6 +35,7 @@ export const Routes = () => {
             <Route path="/industry-invite" element={<IndustryInvite />} />
             <Route path="/industry-info" element={<IndustryInfo />} />
             <Route path="/user-dashboard" element={<UserDashboard/>} />
+            <Route path="/edit" element={<PrivateRoutes component={<Edit />} />} />
 
             {/* <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard/>}/>} /> */}
         </Router>
