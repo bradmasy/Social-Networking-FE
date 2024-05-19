@@ -142,7 +142,8 @@
 }
 
 .ss-user-dashboard__tab__container__column {
-  @include flex-column-justify-align(100%, 47.5%, space-between, center);
+  @include flex-column-justify-align(100%, 47.5%, start, center);
+  gap:25px;
 }
 
 .ss-user-dashboard__tab__container__column-payment-form {
