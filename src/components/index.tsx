@@ -6,3 +6,4 @@ export * from "./checkbox/CheckBox";
 export * from "./overlays/index";
 export * from "./spinner/Spinner";
 export * from "./tiles/location-tile/LocationTile";
+export * from "./navigation-bar/NavBar";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./user-dashboard-menu.scss";
-import { ACCOUNT_INFO, BILLING, MEMBERSHIP, REFERRAL } from "../../../pages/user-dashboard/UserDashboard";
+import { ACCOUNT_INFO, BILLING, MEMBERSHIP,TAB, REFERRAL } from "../../../pages/user-dashboard/UserDashboard";
 
 export interface MenuOption {
     text: string;
@@ -25,7 +25,7 @@ export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
         },
         {
             text: "TAB",
-            value: MEMBERSHIP,
+            value: TAB,
         },
         {
             text: "BILLING",
