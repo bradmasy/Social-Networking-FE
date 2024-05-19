@@ -71,7 +71,8 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                                 setDisplay(true);
                             })
                             .catch((error) => {
-                                props.setErrorDisplay(error)
+                                console.log(error);
+                                props.setErrorDisplay(error);
                             })
                             .finally(() => {
                                 setEnableButton(false);
