@@ -22,6 +22,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
     const [amount, setAmount] = useState("");
     const [enableButton, setEnableButton] = useState(false);
     const [display, setDisplay] = useState(false);
+    const [cardName, setCardName] = useState("");
 
     const processAmount = (): string => {
         const conversionFactor = 100; // square payments values accept cents, amount:100 === $1
@@ -31,8 +32,11 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
     }
 
     const updateAmount = (e: string) => {
-        console.log(e)
-        setAmount(e)
+        setAmount(e);
+    }
+
+    const updateName = (e:string)=> {
+        setCardName(e);
     }
 
     return (
@@ -40,6 +44,10 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
             <div className="ss-payment-form-container">
                 <div className="ss-payment-form-container__title">
                     MAKE A PAYMENT ON YOUR TAB TODAY
+                </div>
+                <div className="ss-payment-form-container__amount">
+                    <label>NAME ON CARD</label>
+                    <input name="name" type="text" value={amount} onChange={(e) => updateName(e.target.value)}></input>
                 </div>
                 <div className="ss-payment-form-container__amount">
                     <label>AMOUNT</label>
@@ -52,13 +60,13 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
 
                         props.setLoaded(true)
-                        setAmount("$277");
 
                         const totalMoneyConverted = processAmount();
 
                         const body = {
                             token: token["token"],
                             amount: totalMoneyConverted,
+                            name: cardName
                             // type:props.type
                         }
 
