@@ -1,5 +1,5 @@
-import { ChangeEvent, useLayoutEffect, useState } from "react";
-import { ApplyOverlay, CheckBox, CheckBoxProps, Header } from "../../components";
+import { ChangeEvent, useEffect, useLayoutEffect, useState } from "react";
+import { ApplyOverlay, Button, CheckBox, CheckBoxProps, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
@@ -26,7 +26,7 @@ export const Payment: React.FC = () => {
     const [disableMonthly, setDisableMonthly] = useState(false);
     const [plan, setPlan] = useState("");
     const [cardName, setCardName] = useState('');
-
+    const [disableCard, setDisableCard] = useState(false);
 
     const handleMembershipCheckBoxChange = (isChecked: boolean) => {
         if (isChecked) {
@@ -51,15 +51,35 @@ export const Payment: React.FC = () => {
             setPlan("tab")
             setEnableButton(false)
             setAmount("0")
+            setDisableCard(true)
         } else {
             setIsTabChecked(isChecked);
             setDisableMonthly(false);
             setPlan("");
             setEnableButton(true)
             setAmount("")
+            setDisableCard(false)
+
         }
     };
 
+    const makePayment = (body: { [key: string]: string }) => {
+        apiService.make_payment(body)
+            .then((response) => {
+                console.log(response)
+                setDisplay(true);
+                setTimeout(() => {
+                    navigate("/login") // redirect to login to login and use their account
+                }, 2000)
+            })
+            .catch((error) => {
+                console.log(error)
+                setErrorDisplay(error)
+            })
+            .finally(() => {
+                setEnableButton(false);
+            })
+    }
 
     useLayoutEffect(() => {
         const getCredentials = async () => {
@@ -83,6 +103,7 @@ export const Payment: React.FC = () => {
         getCredentials();
 
     })
+
 
     const heading = (
         <>
@@ -118,7 +139,24 @@ export const Payment: React.FC = () => {
             <div>RE-DIRECTING TO LOGIN</div>
         </>
     )
+    const buttonStyles = {
+        borderRadius: "5px",
+        fontWeight: "200",
+        backgroundColor: "rgb(80, 178, 202)",
+        color: "white",
+        width: "100%"
+    }
 
+    const submitTab = () => {
+        const totalMoneyConverted = processAmount();
+
+        const body = {
+            amount: totalMoneyConverted,
+            plan: plan,
+        }
+       
+        makePayment(body)
+    }
     const checkboxPropsMonthly: CheckBoxProps = {
         label: "PAY MEMBERSHIP ($277.00)",
         onChange: handleMembershipCheckBoxChange,
@@ -165,11 +203,12 @@ export const Payment: React.FC = () => {
                                 <div className="ss-payments-container__user-information__pay-membership">
                                     <CheckBox {...checkboxPropsTab} />
                                 </div>
-                                <div className="ss-payments-container__user-information__input-container">
-                                    <label>NAME ON CARD</label>
-                                    <input name="name" type="text" value={cardName} onChange={handleCardName}></input>
-                                </div>
-
+                                {!disableCard && (
+                                    <div className="ss-payments-container__user-information__input-container">
+                                        <label>NAME ON CARD</label>
+                                        <input name="name" type="text" value={cardName} onChange={handleCardName}></input>
+                                    </div>
+                                )}
                             </div>
 
                             <PaymentForm
@@ -177,7 +216,8 @@ export const Payment: React.FC = () => {
                                 // applicationId={`${env.SQUARE_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    if (isMonthlyChecked || isTabChecked) {
+                                    console.log(buyer)
+                                    if (isMonthlyChecked) {
                                         setLoaded(true)
                                         setAmount("$277");
 
@@ -187,28 +227,28 @@ export const Payment: React.FC = () => {
                                             token: token["token"],
                                             amount: totalMoneyConverted,
                                             plan: plan,
-                                            name:cardName
+                                            name: cardName
 
                                         }
 
                                         // disable the button while the transaction is occuring...
                                         setEnableButton(false);
-
-                                        apiService.make_payment(body)
-                                            .then((response) => {
-                                                console.log(response)
-                                                setDisplay(true);
-                                                setTimeout(() => {
-                                                    navigate("/login") // redirect to login to login and use their account
-                                                }, 2000)
-                                            })
-                                            .catch((error) => {
-                                                console.log(error)
-                                                setErrorDisplay(error)
-                                            })
-                                            .finally(() => {
-                                                setEnableButton(false);
-                                            })
+                                        makePayment(body)
+                                        // apiService.make_payment(body)
+                                        //     .then((response) => {
+                                        //         console.log(response)
+                                        //         setDisplay(true);
+                                        //         setTimeout(() => {
+                                        //             navigate("/login") // redirect to login to login and use their account
+                                        //         }, 2000)
+                                        //     })
+                                        //     .catch((error) => {
+                                        //         console.log(error)
+                                        //         setErrorDisplay(error)
+                                        //     })
+                                        //     .finally(() => {
+                                        //         setEnableButton(false);
+                                        //     })
                                     } else {
 
                                         setErrorDisplay(true)
@@ -222,22 +262,23 @@ export const Payment: React.FC = () => {
                                 locationId={locationId}
 
                             >
-                                <CreditCard
+                                {!disableCard ? (
+                                    <CreditCard
 
-                                    buttonProps={{
-                                        css: {
-                                            backgroundColor: "#50B2CA",
-                                            fontSize: "14px",
-                                            color: "#fff",
-                                            transition: "0.5s ease-in-out",
-                                            "&:hover": {
-                                                scale: '1.05'
+                                        buttonProps={{
+                                            css: {
+                                                backgroundColor: "#50B2CA",
+                                                fontSize: "14px",
+                                                color: "#fff",
+                                                transition: "0.5s ease-in-out",
+                                                "&:hover": {
+                                                    scale: '1.05'
 
+                                                },
                                             },
-                                        },
-                                        isLoading: enableButton
-                                    }}
-                                />
+                                            isLoading: enableButton
+                                        }}
+                                    />) : (<Button click={submitTab} styles={buttonStyles} text="Submit" type="button" />)}
 
                             </PaymentForm>
 
