@@ -4,10 +4,10 @@ import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
 
-import "./payment.scss";
+import "./payment-membership.scss";
 import { useNavigate } from "react-router-dom";
 
-export const Payment: React.FC = () => {
+export const PaymentMembership: React.FC = () => {
 
     const apiService = useApiService();
     const navigate = useNavigate();
@@ -64,7 +64,7 @@ export const Payment: React.FC = () => {
     };
 
     const makePayment = (body: { [key: string]: string }) => {
-        apiService.make_payment(body)
+        apiService.make_payment_membership(body)
             .then((response) => {
                 setDisplay(true);
                 setTimeout(() => {

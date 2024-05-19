@@ -1,0 +1,62 @@
+// @import "../../global-styles/mixins.scss";
+@import "../../global-styles/index.scss";
+
+.fade-in {
+  animation: fadeIn 2s ease-in;
+}
+
+.ss-payments-container {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  transition: 1s ease-in-out;
+}
+
+.ss-payments-container__heading {
+  @include flex-column-justify-align(auto, 90%, center, center);
+
+  font-size: 1.5em;
+  letter-spacing: 5px;
+  //   margin-bottom:25px;
+}
+
+.ss-payments-container__payment-information {
+  border-radius: 8px;
+  background-color: white;
+  padding: 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.ss-payments-container__user-information {
+  @include flex-column-justify-align(100%, auto, center, center);
+  padding: 10px;
+
+  color: black;
+  font-weight: 300;
+}
+
+.ss-payments-container__user-information__pay-membership {
+  @include flex-column-justify-align(auto, 100%, center, center);
+  padding: 10px;
+}
+
+.ss-payments-container__user-information__input-container {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  gap: 10px;
+  padding: 10px;
+  input {
+    @include flex-column-justify-align(100%, 80%, center, center);
+    border-radius: 8px;
+    font-family: "lexend";
+    border: solid grey 1px;
+    outline: none;
+    min-height: 20px;
+  }
+}
+
+.highlight {
+  color: $main-blue;
+  font-weight: bold;
+}
+
+.tool-tip{
+  font-size: .5em;
+}

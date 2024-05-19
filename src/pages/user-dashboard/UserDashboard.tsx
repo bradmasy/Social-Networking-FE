@@ -48,6 +48,7 @@ export const BILLING = "billing";
 export const TAB = "tab";
 export const REFERRAL = "referral";
 export const MEMBERSHIP = "membership";
+export const PAYMENTS = "payment"
 
 
 export const UserDashboard: React.FC = () => {
@@ -314,19 +315,19 @@ export const UserDashboard: React.FC = () => {
                                 </div>
                             </>)}{(state === TAB && loaded && membership) && (
                                 <>
-                                    <main className="ss-user-dashboard__billing">
-                                        <div className="ss-user-dashboard__billing__container">
-                                            <div className="ss-user-dashboard__billing__container__column">
-                                                <div className="ss-user-dashboard__billing__container__column__tile">
-                                                    <div className="ss-user-dashboard__billing__container__column__tile__container">
-                                                        <div className="ss-user-dashboard__billing__container__column__tile__title">
+                                    <main className="ss-user-dashboard__tab">
+                                        <div className="ss-user-dashboard__tab__container">
+                                            <div className="ss-user-dashboard__tab__container__column">
+                                                <div className="ss-user-dashboard__tab__container__column__tile">
+                                                    <div className="ss-user-dashboard__tab__container__column__tile__container">
+                                                        <div className="ss-user-dashboard__tab__container__column__tile__title">
 
                                                             <p>CURRENT TAB
                                                             </p>
 
 
                                                         </div>
-                                                        <div className="ss-user-dashboard__billing__container__column__tile__content">
+                                                        <div className="ss-user-dashboard__tab__container__column__tile__content">
                                                             {
                                                                 "$" + membership['balance']
                                                             }
@@ -334,37 +335,48 @@ export const UserDashboard: React.FC = () => {
                                                     </div>
 
                                                 </div>
-                                                <div className="ss-user-dashboard__billing__container__column__tile">
-                                                    <div className="ss-user-dashboard__billing__container__column__tile__container">
-                                                        <div className="ss-user-dashboard__billing__container__column__tile__title">
+                                                <div className="ss-user-dashboard__tab__container__column__tile">
+                                                    <div className="ss-user-dashboard__tab__container__column__tile__container">
+                                                        <div className="ss-user-dashboard__tab__container__column__tile__title">
 
                                                             <p>LAST PAYMENT
                                                             </p>
 
                                                         </div>
-                                                        <div className="ss-user-dashboard__billing__container__column__tile__content-receipts">
+                                                        <div className="ss-user-dashboard__tab__container__column__tile__content-receipts">
                                                             {
 
                                                                 <div className="ss-user-dashboard__receipt-tab">
-                                                                    <div className="ss-user-dashboard__receipt-tab__date">
-                                                                        <div>
-                                                                            <label>
-                                                                                DATE
-                                                                            </label>
+                                                                    {
+                                                                        receiptData.length > 0 ? (
+                                                                            <>
+                                                                                <div className="ss-user-dashboard__receipt-tab__date">
+                                                                                    <div>
+                                                                                        <label>
+                                                                                            DATE
+                                                                                        </label>
 
-                                                                        </div>
-                                                                        {
-                                                                            formatDate(receiptData[0].createdAt)
-                                                                        }
-                                                                    </div>
-                                                                    <div className="ss-user-dashboard__receipt-tab__amount">
-                                                                        <div>
-                                                                            <label>AMOUNT</label>
-                                                                        </div>
-                                                                        <div>
-                                                                            {"$" + receiptData[0].amount}
-                                                                        </div>
-                                                                    </div>
+                                                                                    </div>
+                                                                                    {
+
+                                                                                        formatDate(receiptData[0].createdAt)
+                                                                                    }
+                                                                                </div>
+                                                                                <div className="ss-user-dashboard__receipt-tab__amount">
+                                                                                    <div>
+                                                                                        <label>AMOUNT</label>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        {"$" + receiptData[0].amount}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>You have no payments yet</>
+                                                                        )
+                                                                    }
+
+
 
                                                                 </div>
 
@@ -373,8 +385,8 @@ export const UserDashboard: React.FC = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="ss-user-dashboard__billing__container__column-payment-form">
-                                                <div className="ss-user-dashboard__billing__container__column-title">
+                                            <div className="ss-user-dashboard__tab__container__column-payment-form">
+                                                <div className="ss-user-dashboard__tab__container__column-title">
                                                     PAY TAB
                                                 </div>
                                                 <SSPaymentForm {...paymentFormProps} />
@@ -389,7 +401,16 @@ export const UserDashboard: React.FC = () => {
                         )}
 
                         {/* Render membership section if state is MEMBERSHIP */}
-                        {state === MEMBERSHIP && (
+                        {state === BILLING && (
+                            <>
+                                <main className="ss-user-dashboard_billing">
+                                    <div className="ss-user-dashboard__billing__container">
+
+                                    </div>
+                                </main>
+                            </>
+                        )}
+                        {state === PAYMENTS && (
                             <>
                                 COMING SOON                        </>
                         )}

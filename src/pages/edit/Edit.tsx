@@ -122,7 +122,6 @@ export const Edit: React.FC = () => {
                     setLoading(true)
 
                     apiService.update_user(formData)
-
                         .then((updateUser) => {
                             setLoading(false)
                             setSuccessMessage(<>
@@ -133,11 +132,22 @@ export const Edit: React.FC = () => {
                             setDisplayOverlay(true)
 
                         })
-                        .catch((error: Error) => {
+                        .catch((error:any) => {
                             console.log(error)
                             setLoading(false)
                             sendFormData({});
                             setErrorMessage(<>
+                            {/* {
+                                Object.keys(error.response.data)
+                                .map((each:any, i:number) => (
+                                    <div>
+                                        <div>
+                                            {each[i]}
+                                        </div>
+                                      
+                                    </div>
+                                ))
+                            } */}
 
                                 <div>ERROR UPDATING USER</div>
                                 <div>PLEASE TRY AGAIN</div>

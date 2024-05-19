@@ -129,7 +129,9 @@ export class ApiService {
 
 
     // PAYMENTS
-
+    make_payment_membership = (paymentInfo: { [key: string]: string }): Promise<any> => {
+        return axios.post(`${API_BASE_URL}/payment/membership`, paymentInfo, { headers: this.createHeader() })
+    }
     make_payment = (paymentInfo: { [key: string]: string }): Promise<any> => {
         return axios.post(`${API_BASE_URL}/payment`, paymentInfo, { headers: this.createHeader() })
     }
