@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
-// const API_BASE_URL = 'http://127.0.0.1:8000';
+// const API_BASE_URL =  'https://seven-api-44af44123dfd.herokuapp.com';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 export class ApiService {
     retrieveAuth = (): boolean => {
@@ -41,8 +41,13 @@ export class ApiService {
 
     change_user_password = (data: { [key: string]: string }): Promise<any> => {
         const headers = this.createHeader();
+        return axios.patch(`${API_BASE_URL}/user-password`, data, { headers })
+    }
 
-        return axios.post(`${API_BASE_URL}/user-password`, data, { headers })
+    update_user = (data:{[key:string]:string}): Promise<any> => {
+        const headers = this.createHeader();
+
+        return axios.patch(`${API_BASE_URL}/users`,data, {headers})
     }
 
     // login - signup
@@ -146,5 +151,22 @@ export class ApiService {
 
     industryInvite = (industryPassword: { [key: string]: string }) => {
         return axios.post(`${API_BASE_URL}/industry-passcode`, industryPassword, { headers: this.createHeader() })
+    }
+
+    // PLAN
+
+    /**
+     * Gets the plan associated with the user.
+     * @returns 
+     */
+    get_user_plan = (): Promise<any> =>{
+        return axios.get(`${API_BASE_URL}/plan`, { headers: this.createHeader() })
+
+    }
+
+    // RECEIPTS
+
+    get_user_receipts = ():Promise<any> => {
+        return axios.get(`${API_BASE_URL}/receipt`, { headers: this.createHeader() })
     }
 }

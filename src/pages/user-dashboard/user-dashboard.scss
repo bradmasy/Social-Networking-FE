@@ -23,7 +23,7 @@
 .ss-user-dashboard-content-rows__row__tile {
   @include flex-column-justify-align(auto, 95%, center, center);
   border: white solid 1px;
-  padding-bottom:25px;
+  padding-bottom: 25px;
 }
 
 .ss-user-dashboard-content-rows__column__tile {
@@ -40,7 +40,7 @@
   @include flex-row-justify-align(auto, 100%, left, center);
   font-size: 1.5em;
   font-weight: 200;
-  gap:25px;  
+  gap: 25px;
 
   p {
     @include flex-row-justify-align(auto, auto, left, center);
@@ -83,45 +83,117 @@
 .ss-user-dashboard__membership-container {
   @include flex-column-justify-align(80%, 100%, start, center);
   // min-height: 00px;
-
 }
-.ss-user-dashboard__membership-container__card-img{
-    @include flex-column-justify-align(auto, 100%, start, center);
-    padding:20px;
-    img{
-        border-radius:8px;
-    }
+.ss-user-dashboard__membership-container__card-img {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  padding: 20px;
+  img {
+    border-radius: 8px;
+  }
 }
 .ss-user-dashboard__membership-container__info {
   @include flex-column-justify-align(80%, 90%, start, center);
-
-
-
 }
 
-
-.ss-user-dashboard__membership-container__info__row{
-    @include flex-row-justify-align(auto, 100%, space-between, start);
-
+.ss-user-dashboard__membership-container__info__row {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
 }
 
-.ss-user-dashboard__membership-container__info__tile{
-    @include flex-column-justify-align(auto, 50%, start, center);
-
+.ss-user-dashboard__membership-container__info__tile {
+  @include flex-column-justify-align(auto, 50%, start, center);
 }
 
-.ss-user-dashboard-content__membership-title{
-    @include flex-row-justify-align(auto, 100%, left, center);
-    font-weight: 200;
-    gap:25px;  
-    color:$main-blue;
-}  
-
-
-.ss-user-dashboard-content__membership__info__tile__text{
-    @include flex-row-justify-align(auto, 100%, start, center);
+.ss-user-dashboard-content__membership-title {
+  @include flex-row-justify-align(auto, 100%, left, center);
+  font-weight: 200;
+  gap: 25px;
+  color: $main-blue;
 }
 
-.ss-user-dashboard-content__membership__info__tile__text-column{
-    @include flex-column-justify-align(auto, 100%, start, start);
+.ss-user-dashboard-content__membership__info__tile__text {
+  @include flex-row-justify-align(auto, 100%, start, center);
+}
+
+.ss-user-dashboard-content__membership__info__tile__text-column {
+  @include flex-column-justify-align(auto, 100%, start, start);
+}
+
+.ss-user-dashboard__billing {
+  @include flex-row-justify-align(90%, 100%, center, center);
+}
+
+.ss-user-dashboard__billing__container {
+  @include flex-row-justify-align(100%, 100%, space-around, center);
+  // border: solid white 1px;
+}
+
+.ss-user-dashboard__billing__container__column {
+  @include flex-column-justify-align(100%, 47.5%, space-between, center);
+}
+
+.ss-user-dashboard__billing__container__column-payment-form {
+  @include flex-column-justify-align(100%, 47.5%, start, center);
+  border: solid white 1px;
+}
+
+.ss-user-dashboard__billing__container__column-title {
+  font-size: 1.5em;
+  padding: 25px 0px;
+}
+
+.ss-user-dashboard__billing__container__column__tile {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  padding: 25px 0px;
+  border: solid white 1px;
+}
+
+.ss-user-dashboard__billing__container__column__tile__container {
+  @include flex-column-justify-align(auto, 90%, start, center);
+}
+
+.ss-user-dashboard__billing__container__column__tile__title {
+  @include flex-column-justify-align(auto, 100%, start, start);
+  font-size: 1.5em;
+  font-weight: 200;
+
+  p {
+    border-bottom: solid 1px white;
+  }
+}
+
+.ss-user-dashboard__billing__container__column__tile__content {
+  @include flex-column-justify-align(auto, 100%, start, start);
+  // border:solid white 1px;
+  padding: 10px 0px;
+}
+
+.ss-user-dashboard__billing__container__column__tile__content-receipts {
+  @include flex-column-justify-align(auto, 100%, start, start);
+}
+
+.ss-user-dashboard__receipt-tab {
+  @include flex-column-justify-align(auto, auto, start, start);
+  padding: 20px;
+  border: solid $main-blue 1px;
+  border-radius: 8px;
+}
+
+.ss-user-dashboard__receipt-tab__date {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
+  gap: 25px;
+  div {
+    label {
+      font-weight: 200;
+    }
+  }
+}
+
+.ss-user-dashboard__receipt-tab__amount {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
+
+  div {
+    label {
+      font-weight: 200;
+    }
+  }
 }

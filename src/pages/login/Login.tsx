@@ -58,6 +58,8 @@ export const Login: React.FC = () => {
                         navigate("/user-dashboard")
                     })
                     .catch((error: Error) => {
+                        setLoading(false)
+
                         sendFormData({});
                         setErrorMessage(<>
 

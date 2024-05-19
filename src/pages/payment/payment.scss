@@ -34,7 +34,7 @@
 }
 
 .ss-payments-container__user-information__pay-membership {
-  @include flex-column-justify-align(auto, auto, center, center);
+  @include flex-column-justify-align(auto, 100%, center, center);
   padding: 10px;
 }
 

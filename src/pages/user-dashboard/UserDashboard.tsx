@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Button, Header } from "../../components";
 import { UserDashboardMenu } from "../../components/menus";
 import { useApiService } from "../../contexts/ApiServiceContext";
@@ -6,6 +6,7 @@ import cardImg from "../../assets/images/card-black.png";
 
 import "./user-dashboard.scss";
 import { useNavigate } from "react-router-dom";
+import { SSPaymentForm, SSPaymentFormProps } from "../../components/form/payment-form/SSPaymentForm";
 
 export interface Plan {
     id: string;
@@ -33,6 +34,14 @@ export interface UserData {
     createdAt: Date;
 }
 
+export interface Receipt {
+    id: number;
+    user: number;
+    createdAt: string;
+    amount: number;
+
+}
+
 export const ACCOUNT_INFO = "accountInformation";
 export const BILLING = "billing";
 export const REFERRAL = "referral";
@@ -51,12 +60,22 @@ export const UserDashboard: React.FC = () => {
     const [locationData, setLocationData] = useState<{ [key: string]: string }[]>([]);
     const [plan, setPlan] = useState<{ [key: string]: string }>({});
     const [state, SetState] = useState(ACCOUNT_INFO)
+    const [appId, setAppId] = useState('');
+    const [locationId, setLocationId] = useState('');
+    const [loaded, setLoaded] = useState(false);
+    const [errorMessage, setErrorMessage] = useState((<><span>PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN</span></>))
+    const [errorDisplay, setErrorDisplay] = useState(false);
+    const [receiptData, setReceiptData] = useState<Receipt[]>([])
 
     useEffect(() => {
 
-        apiService.get_user_data()
+        apiService.get_user_plan()
+            .then((plan) => {
+                console.log(plan)
+                return apiService.get_user_data()
+            })
             .then((response) => {
-                console.log(response)
+                console.log(response.data)
                 const user_information = response.data.user
                 const membership = user_information["membership"]
 
@@ -77,6 +96,11 @@ export const UserDashboard: React.FC = () => {
                 }, {});
 
                 setUserData(mappedInfo)
+                return apiService.get_user_receipts();
+            })
+            .then((receipts) => {
+                setReceiptData(receipts.data["Receipts"])
+                console.log(receipts.data)
             })
     }, [apiService])
 
@@ -92,6 +116,28 @@ export const UserDashboard: React.FC = () => {
             })
     }, [apiService, locations])
 
+    useLayoutEffect(() => {
+        const getCredentials = async () => {
+            await apiService.get_square_credentials()
+                .then((response: any) => {
+                    const data = response.data;
+                   setAppId(data['authData']['square']['productionAppId'])
+                    //  setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
+                    setLocationId(data['authData']['location']['id'])
+                    setLoaded(true)
+                })
+                .catch((error: Error) => {
+                    const errorMessage = error.message || "An error occurred";
+                    setErrorMessage(<><span>{errorMessage}</span></>);
+                    setErrorDisplay(true)
+                    console.error(error)
+                })
+        }
+
+        getCredentials();
+
+    })
+
     const editButtonStyles = {
         // border:"solid red 1px",
         // height:"",
@@ -102,12 +148,30 @@ export const UserDashboard: React.FC = () => {
         navigate("/edit?type=password")
     }
 
+    const editDetails = () => {
+        navigate("/edit?type=user-details")
+
+    }
+
     function formatKey(key: string): string {
         const words = key.split(/(?=[A-Z])/);
         const formattedKey = words.join(' ').toLowerCase();
         return formattedKey.charAt(0).toUpperCase() + formattedKey.slice(1).toUpperCase();
     }
 
+    const formatDate = (date: string) => {
+        const dateString = date.split("T")[0]
+        return dateString
+    }
+    const paymentFormProps: SSPaymentFormProps = {
+        appId: appId,
+        locationId: locationId,
+        loaded: loaded,
+        setLoaded: setLoaded,
+        errorMessage: errorMessage,
+        errorDisplay: errorDisplay,
+        setErrorDisplay: setErrorDisplay
+    }
     return (
         <>
             <Header />
@@ -124,7 +188,7 @@ export const UserDashboard: React.FC = () => {
                                             <div className="ss-user-dashboard-content__title">
                                                 <p>DETAILS
                                                 </p>
-                                                <Button text="EDIT" styles={editButtonStyles} type="button" />
+                                                <Button text="EDIT" styles={editButtonStyles} type="button" click={editDetails} />
 
                                             </div>
                                             <div className="ss-user-dashboard__info-snippets">
@@ -160,7 +224,7 @@ export const UserDashboard: React.FC = () => {
 
                                             </div>
                                             <div className="ss-user-dashboard__edit-password">
-                                                <Button text="EDIT PASSWORD" type="button" click={editPassword}/>
+                                                <Button text="EDIT PASSWORD" type="button" click={editPassword} />
                                             </div>
                                         </div>
                                     </div>
@@ -238,9 +302,75 @@ export const UserDashboard: React.FC = () => {
 
                                 </div>
                             </div>
-                        </>)}{state === BILLING && (
+                        </>)}{(state === BILLING && loaded) && (
                             <>
-                                COMING SOON
+                                <main className="ss-user-dashboard__billing">
+                                    <div className="ss-user-dashboard__billing__container">
+                                        <div className="ss-user-dashboard__billing__container__column">
+                                            <div className="ss-user-dashboard__billing__container__column__tile">
+                                                <div className="ss-user-dashboard__billing__container__column__tile__container">
+                                                    <div className="ss-user-dashboard__billing__container__column__tile__title">
+
+                                                        <p>CURRENT TAB
+                                                        </p>
+
+
+                                                    </div>
+                                                    <div className="ss-user-dashboard__billing__container__column__tile__content">
+                                                        {
+                                                            "$" + membership['balance']
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div className="ss-user-dashboard__billing__container__column__tile">
+                                                <div className="ss-user-dashboard__billing__container__column__tile__container">
+                                                    <div className="ss-user-dashboard__billing__container__column__tile__title">
+
+                                                        <p>LAST PAYMENT
+                                                        </p>
+
+                                                    </div>
+                                                    <div className="ss-user-dashboard__billing__container__column__tile__content-receipts">
+                                                        {
+
+                                                            <div className="ss-user-dashboard__receipt-tab">
+                                                                <div className="ss-user-dashboard__receipt-tab__date">
+                                                                    <div>
+                                                                        <label>
+                                                                            DATE
+                                                                        </label>
+
+                                                                    </div>
+                                                                    {
+                                                                        formatDate(receiptData[0].createdAt)
+                                                                    }
+                                                                </div>
+                                                                <div className="ss-user-dashboard__receipt-tab__amount">
+                                                                    <div>
+                                                                        <label>AMOUNT</label>
+                                                                    </div>
+                                                                    <div>
+                                                                        { "$"+receiptData[0].amount}
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="ss-user-dashboard__billing__container__column-payment-form">
+                                            <div className="ss-user-dashboard__billing__container__column-title">
+                                                PAY TAB
+                                            </div>
+                                            <SSPaymentForm {...paymentFormProps} />
+                                        </div>
+                                    </div>
+                                </main>
                             </>
                         )}  {/* Render referral section if state is REFERRAL */}
                     {state === REFERRAL && (

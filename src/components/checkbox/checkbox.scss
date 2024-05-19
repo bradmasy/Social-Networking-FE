@@ -1,7 +1,7 @@
 @import "../../global-styles/index.scss";
 
 .ss-checkbox{
-    @include flex-column-justify-align(auto,auto,center,center);
+    @include flex-column-justify-align(auto,100%,center,center);
     padding:15px;
     background-color: $main-blue;
     color:white;
