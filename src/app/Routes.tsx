@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthorizationContext"
 import { Routes as Router, Route, Navigate } from "react-router-dom";
-import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations } from '../pages/index'
+import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
 import { Edit } from "../pages/edit/Edit";
@@ -28,6 +28,8 @@ export const Routes = () => {
             <Route path="" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/apply" element={<Application />} />
+            <Route path="/payment/membership" element={<PrivateRoutes component={<PaymentMembership />} />} />
+
             <Route path="/payment" element={<PrivateRoutes component={<Payment />} />} />
             <Route path="/signup" element={<IndustryRoute component={<Signup />} />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />

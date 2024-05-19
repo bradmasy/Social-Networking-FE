@@ -9,3 +9,4 @@ export { IndustryInfo } from "./industry-info/IndustryInfo";
 export { IndustryInvite } from "./industry-invite/IndustryInvite";
 export { UserDashboard } from "./user-dashboard/UserDashboard";
 export { Locations } from "./locations/Locations";
+export { PaymentMembership } from "./payment-membership/PaymentMembership";

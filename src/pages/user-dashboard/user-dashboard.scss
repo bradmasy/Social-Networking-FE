@@ -118,40 +118,54 @@
   @include flex-column-justify-align(auto, 100%, start, start);
 }
 
+// BILLING OPTION
 .ss-user-dashboard__billing {
   @include flex-row-justify-align(90%, 100%, center, center);
 }
 
 .ss-user-dashboard__billing__container {
   @include flex-row-justify-align(100%, 100%, space-around, center);
+   border: solid white 1px;
+}
+
+.ss-user-dashboard__tab__container__column {
+  @include flex-column-justify-align(100%, 47.5%, space-between, center);
+}
+// TAB MENU OPTION
+.ss-user-dashboard__tab {
+  @include flex-row-justify-align(90%, 100%, center, center);
+}
+
+.ss-user-dashboard__tab__container {
+  @include flex-row-justify-align(100%, 100%, space-around, center);
   // border: solid white 1px;
 }
 
-.ss-user-dashboard__billing__container__column {
+.ss-user-dashboard__tab__container__column {
   @include flex-column-justify-align(100%, 47.5%, space-between, center);
 }
 
-.ss-user-dashboard__billing__container__column-payment-form {
+.ss-user-dashboard__tab__container__column-payment-form {
   @include flex-column-justify-align(100%, 47.5%, start, center);
   border: solid white 1px;
 }
 
-.ss-user-dashboard__billing__container__column-title {
+.ss-user-dashboard__tab__container__column-title {
   font-size: 1.5em;
   padding: 25px 0px;
 }
 
-.ss-user-dashboard__billing__container__column__tile {
+.ss-user-dashboard__tab__container__column__tile {
   @include flex-column-justify-align(auto, 100%, start, center);
   padding: 25px 0px;
   border: solid white 1px;
 }
 
-.ss-user-dashboard__billing__container__column__tile__container {
+.ss-user-dashboard__tab__container__column__tile__container {
   @include flex-column-justify-align(auto, 90%, start, center);
 }
 
-.ss-user-dashboard__billing__container__column__tile__title {
+.ss-user-dashboard__tab__container__column__tile__title {
   @include flex-column-justify-align(auto, 100%, start, start);
   font-size: 1.5em;
   font-weight: 200;
@@ -161,13 +175,13 @@
   }
 }
 
-.ss-user-dashboard__billing__container__column__tile__content {
+.ss-user-dashboard__tab__container__column__tile__content {
   @include flex-column-justify-align(auto, 100%, start, start);
   // border:solid white 1px;
   padding: 10px 0px;
 }
 
-.ss-user-dashboard__billing__container__column__tile__content-receipts {
+.ss-user-dashboard__tab__container__column__tile__content-receipts {
   @include flex-column-justify-align(auto, 100%, start, start);
 }
 
