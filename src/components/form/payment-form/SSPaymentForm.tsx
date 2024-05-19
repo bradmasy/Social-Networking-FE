@@ -51,7 +51,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                 </div>
                 <div className="ss-payment-form-container__amount">
                     <label>AMOUNT</label>
-                    <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
+                    <input name="amount" type="number" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
                 </div>
                 <PaymentForm
                     applicationId={props.appId}
