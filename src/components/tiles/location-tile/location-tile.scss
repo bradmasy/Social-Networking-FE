@@ -1,0 +1,6 @@
+@import "../../../global-styles/index.scss";
+
+.ss-location-tile{
+    @include flex-column-justify-align(50%,24%,center,center);
+    border:solid red 1px;
+}
