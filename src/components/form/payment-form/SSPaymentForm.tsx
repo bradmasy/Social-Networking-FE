@@ -12,12 +12,13 @@ export interface SSPaymentFormProps {
     errorMessage: JSX.Element;
     errorDisplay: boolean;
     setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+    // type: "TAB" | "MONTH";
 }
+
 export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
     const apiService = useApiService();
 
-    const [isChecked, setIsChecked] = useState(false);
     const [amount, setAmount] = useState("");
     const [enableButton, setEnableButton] = useState(false);
     const [display, setDisplay] = useState(false);
@@ -33,6 +34,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
         console.log(e)
         setAmount(e)
     }
+
     return (
         <>
             <div className="ss-payment-form-container">
@@ -47,35 +49,34 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                     applicationId={props.appId}
 
                     cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                        if (isChecked) {
-                            props.setLoaded(true)
-                            setAmount("$277");
 
-                            const totalMoneyConverted = processAmount();
 
-                            const body = {
-                                token: token["token"],
-                                amount: totalMoneyConverted
-                            }
+                        props.setLoaded(true)
+                        setAmount("$277");
 
-                            // disable the button while the transaction is occuring...
-                            setEnableButton(true);
+                        const totalMoneyConverted = processAmount();
 
-                            apiService.make_payment(body)
-                                .then((response) => {
-                                    setDisplay(true);
-                                })
-                                .catch((error) => {
-                                    props.setErrorDisplay(error)
-                                })
-                                .finally(() => {
-                                    setEnableButton(false);
-                                })
-                        } else {
-
-                            props.setErrorDisplay(true)
-
+                        const body = {
+                            token: token["token"],
+                            amount: totalMoneyConverted,
+                            // type:props.type
                         }
+
+
+                        // disable the button while the transaction is occuring...
+                        setEnableButton(true);
+
+                        apiService.make_payment(body)
+                            .then((response) => {
+                                setDisplay(true);
+                            })
+                            .catch((error) => {
+                                props.setErrorDisplay(error)
+                            })
+                            .finally(() => {
+                                setEnableButton(false);
+                            })
+
 
 
                     }}
