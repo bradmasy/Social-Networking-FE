@@ -1,11 +1,12 @@
 @import "../../global-styles/index.scss";
 
 .ss-home-container {
-  @include flex-column-justify-align(100%, 100%, center, center);
+  @include flex-column-justify-align(100vh, 100%, center, center);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: white;
 }
 
 .ss-home-container__main {
@@ -27,11 +28,78 @@
 }
 
 .ss-home-container__buttons {
-  @include flex-row-justify-align(10%, auto, center, center);
+  @include flex-row-justify-align(10vh, 20%, space-between, center);
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   gap: 25px;
+  z-index: 1;
+}
+
+.ss-home_container__animation-container {
+  @include flex-column-justify-align(80%, 80vw, start, center);
+  border: none;
+  outline: none;
+  background-color: white;
+  // border: solid red 1px;
+  // overflow:hidden;
+  // outline: 10px solid white;
+  outline-offset: -4px;
+}
+
+.ss-home-container__animation {
+  @include flex-column-justify-align(80%, 80vw, center, center);
+  border: none;
+  outline: none;
+  background-color: white;
+  // border: solid red 1px;
+  // overflow: hidden;
+  // outline: 10px solid white;
+  // outline-offset: -4px;
+  border: none;
+    outline: none;
+  video {
+    border: none !important;
+    outline: none !important;
+  }
+}
+
+video {
+  border: solid red 1px;
+  outline: none;
+}
+
+source {
+  outline: none !important;
 }
 
 @media screen and (max-width: 800px) {
+  .ss-home-container {
+    @include flex-column-justify-align(100vh, 100%, start, center);
+  }
+  .ss-home-container__animation {
+    @include flex-column-justify-align(100%, 100vw, center, center);
+    overflow: hidden;
+  
+    border: none;
+    outline: none;
+  }
+  .ss-home_container__animation-container {
+    // overflow: hidden;
+    // outline: 10px solid white;
+  }
+
+  .ss-home-container__buttons {
+    @include flex-row-justify-align(10vh, 50%, space-between, center);
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    gap: 25px;
+    z-index: 1;
+  }
+
   .ss-home-container__main {
     p {
       // padding: 10px;
