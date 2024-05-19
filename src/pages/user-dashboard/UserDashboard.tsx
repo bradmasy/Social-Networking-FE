@@ -69,6 +69,8 @@ export const UserDashboard: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState((<><span>PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN</span></>))
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [receiptData, setReceiptData] = useState<Receipt[]>([])
+    const [cardLoaded, setCardLoaded] = useState(false);
+
     useEffect(() => {
 
         apiService.get_user_receipts()
@@ -133,7 +135,7 @@ export const UserDashboard: React.FC = () => {
                     setAppId(data['authData']['square']['productionAppId'])
                     //  setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
                     setLocationId(data['authData']['location']['id'])
-                    // setLoaded(true)
+                    setCardLoaded(true)
                 })
                 .catch((error: Error) => {
                     const errorMessage = error.message || "An error occurred";
@@ -184,7 +186,7 @@ export const UserDashboard: React.FC = () => {
     return (
         <>
             <NavBar />
-            {!loaded ? (<LoadingOverlay />
+            {!loaded && !cardLoaded ? (<LoadingOverlay />
             ) : (<>
                 <div className="ss-user-dashboard  fade-in">
                     <UserDashboardMenu setState={SetState} />
@@ -376,10 +378,7 @@ export const UserDashboard: React.FC = () => {
                                                                         )
                                                                     }
 
-
-
                                                                 </div>
-
                                                             }
                                                         </div>
                                                     </div>
