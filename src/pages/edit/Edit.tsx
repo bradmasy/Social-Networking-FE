@@ -116,7 +116,7 @@ export const Edit: React.FC = () => {
                 else if (type === "user-details") {
                     console.log('updating user')
 
-
+                    // filter out empty fields 
                     console.log(`api request`)
                     console.log(formData)
                     setLoading(true)

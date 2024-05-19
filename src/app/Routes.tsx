@@ -29,7 +29,6 @@ export const Routes = () => {
             <Route path="/about" element={<About />} />
             <Route path="/apply" element={<Application />} />
             <Route path="/payment/membership" element={<PrivateRoutes component={<PaymentMembership />} />} />
-
             <Route path="/payment" element={<PrivateRoutes component={<Payment />} />} />
             <Route path="/signup" element={<IndustryRoute component={<Signup />} />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
