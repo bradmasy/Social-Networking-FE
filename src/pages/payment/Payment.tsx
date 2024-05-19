@@ -66,14 +66,12 @@ export const Payment: React.FC = () => {
     const makePayment = (body: { [key: string]: string }) => {
         apiService.make_payment(body)
             .then((response) => {
-                console.log(response)
                 setDisplay(true);
                 setTimeout(() => {
-                    navigate("/login") // redirect to login to login and use their account
+                    navigate("/payment-success") // redirect to success
                 }, 2000)
             })
             .catch((error) => {
-                console.log(error)
                 setErrorDisplay(error)
             })
             .finally(() => {
@@ -136,7 +134,7 @@ export const Payment: React.FC = () => {
 
     const successMessage = (
         <><div>PAYMENT SUCCESSFUL</div>
-            <div>RE-DIRECTING TO LOGIN</div>
+          
         </>
     )
     const buttonStyles = {
