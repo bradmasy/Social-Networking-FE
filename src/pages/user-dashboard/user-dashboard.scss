@@ -236,4 +236,8 @@
         padding-bottom:20px;
 
   }
+  .ss-user-dashboard-content__membership__info__tile__text-column {
+    // @include flex-column-justify-align(auto, 100%, start, start);
+    text-align: left;
+  }
 }
