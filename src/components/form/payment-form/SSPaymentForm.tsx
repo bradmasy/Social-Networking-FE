@@ -62,12 +62,13 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                             // type:props.type
                         }
 
-
+                        console.log(body)
                         // disable the button while the transaction is occuring...
                         setEnableButton(true);
 
                         apiService.make_payment(body)
                             .then((response) => {
+                                console.log(response)
                                 setDisplay(true);
                             })
                             .catch((error) => {
