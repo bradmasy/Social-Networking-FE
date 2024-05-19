@@ -13,10 +13,10 @@ export const Home: React.FC = () => {
 
     const message = (
         <>
-            <span>WELCOME TO <br /><span className="highlight title-text">SEVENS SOCIAL</span><br /><br /></span>
-            <span>IF YOU ARE A MEMBER, PLEASE USE THE <span className="highlight">LOGIN</span> BUTTON TO LOGIN<br /></span>
+            <span className="highlight title-text">WELCOME TO SEVENS SOCIAL</span>
+            {/* <span>IF YOU ARE A MEMBER, PLEASE USE THE <span className="highlight">LOGIN</span> BUTTON TO LOGIN<br /></span>
             <span>IF YOU ARE INTERESTED IN BECOMING A MEMBER<br /></span>
-            <span>PLEASE CLICK <span className="highlight">APPLY</span><br /></span>
+            <span>PLEASE CLICK <span className="highlight">APPLY</span><br /></span> */}
 
         </>
     )
@@ -28,6 +28,11 @@ export const Home: React.FC = () => {
         <>
             {/* <Header /> */}
             <section className="ss-home-container">
+                  <main className="ss-home-container__main">
+                    <p>
+                        {message}
+                    </p>
+                </main>
                 <div className="ss-home_container__animation-container">
                 <video autoPlay loop muted className="ss-home-container__animation">
                     <source src={spinningLogo} type="video/mp4" />
@@ -47,11 +52,7 @@ export const Home: React.FC = () => {
                     className='react-player'
                     /> */}
 
-                {/* <main className="ss-home-container__main">
-                    <p>
-                        {message}
-                    </p>
-                </main>*/}
+              
                { <div className="ss-home-container__buttons">
                     <Button text="APPLY" type="button" click={() => {
                         relocate("/apply");
