@@ -1,0 +1,30 @@
+@import "../../global-styles/mixins.scss";
+
+.ss-header {
+//   @include flex-row-justify-align(10%, 100%, center, center);
+//   min-height: 100px;
+//   border:solid red 1px;
+@include flex-row-justify(150px, 100%, center);
+align-items: center;
+
+
+}
+
+.ss-header__logo-container{
+    @include flex-row-justify-align(100%, 80px, center, center);
+
+    // max-height: 100px;
+
+    img{
+        @include flex-row-justify-align(100px, 55px, center, center);
+        // border:solid orange 1px;
+        max-height: 125px;
+        min-width: 50px;
+
+    }
+}
+
+.ss-header__text{
+    font-weight: 100;
+    letter-spacing: 5px;
+}
