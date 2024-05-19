@@ -95,10 +95,6 @@ export const Payment: React.FC = () => {
         </>
     )
 
-    // const adedMembershipFeeToOrder = () => {
-    //     const feeAmount = '$277';
-    //     setAmount(feeAmount);
-    // }
 
     /**
      * Converts the user input into the values that square expects for the API call.
@@ -195,7 +191,6 @@ export const Payment: React.FC = () => {
 
                                         }
 
-
                                         // disable the button while the transaction is occuring...
                                         setEnableButton(false);
 
@@ -243,6 +238,7 @@ export const Payment: React.FC = () => {
                                         isLoading: enableButton
                                     }}
                                 />
+
                             </PaymentForm>
 
                         </main>

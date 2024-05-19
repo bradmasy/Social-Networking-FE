@@ -36,7 +36,7 @@ export const Routes = () => {
             <Route path="/industry-info" element={<IndustryInfo />} />
             <Route path="/user-dashboard" element={<UserDashboard />} />
             <Route path="/edit" element={<PrivateRoutes component={<Edit />} />} />
-            {/* <Route path="/locations" element={<PrivateRoutes component={<Locations />} />} /> */}
+            <Route path="/locations" element={<PrivateRoutes component={<Locations />} />} />
 
             {/* <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard/>}/>} /> */}
         </Router>
