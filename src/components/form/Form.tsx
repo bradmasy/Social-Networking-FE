@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./form.scss";
 import { Button, ButtonProps } from "../button/Button";
 
@@ -11,6 +11,7 @@ export interface Input {
     type: string;
     label: string;
     icon?: string;
+    value?: string | null;
 }
 
 export interface SelectOption {
@@ -18,7 +19,6 @@ export interface SelectOption {
     value: number | undefined;
     icon?: string;
 }
-
 
 interface FormProps {
     sendFormData: React.Dispatch<React.SetStateAction<FormData>>;
@@ -28,18 +28,17 @@ interface FormProps {
 }
 
 export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInputs, buttonProps }) => {
-    const initialFormData: FormData = {};
+    const initialFormData: FormData = formInputs.reduce((acc, input) => {
+        acc[input.name] = input.value || "";
+        return acc;
+    }, {} as FormData);
 
-    formInputs.forEach(input => {
-        initialFormData[input.name] = null;
-    });
-
-    const [formData, setFormData] = useState(initialFormData);
-    const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({}); // Initialize as empty object
+    const [formData, setFormData] = useState<FormData>(initialFormData);
+    const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
 
     const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>, inputName: string) => {
         const { value } = event.target;
-        setFormData({ ...formData, [inputName]: value });
+        setFormData(prevState => ({ ...prevState, [inputName]: value }));
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -47,56 +46,56 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
         sendFormData(formData);
     };
 
-    const revealPassword = (inputName: string): React.MouseEventHandler<HTMLImageElement> => (event) => {
-        const updatedShowPassword = { ...showPassword };
-        updatedShowPassword[inputName] = !showPassword[inputName] || false; // Toggle state or set to false if missing
-
-        setShowPassword(updatedShowPassword);
+    const revealPassword = (inputName: string): React.MouseEventHandler<HTMLImageElement> => () => {
+        setShowPassword(prevState => ({ ...prevState, [inputName]: !prevState[inputName] }));
     }
 
+    useEffect(() => {
+        setFormData(initialFormData);
+    }, [formInputs]);
+
     return (
-        <>
-            <form className="ss-form-container" onSubmit={handleSubmit}>
-                {formInputs.map((input, index) => (
-                    <div key={index} className={`ss-form__input-container ${input.type === 'textarea' ? 'textarea-container' : ''}`}>
-                        <label className="ss-form__label">{input.label.toUpperCase()}</label>
-                        {input.type === 'select' ? (
-                            <select
-                                className="ss-form__input"
-                                onChange={(event) => handleChange(event, input.name)}
-                            >
-                                {selectInputs?.map((option, index) => (
-                                    <option value={option.value} key={index}>
-                                        {option.name}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : (input.type === 'password' ? (
+        <form className="ss-form-container" onSubmit={handleSubmit}>
+            {formInputs.map((input, index) => (
+                <div key={index} className={`ss-form__input-container ${input.type === 'textarea' ? 'textarea-container' : ''}`}>
+                    <label className="ss-form__label">{input.label.toUpperCase()}</label>
+                    {input.type === 'select' ? (
+                        <select
+                            className="ss-form__input"
+                            onChange={(event) => handleChange(event, input.name)}
+                        >
+                            {selectInputs?.map((option, index) => (
+                                <option value={option.value} key={index}>
+                                    {option.name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        input.type === 'password' ? (
                             <div className="ss-input-container__icon">
                                 <input
                                     type={showPassword[input.name] ? "text" : "password"}
                                     className="ss-form__input"
+                                    value={formData[input.name] || ''}
                                     onChange={(event) => handleChange(event, input.name)}
                                 />
                                 <img className="ss-icon" onClick={revealPassword(input.name)} src={input.icon} alt="icon"></img>
                             </div>
-                        ) :
-                            <>
-
-                                <input
-                                    type={input.type}
-                                    className={`ss-form__input ${input.type === 'textarea' ? 'textarea-input' : ''}`}
-                                    onChange={(event) => handleChange(event, input.name)}
-                                />
-
-                            </>
-                        )}
-                    </div>
-                ))}
-                <div className="ss-form-container__submit-button">
-                    <Button type={buttonProps.type} text={buttonProps.text} />
+                        ) : (
+                            <input
+                                type={input.type}
+                                placeholder={input.value || ''}
+                                className={`ss-form__input ${input.type === 'textarea' ? 'textarea-input' : ''}`}
+                                value={formData[input.name] || ''}
+                                onChange={(event) => handleChange(event, input.name)}
+                            />
+                        )
+                    )}
                 </div>
-            </form>
-        </>
-    )
+            ))}
+            <div className="ss-form-container__submit-button">
+                <Button type={buttonProps.type} text={buttonProps.text} />
+            </div>
+        </form>
+    );
 }

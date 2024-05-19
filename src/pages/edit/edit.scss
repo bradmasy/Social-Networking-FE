@@ -1,7 +1,7 @@
 @import "../../global-styles/index.scss";
 
 .ss-edit-container{
-    @include flex-column-justify-align(calc(100vh - 150px), 100%,center,center);
+    @include flex-column-justify-align(auto, 100%,center,center);
  
 }
 

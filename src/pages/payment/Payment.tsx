@@ -1,38 +1,74 @@
-import { useLayoutEffect, useState } from "react";
+import { ChangeEvent, useLayoutEffect, useState } from "react";
 import { ApplyOverlay, CheckBox, CheckBoxProps, Header } from "../../components";
 import { CreditCard, PaymentForm } from 'react-square-web-payments-sdk';
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
+
 import "./payment.scss";
+import { useNavigate } from "react-router-dom";
 
 export const Payment: React.FC = () => {
 
     const apiService = useApiService();
+    const navigate = useNavigate();
 
     const [amount, setAmount] = useState("");
     const [loaded, setLoaded] = useState(false);
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
-    const [enableButton, setEnableButton] = useState(false);
+    const [enableButton, setEnableButton] = useState(true);
     const [appId, setAppId] = useState('');
     const [locationId, setLocationId] = useState('');
     const [errorMessage, setErrorMessage] = useState((<><span>PAYMENT UNSUCCESSFUL, PLEASE TRY AGAIN</span></>))
-    const [isChecked, setIsChecked] = useState(false);
+    const [isTabChecked, setIsTabChecked] = useState(false);
+    const [isMonthlyChecked, setIsMonthlyChecked] = useState(false);
+    const [disableTab, setDisableTab] = useState(false);
+    const [disableMonthly, setDisableMonthly] = useState(false);
+    const [plan, setPlan] = useState("");
+    const [cardName, setCardName] = useState('');
 
 
-    const handleCheckBoxChange = (isChecked: boolean) => {
-        setIsChecked(isChecked);
-        // Do something with the isChecked value
+    const handleMembershipCheckBoxChange = (isChecked: boolean) => {
+        if (isChecked) {
+            setIsMonthlyChecked(isChecked);
+            setDisableTab(true)
+            setPlan("month")
+            setEnableButton(false)
+            setAmount("277")
+        } else {
+            setIsMonthlyChecked(isChecked);
+            setDisableTab(false)
+            setPlan("")
+            setEnableButton(true)
+            setAmount("")
+        }
     };
+
+    const handleTabCheckBoxChange = (isChecked: boolean) => {
+        if (isChecked) {
+            setIsTabChecked(isChecked);
+            setDisableMonthly(true)
+            setPlan("tab")
+            setEnableButton(false)
+            setAmount("0")
+        } else {
+            setIsTabChecked(isChecked);
+            setDisableMonthly(false);
+            setPlan("");
+            setEnableButton(true)
+            setAmount("")
+        }
+    };
+
 
     useLayoutEffect(() => {
         const getCredentials = async () => {
             await apiService.get_square_credentials()
                 .then((response: any) => {
                     const data = response.data;
-                    setAppId(data['authData']['square']['productionAppId'])
+                    // setAppId(data['authData']['square']['productionAppId'])
 
-                    // setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
+                    setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
                     setLocationId(data['authData']['location']['id'])
                     setLoaded(true)
                 })
@@ -80,14 +116,29 @@ export const Payment: React.FC = () => {
         return totalAmountInCents.toString();
     }
 
+
     const successMessage = (
-        <><span>PAYMENT SUCCESSFUL</span>
+        <><div>PAYMENT SUCCESSFUL</div>
+            <div>RE-DIRECTING TO LOGIN</div>
         </>
     )
 
-    const checkboxProps: CheckBoxProps = {
+    const checkboxPropsMonthly: CheckBoxProps = {
         label: "PAY MEMBERSHIP ($277.00)",
-        onChange: handleCheckBoxChange
+        onChange: handleMembershipCheckBoxChange,
+        subText: "RENEWED MONTHLY",
+        disabled: disableMonthly
+    }
+
+    const checkboxPropsTab: CheckBoxProps = {
+        label: "PAY LATER WITH TAB",
+        onChange: handleTabCheckBoxChange,
+        subText: "NO FEE NOW",
+        disabled: disableTab
+    }
+
+    const handleCardName = (event: ChangeEvent<HTMLInputElement>) => {
+        setCardName(event.target.value);
     }
 
     return (
@@ -113,17 +164,16 @@ export const Payment: React.FC = () => {
                         <main className="ss-payments-container__payment-information">
                             <div className="ss-payments-container__user-information">
                                 <div className="ss-payments-container__user-information__pay-membership">
-                                    {/* <Button click={adedMembershipFeeToOrder} text="PAY MEMBERSHIP FEE" type="button" /> */}
-                                    <CheckBox {...checkboxProps} />
+                                    <CheckBox {...checkboxPropsMonthly} />
+                                </div>
+                                <div className="ss-payments-container__user-information__pay-membership">
+                                    <CheckBox {...checkboxPropsTab} />
                                 </div>
                                 <div className="ss-payments-container__user-information__input-container">
                                     <label>NAME ON CARD</label>
-                                    <input name="name" type="text"></input>
+                                    <input name="name" type="text" value={cardName} onChange={handleCardName}></input>
                                 </div>
-                                {/* <div className="ss-payments-container__user-information__input-container">
-                                    <label>AMOUNT</label>
-                                    <input name="amount" type="text" value={amount} onChange={(e) => updateAmount(e.target.value)}></input>
-                                </div> */}
+
                             </div>
 
                             <PaymentForm
@@ -131,7 +181,7 @@ export const Payment: React.FC = () => {
                                 // applicationId={`${env.SQUARE_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    if (isChecked) {
+                                    if (isMonthlyChecked || isTabChecked) {
                                         setLoaded(true)
                                         setAmount("$277");
 
@@ -139,17 +189,26 @@ export const Payment: React.FC = () => {
 
                                         const body = {
                                             token: token["token"],
-                                            amount: totalMoneyConverted
+                                            amount: totalMoneyConverted,
+                                            plan: plan,
+                                            name:cardName
+
                                         }
 
+
                                         // disable the button while the transaction is occuring...
-                                        setEnableButton(true);
+                                        setEnableButton(false);
 
                                         apiService.make_payment(body)
                                             .then((response) => {
+                                                console.log(response)
                                                 setDisplay(true);
+                                                setTimeout(() => {
+                                                    navigate("/login") // redirect to login to login and use their account
+                                                }, 2000)
                                             })
                                             .catch((error) => {
+                                                console.log(error)
                                                 setErrorDisplay(error)
                                             })
                                             .finally(() => {
@@ -169,6 +228,7 @@ export const Payment: React.FC = () => {
 
                             >
                                 <CreditCard
+
                                     buttonProps={{
                                         css: {
                                             backgroundColor: "#50B2CA",

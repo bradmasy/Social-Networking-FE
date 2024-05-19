@@ -24,7 +24,7 @@ export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
             value: ACCOUNT_INFO,
         },
         {
-            text: "MEMBERSHIP",
+            text: "TAB",
             value: MEMBERSHIP,
         },
         {
