@@ -19,6 +19,7 @@ export const Signup: React.FC = () => {
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
     const [displayOverlay, setDisplayOverlay] = useState(false);
     const [loading, setLoading] = useState(false);
+    
     const [errorMessage, setErrorMessage] = useState(
         <>
             <div>PLEASE FILL OUT</div>

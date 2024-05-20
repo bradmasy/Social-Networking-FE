@@ -1,6 +1,112 @@
 @import "../../../global-styles/index.scss";
 
-.ss-location-tile{
-    @include flex-column-justify-align(50%,24%,center,center);
-    border:solid red 1px;
+// .ss-location-tile {
+//   //   @include flex-column-justify-align(50%, 24%, center, center);
+//   //   border: solid red 1px;
+//   @include flex-column-justify-align(50%, 24%, center, center);
+//   font-family: "lexend";
+//   font-weight: $font-md;
+//   position: relative;
+// }
+
+// .ss-location-tile:hover {
+//   cursor: pointer;
+// }
+
+.ss-tile__wrapper {
+  @include flex-column-justify-align(55%, 22%, center, center);
+  font-family: "lexend";
+  font-weight: $font-md;
+  position: relative;
+  border: solid $main-white $border-md;
+  transition: 2s ease-in-out;
+}
+
+.ss-tile__overlay {
+  @include flex-column-justify-align(100%, 100%, center, center);
+  opacity: 0;
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+}
+
+.ss-tile__container {
+  position: relative;
+  z-index: 1;
+
+  @include flex-column-justify-align(100%, 100%, center, center);
+}
+.ss-tile__container__location-name {
+  @include flex-row-justify-align(20%, 100%, center, center);
+  color: $main-white;
+  letter-spacing: $letter-xxxsm;
+  font-weight: $font-md;
+  transition: 2s ease-in-out;
+}
+
+.ss-tile__container__location {
+  @include flex-column-justify-align(10%, 100%, center, center);
+  font-size: $font-sm;
+  color: $main-blue;
+  letter-spacing: $letter-xxxsm;
+  transition: 2s ease-in-out;
+
+  p {
+    @include flex-column-justify-align(100%, 100%, center, center);
+  }
+}
+
+.ss-tile__wrapper:hover {
+  cursor: pointer;
+  .ss-tile__container {
+    .ss-tile__container__location-name {
+      // font-weight: 300;
+      text-shadow: 2px 2px 4px 10px black;
+      filter: brightness(80%);
+    }
+    .ss-tile__container__location {
+      // font-weight: 300;
+      text-shadow: 2px 2px 4px 10px black;
+      filter: brightness(80%);
+    }
+  }
+}
+
+@media screen and (max-width: $tablet) {
+  :host {
+    width: 375px;
+    height: 375px;
+    // flex-wrap: wrap;
+    // width: 100%;
+    .ss-tile__wrapper {
+      @include flex-row-justify-align(100%, 100%, center, center);
+      position: relative;
+      border: solid $main-white $border-md;
+      transition: 2s ease-in-out;
+
+      .ss-tile__overlay {
+        @include flex-column-justify-align(100%, 100%, center, center);
+        opacity: 0.1;
+        position: absolute;
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+      }
+
+      .ss-tile__container {
+        position: relative;
+        z-index: 1;
+      }
+      .ss-tile__container__location-name {
+        font-size: 0.75em;
+      }
+
+      .ss-tile__container__location {
+        font-size: 0.5em;
+
+        p {
+        }
+      }
+    }
+  }
 }

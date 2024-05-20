@@ -23,15 +23,16 @@ export const Edit: React.FC = () => {
     const isInitialMount = useRef(true);
 
     const [state, setState] = useState("");
-    const [formData, sendFormData] = useState({});
+    const [formData, sendFormData] = useState<{ [key: string]: string | null }>({});
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
     const [displayOverlay, setDisplayOverlay] = useState(false);
     const [loading, setLoading] = useState(false);
     const [dataFetched, setDataFetched] = useState(false);
+    const [submitClicked, setSubmitClicked] = useState(false)
     const [successMessage, setSuccessMessage] = useState(
         <>
-        <span>PASSWORD CHANGE SUCCESSFUL<br /></span>
-    </>
+            <span>PASSWORD CHANGE SUCCESSFUL<br /></span>
+        </>
     )
     const [userData, setUserData] = useState<{ [key: string]: string }>({
         phoneNumber: "",
@@ -62,9 +63,7 @@ export const Edit: React.FC = () => {
 
                 apiService.get_user_data()
                     .then((response) => {
-                        console.log(response)
                         const user = response.data["user"]
-                        console.log(user)
                         setUserData(user);
                         sendFormData(userData)
                         setDataFetched(true);
@@ -74,102 +73,90 @@ export const Edit: React.FC = () => {
             return;
         }
 
-        const fieldsWritten = Object.keys(formData).length;
 
-        if (fieldsWritten > 0) {
-            if (ValidationService.validateForm(formData)) {
+
+        if (type === "password") {
+            if (ValidationService.validateForm(formData) && ValidationService.validatePasswordChange(formData)) {
                 setLoading(true)
-                console.log(formData)
 
-                if (type === "password") {
-                    if (ValidationService.validatePasswordChange(formData)) {
-                        apiService.change_user_password(formData)
-                            .then((response) => {
-                                setLoading(false)
-
-                                console.log(response)
-                                setDisplayOverlay(true)
-                            })
-                            .catch((error: Error) => {
-                                console.log(error)
-                                setLoading(false)
-                                sendFormData({});
-                                setErrorMessage(<>
-
-                                    <div>ERROR CHANGING PASSWORD</div>
-                                    <div>PLEASE TRY AGAIN</div>
-
-                                </>)
-                                setDisplayOverlayError(true);
-                                console.error(error)
-                            })
-                    } else {
+                apiService.change_user_password(formData)
+                    .then((response) => {
+                        setLoading(false)
+                        setDisplayOverlay(true)
+                    })
+                    .catch((error: Error) => {
+                        setLoading(false)
+                        sendFormData({});
                         setErrorMessage(<>
-                            <div>RETYPED PASSWORD AND NEW PASSWORD DO NOT MATCH </div>
-                            <div> TRY AGAIN</div>
+
+                            <div>ERROR CHANGING PASSWORD</div>
+                            <div>PLEASE TRY AGAIN</div>
 
                         </>)
-                        sendFormData({});
                         setDisplayOverlayError(true);
-                    }
-                }
-                else if (type === "user-details") {
-                    console.log('updating user')
-
-                    // filter out empty fields 
-                    console.log(`api request`)
-                    console.log(formData)
-                    setLoading(true)
-
-                    apiService.update_user(formData)
-                        .then((updateUser) => {
-                            setLoading(false)
-                            setSuccessMessage(<>
-                            <div>SUCCESS</div>
-                            <div>USER DETAILS UPDATED</div>
-                            </>)
-                            console.log(updateUser)
-                            setDisplayOverlay(true)
-
-                        })
-                        .catch((error:any) => {
-                            console.log(error)
-                            setLoading(false)
-                            sendFormData({});
-                            setErrorMessage(<>
-                            {/* {
-                                Object.keys(error.response.data)
-                                .map((each:any, i:number) => (
-                                    <div>
-                                        <div>
-                                            {each[i]}
-                                        </div>
-                                      
-                                    </div>
-                                ))
-                            } */}
-
-                                <div>ERROR UPDATING USER</div>
-                                <div>PLEASE TRY AGAIN</div>
-
-                            </>)
-                            setDisplayOverlayError(true);
-
-                        })
-
-                }
+                        console.error(error)
+                    })
             } else {
-                if (type !== "user-details") {
+                setErrorMessage(<>
+                    <div>RETYPED PASSWORD AND NEW PASSWORD DO NOT MATCH </div>
+                    <div> TRY AGAIN</div>
+
+                </>)
+                sendFormData({});
+                setDisplayOverlayError(true);
+            }
+
+        }
+        else if (type === "user-details" && submitClicked) {
+            setLoading(true)
+
+            // Remove all the empty values from the form to patch
+
+            const nonNullFields = Object.entries(formData)
+                .filter(([key, value]) => value !== '' && value !== null)
+                .reduce((obj, [key, value]) => {
+                    obj[key] = value;
+                    return obj;
+                }, {} as { [key: string]: string | null });
+
+            setLoading(true)
+
+            apiService.update_user(nonNullFields)
+                .then((updateUser) => {
+                    setLoading(false)
+                    setSuccessMessage(<>
+                        <div>SUCCESS</div>
+                        <div>USER DETAILS UPDATED</div>
+                    </>)
+                    setDisplayOverlay(true)
+
+                })
+                .catch((error: any) => {
+                    setLoading(false)
+                    sendFormData({});
                     setErrorMessage(<>
-                        <div>PLEASE FILL IN ALL </div>
-                        <div> FIELDS OF THE FORM</div>
+
+
+                        <div>ERROR UPDATING USER</div>
+                        <div>PLEASE TRY AGAIN</div>
 
                     </>)
-                    sendFormData({});
                     setDisplayOverlayError(true);
-                }
+
+                })
+
+        } else {
+            if (type !== "user-details") {
+                setErrorMessage(<>
+                    <div>PLEASE FILL IN ALL </div>
+                    <div> FIELDS OF THE FORM</div>
+
+                </>)
+                sendFormData({});
+                setDisplayOverlayError(true);
             }
         }
+
 
 
     }, [formData])
@@ -260,14 +247,17 @@ export const Edit: React.FC = () => {
             <div>
                 BY ENTERING THE FOLLOWING FIELDS
             </div>
+        </>)
+
+    const editUserCopy = (
+        <>   <div>
+            EDIT USER INFORMATION
+        </div>
+
         </>
 
     )
 
-    // const successMessage = (
-    //     <>
-    //         <span>PASSWORD CHANGE SUCCESSFUL<br /></span>
-    //     </>)
 
     return (
         <>
@@ -289,14 +279,14 @@ export const Edit: React.FC = () => {
                         <main className="ss-edit-container__main">
                             {editPasswordCopy}
                         </main>
-                        <Form formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} />
+                        <Form formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} setSubmitClicked={setSubmitClicked} />
                     </>
                 )}
                 {type === "user-details" && (
                     <> <main className="ss-edit-container__main">
-                        {editPasswordCopy}
+                        {editUserCopy}
                     </main>
-                        <Form formInputs={formInputsDetails} buttonProps={buttonProps} sendFormData={sendFormData} />
+                        <Form formInputs={formInputsDetails} buttonProps={buttonProps} sendFormData={sendFormData} setSubmitClicked={setSubmitClicked} />
                     </>
                 )
                 }
