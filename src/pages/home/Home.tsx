@@ -24,21 +24,6 @@ export const Home: React.FC = () => {
     const relocate = (url: string) => {
         navigate(url);
     }
-
-    const embedVideo = function(src:string, className:string) {
-        return (
-            <div dangerouslySetInnerHTML={{ __html: `
-             <video
-               loop
-               muted=true
-               autoplay
-               playsinline
-               src="${src}"
-               class="${className}"
-             />,
-           ` }}></div>
-        )
-     }
     return (
         <>
             {/* <Header /> */}
@@ -49,14 +34,10 @@ export const Home: React.FC = () => {
                     </p>
                 </main>
                 <div className="ss-home_container__animation-container">
-                    {
-                        embedVideo(spinningLogo,"ss-home-container__animation")
-                    }
-                    
-                    {/* <video autoPlay loop className="ss-home-container__animation">
+                    <video autoPlay loop muted className="ss-home-container__animation">
                         <source src={spinningLogo} type="video/mp4" />
                         Your browser does not support the video tag.
-                    </video> */}
+                    </video>
                 </div>
 
                 {<div className="ss-home-container__buttons">
