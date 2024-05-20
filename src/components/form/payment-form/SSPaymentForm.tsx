@@ -1,8 +1,9 @@
 
 import { CreditCard, PaymentForm } from "react-square-web-payments-sdk";
-import "./ss-payment-form.scss";
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import { useApiService } from "../../../contexts/ApiServiceContext";
+
+import "./ss-payment-form.scss";
 
 export interface SSPaymentFormProps {
     appId: string;
@@ -12,8 +13,8 @@ export interface SSPaymentFormProps {
     errorMessage: JSX.Element;
     errorDisplay: boolean;
     setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>;
-    // type: "TAB" | "MONTH";
-    setDisplay:React.Dispatch<React.SetStateAction<boolean>>;
+    type: "TAB" | "MONTH";
+    setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
@@ -22,7 +23,6 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
     const [amount, setAmount] = useState("");
     const [enableButton, setEnableButton] = useState(false);
-    // const [display, setDisplay] = useState(false);
     const [cardName, setCardName] = useState("");
 
     const processAmount = (): string => {
@@ -36,7 +36,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
         setAmount(e);
     }
 
-    const updateName = (e:string)=> {
+    const updateName = (e: string) => {
         setCardName(e);
     }
 
@@ -59,22 +59,18 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
                     cardTokenizeResponseReceived={async (token: any, buyer: any) => {
 
-
-                        props.setLoaded(true)
-
                         const totalMoneyConverted = processAmount();
 
                         const body = {
                             token: token["token"],
                             amount: totalMoneyConverted,
-                            name: cardName
-                            // type:props.type
+                            name: cardName,
+                            type: props.type
                         }
 
                         console.log(body)
                         // disable the button while the transaction is occuring...
                         setEnableButton(true);
-
                         apiService.make_payment(body)
                             .then((response) => {
                                 console.log(response)
@@ -86,7 +82,8 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                                 props.setErrorDisplay(true);
                             })
                             .finally(() => {
-                              //  setEnableButton(true);
+
+                                //  setEnableButton(true);
                             })
 
 
