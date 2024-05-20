@@ -13,6 +13,7 @@ export interface SSPaymentFormProps {
     errorDisplay: boolean;
     setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>;
     // type: "TAB" | "MONTH";
+    setDisplay:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
@@ -21,7 +22,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
     const [amount, setAmount] = useState("");
     const [enableButton, setEnableButton] = useState(false);
-    const [display, setDisplay] = useState(false);
+    // const [display, setDisplay] = useState(false);
     const [cardName, setCardName] = useState("");
 
     const processAmount = (): string => {
@@ -77,14 +78,15 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                         apiService.make_payment(body)
                             .then((response) => {
                                 console.log(response)
-                                setDisplay(true);
+                                props.setDisplay(true);
                             })
                             .catch((error) => {
                                 console.log(error);
-                                props.setErrorDisplay(error);
+                                console.log(error.data)
+                                props.setErrorDisplay(true);
                             })
                             .finally(() => {
-                                setEnableButton(false);
+                              //  setEnableButton(true);
                             })
 
 

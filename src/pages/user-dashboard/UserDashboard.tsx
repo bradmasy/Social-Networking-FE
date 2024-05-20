@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Button, Header, NavBar } from "../../components";
+import { ApplyOverlay, Button, Header, NavBar } from "../../components";
 import { UserDashboardMenu } from "../../components/menus";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import cardImg from "../../assets/images/card-black.png";
@@ -70,7 +70,8 @@ export const UserDashboard: React.FC = () => {
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [receiptData, setReceiptData] = useState<Receipt[]>([])
     const [cardLoaded, setCardLoaded] = useState(false);
-
+    const [display, setDisplay] = useState(false)
+    const [overlayError, setOverlayError] = useState(false);
     useEffect(() => {
 
         apiService.get_user_receipts()
@@ -107,12 +108,7 @@ export const UserDashboard: React.FC = () => {
                 setUserData(mappedInfo)
                 setLoaded(true)
 
-                // return apiService.get_user_receipts();
             })
-        // .then((receipts) => {
-        //     setReceiptData(receipts.data["Receipts"])
-        //     console.log(receipts.data)
-        // })
     }, [apiService])
 
     useEffect(() => {
@@ -181,10 +177,23 @@ export const UserDashboard: React.FC = () => {
         setLoaded: setLoaded,
         errorMessage: errorMessage,
         errorDisplay: errorDisplay,
-        setErrorDisplay: setErrorDisplay
+        setErrorDisplay: setOverlayError,
+        setDisplay: setDisplay
     }
+
+    const successMessage = (<>
+        <div>PAYMENT SUCCESSFUL</div>
+    </>)
+
     return (
         <>
+            <ApplyOverlay
+                successMessage={successMessage}
+                display={display}
+                setDisplay={setDisplay}
+                errorDisplay={overlayError}
+                setErrorDisplay={setOverlayError}
+                errorMessage={<>ERROR</>} />
             <NavBar />
             {!loaded && !cardLoaded ? (<LoadingOverlay />
             ) : (<>
@@ -323,11 +332,8 @@ export const UserDashboard: React.FC = () => {
                                                 <div className="ss-user-dashboard__tab__container__column__tile">
                                                     <div className="ss-user-dashboard__tab__container__column__tile__container">
                                                         <div className="ss-user-dashboard__tab__container__column__tile__title">
-
                                                             <p>CURRENT TAB
                                                             </p>
-
-
                                                         </div>
                                                         <div className="ss-user-dashboard__tab__container__column__tile__content">
                                                             {
@@ -335,19 +341,15 @@ export const UserDashboard: React.FC = () => {
                                                             }
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div className="ss-user-dashboard__tab__container__column__tile">
                                                     <div className="ss-user-dashboard__tab__container__column__tile__container">
                                                         <div className="ss-user-dashboard__tab__container__column__tile__title">
-
                                                             <p>LAST PAYMENT
                                                             </p>
-
                                                         </div>
                                                         <div className="ss-user-dashboard__tab__container__column__tile__content-receipts">
                                                             {
-
                                                                 <div className="ss-user-dashboard__receipt-tab">
                                                                     {
                                                                         receiptData.length > 0 ? (
