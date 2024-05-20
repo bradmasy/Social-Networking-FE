@@ -1,13 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { Button, Header, NavBar } from "../../components";
+import { ApplyOverlay, Button, NavBar } from "../../components";
 import { UserDashboardMenu } from "../../components/menus";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import cardImg from "../../assets/images/card-black.png";
-
-import "./user-dashboard.scss";
 import { useNavigate } from "react-router-dom";
 import { SSPaymentForm, SSPaymentFormProps } from "../../components/form/payment-form/SSPaymentForm";
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
+
+import "./user-dashboard.scss";
 
 export interface Plan {
     id: string;
@@ -31,7 +31,6 @@ export interface UserData {
     lastName: string;
     phoneNumber: string;
     socialLink: string;
-    // membership: Membership;
     createdAt: Date;
 }
 
@@ -40,7 +39,6 @@ export interface Receipt {
     user: number;
     createdAt: string;
     amount: number;
-
 }
 
 export const ACCOUNT_INFO = "accountInformation";
@@ -56,8 +54,7 @@ export const UserDashboard: React.FC = () => {
     const apiService = useApiService();
     const navigate = useNavigate();
 
-    const [userdata, setUserData] = useState<{ [key: string]: string }>({}
-    );
+    const [userdata, setUserData] = useState<{ [key: string]: string }>({});
     const [membership, SetMembership] = useState<{ [key: string]: string }>({})
     const [locations, setLocations] = useState([{}]);
     const [locationData, setLocationData] = useState<{ [key: string]: string }[]>([]);
@@ -70,21 +67,20 @@ export const UserDashboard: React.FC = () => {
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [receiptData, setReceiptData] = useState<Receipt[]>([])
     const [cardLoaded, setCardLoaded] = useState(false);
+    const [display, setDisplay] = useState(false)
+    const [overlayError, setOverlayError] = useState(false);
 
     useEffect(() => {
 
         apiService.get_user_receipts()
             .then((receipts) => {
                 setReceiptData(receipts.data["Receipts"])
-                console.log(receipts.data)
                 return apiService.get_user_plan()
             })
             .then((plan) => {
-                console.log(plan)
                 return apiService.get_user_data()
             })
             .then((response) => {
-                console.log(response.data)
                 const user_information = response.data.user
                 const membership = user_information["membership"]
 
@@ -107,12 +103,7 @@ export const UserDashboard: React.FC = () => {
                 setUserData(mappedInfo)
                 setLoaded(true)
 
-                // return apiService.get_user_receipts();
             })
-        // .then((receipts) => {
-        //     setReceiptData(receipts.data["Receipts"])
-        //     console.log(receipts.data)
-        // })
     }, [apiService])
 
     useEffect(() => {
@@ -123,7 +114,6 @@ export const UserDashboard: React.FC = () => {
                     locations.includes(each["id"])
                 )
                 setLocationData(location_data)
-                console.log(location_data)
             })
     }, [apiService, locations])
 
@@ -133,7 +123,7 @@ export const UserDashboard: React.FC = () => {
                 .then((response: any) => {
                     const data = response.data;
                     setAppId(data['authData']['square']['productionAppId'])
-                    //  setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
+                    // setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
                     setLocationId(data['authData']['location']['id'])
                     setCardLoaded(true)
                 })
@@ -181,10 +171,25 @@ export const UserDashboard: React.FC = () => {
         setLoaded: setLoaded,
         errorMessage: errorMessage,
         errorDisplay: errorDisplay,
-        setErrorDisplay: setErrorDisplay
+        setErrorDisplay: setOverlayError,
+        setDisplay: setDisplay,
+        type: "TAB",
+
     }
+
+    const successMessage = (<>
+        <div>PAYMENT SUCCESSFUL</div>
+    </>)
+
     return (
         <>
+            <ApplyOverlay
+                successMessage={successMessage}
+                display={display}
+                setDisplay={setDisplay}
+                errorDisplay={overlayError}
+                setErrorDisplay={setOverlayError}
+                errorMessage={<>ERROR</>} />
             <NavBar />
             {!loaded && !cardLoaded ? (<LoadingOverlay />
             ) : (<>
@@ -323,11 +328,8 @@ export const UserDashboard: React.FC = () => {
                                                 <div className="ss-user-dashboard__tab__container__column__tile">
                                                     <div className="ss-user-dashboard__tab__container__column__tile__container">
                                                         <div className="ss-user-dashboard__tab__container__column__tile__title">
-
                                                             <p>CURRENT TAB
                                                             </p>
-
-
                                                         </div>
                                                         <div className="ss-user-dashboard__tab__container__column__tile__content">
                                                             {
@@ -335,19 +337,15 @@ export const UserDashboard: React.FC = () => {
                                                             }
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <div className="ss-user-dashboard__tab__container__column__tile">
                                                     <div className="ss-user-dashboard__tab__container__column__tile__container">
                                                         <div className="ss-user-dashboard__tab__container__column__tile__title">
-
                                                             <p>LAST PAYMENT
                                                             </p>
-
                                                         </div>
                                                         <div className="ss-user-dashboard__tab__container__column__tile__content-receipts">
                                                             {
-
                                                                 <div className="ss-user-dashboard__receipt-tab">
                                                                     {
                                                                         receiptData.length > 0 ? (
