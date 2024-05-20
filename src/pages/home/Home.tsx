@@ -34,7 +34,7 @@ export const Home: React.FC = () => {
                     </p>
                 </main>
                 <div className="ss-home_container__animation-container">
-                    <video autoPlay loop className="ss-home-container__animation">
+                    <video autoPlay loop muted className="ss-home-container__animation">
                         <source src={spinningLogo} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
