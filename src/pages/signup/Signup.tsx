@@ -37,7 +37,7 @@ export const Signup: React.FC = () => {
                 apiService.signup(formData)
                     .then((response: any) => {
                         authService.setAuthenticationToken(response.data)
-                        navigate('/payment')
+                        navigate('/payment/membership')
                     })
                     .catch((err: { [key: string]: any }) => {
                         setErrorMessage(

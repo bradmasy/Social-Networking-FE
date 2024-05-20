@@ -16,7 +16,7 @@ export const NavBar: React.FC = () => {
                 </div>
                 <div className="ss-header-link-container start">
                     <div className="ss-header-link-container__links">
-                        <a href="./">DASHBOARD</a>
+                        <a href="./user-dashboard">DASHBOARD</a>
                         <a href="/payment">PAYMENTS</a>
                     </div>
                 </div>

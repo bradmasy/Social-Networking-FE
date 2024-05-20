@@ -164,6 +164,8 @@ export const UserDashboard: React.FC = () => {
         const dateString = date.split("T")[0]
         return dateString
     }
+    const title = "MAKE A PAYMENT ON YOUR TAB TODAY"
+
     const paymentFormProps: SSPaymentFormProps = {
         appId: appId,
         locationId: locationId,
@@ -174,6 +176,7 @@ export const UserDashboard: React.FC = () => {
         setErrorDisplay: setOverlayError,
         setDisplay: setDisplay,
         type: "TAB",
+        title:title
 
     }
 
