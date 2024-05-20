@@ -13,7 +13,7 @@ export const Home: React.FC = () => {
 
     const message = (
         <>
-            <span className="highlight title-text">WELCOME TO SEVENS SOCIAL</span>
+            <span className="title-text">WELCOME TO SEVENS SOCIAL</span>
             {/* <span>IF YOU ARE A MEMBER, PLEASE USE THE <span className="highlight">LOGIN</span> BUTTON TO LOGIN<br /></span>
             <span>IF YOU ARE INTERESTED IN BECOMING A MEMBER<br /></span>
             <span>PLEASE CLICK <span className="highlight">APPLY</span><br /></span> */}

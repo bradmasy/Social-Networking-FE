@@ -15,6 +15,7 @@ export interface SSPaymentFormProps {
     setErrorDisplay: React.Dispatch<React.SetStateAction<boolean>>;
     type: "TAB" | "MONTH";
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
+    title: string;
 }
 
 export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
@@ -44,7 +45,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
         <>
             <div className="ss-payment-form-container">
                 <div className="ss-payment-form-container__title">
-                    MAKE A PAYMENT ON YOUR TAB TODAY
+                    {props.title}                
                 </div>
                 <div className="ss-payment-form-container__amount">
                     <label>NAME ON CARD</label>
@@ -68,7 +69,6 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                             type: props.type
                         }
 
-                        console.log(body)
                         // disable the button while the transaction is occuring...
                         setEnableButton(true);
                         apiService.make_payment(body)
@@ -106,7 +106,7 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
 
                                 },
                             },
-                            isLoading: enableButton
+                            isLoading: cardName === ""  || amount === ""
                         }}
                     />
                 </PaymentForm>

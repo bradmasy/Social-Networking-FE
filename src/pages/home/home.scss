@@ -16,7 +16,7 @@
     @include flex-column-justify-align(auto, auto, center, center);
 
     font-size: 1.75em;
-    font-weight: 300;
+  //  font-weight: 300;
     letter-spacing: $letter-xsm;
   }
   // position: absolute;
@@ -27,13 +27,15 @@
 
 .highlight {
   color: $main-blue;
-  font-weight: 300;
+ // font-weight: 300;
 
 }
 
-// .title-text {
-//   font-size: 2em;
-// }
+.title-text {
+  color: $main-blue;
+
+  font-size: 1.5em;
+}
 
 .ss-home-container__buttons {
   @include flex-row-justify-align(10vh, 20%, space-between, center);
@@ -83,6 +85,12 @@ source {
 }
 
 @media screen and (max-width: 800px) {
+  
+.title-text {
+  color: $main-blue;
+
+  font-size: 1.25em;
+}
   .ss-home-container {
     @include flex-column-justify-align(100vh, 100%, start, center);
   }
