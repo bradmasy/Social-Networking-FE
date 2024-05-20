@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthorizationContext"
 import { Routes as Router, Route, Navigate } from "react-router-dom";
-import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership } from '../pages/index'
+import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
 import { Edit } from "../pages/edit/Edit";
@@ -23,6 +23,7 @@ const IndustryRoute = ({ component }: { component: JSX.Element }) => {
 
 export const Routes = () => {
 
+
     return (
         <Router>
             <Route path="" element={<Home />} />
@@ -37,7 +38,15 @@ export const Routes = () => {
             <Route path="/industry-info" element={<IndustryInfo />} />
             <Route path="/edit" element={<PrivateRoutes component={<Edit />} />} />
             <Route path="/locations" element={<PrivateRoutes component={<Locations />} />} />
+            <Route path="/locations/:id" element={<PrivateRoutes component={<LocationDetails />} />} />
+            <Route path="/locations/:id/spaces" element={<PrivateRoutes component={<Spaces />} />} />
+            <Route path="/locations/:id/spaces/:space" element={<PrivateRoutes component={<SpaceDetails />} />} />
+            <Route path="/locations/:id/events" element={<PrivateRoutes component={<ComingSoon/>} />} />
+
+            <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon/>} />} />
+
             <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard />} />} />
+            <Route path="/logout" element={<PrivateRoutes component={<Logout />} />} />
         </Router>
     )
 }

@@ -1,0 +1,55 @@
+@import "../../../global-styles/index.scss";
+
+@media screen and (max-width: 800px) {
+  .ss-mobile-menu {
+    @include flex-row-justify-align(80%, 90%, center, center);
+    color: white;
+    font-family: "lexend";
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    position: absolute;
+    background-color: $main-blue;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden hidden;
+    border-radius: 8px;
+
+    .ss-mobile-menu__menu-item-container {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      height: 90%;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      border-radius: 8px 8px 8px 8px;
+
+      .ss-mobile-menu__menu-option {
+        display: flex;
+        border: solid white 1px;
+        width: 90%;
+        justify-content: center;
+        height: 10%;
+        align-items: center;
+        font-family: "lexend";
+        transition: 0.5s ease-in-out;
+        border-radius: 8px 8px 8px 8px;
+        text-decoration: none;
+        color: white;
+
+        a {
+          text-decoration: none;
+          color: white;
+        }
+      }
+      .ss-mobile-menu__menu-option:hover {
+        cursor: pointer;
+        scale: 1.05;
+        filter: brightness(0) saturate(100%) invert(9%) sepia(91%)
+          saturate(2271%) hue-rotate(332deg) brightness(105%) contrast(100%);
+      }
+    }
+  }
+}

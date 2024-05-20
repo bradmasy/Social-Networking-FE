@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Header, LocationTile, NavBar } from "../../components";
 import { useApiService } from "../../contexts/ApiServiceContext";
+
 import londonImage from "../../assets/images/London.png";
-import portStanleyImage from "../../assets/images/PortStanley.png";
+import portStanleyImage from "../../assets/images/PortStanley.png"; 
+import comingSoon from "../../assets/images/coming-soon.jpg";
 
 import "./locations.scss";
 
@@ -38,16 +40,20 @@ export const Locations: React.FC = () => {
                 {locations.map((location) => {
 
                     let imageSrc;
+                    let redirectUrl;
 
                     switch (location.city.toLowerCase()) {
                         case "london":
                             imageSrc = londonImage;
+                            redirectUrl =`/locations/${location.id}`
                             break;
                         case "port stanley":
                             imageSrc = portStanleyImage;
+                            redirectUrl =`/locations/${location.id}`
                             break;
                         default:
-                            imageSrc = "";
+                            imageSrc = comingSoon;
+                            redirectUrl ="/coming-soon";
                             break;
                     }
                     return (
@@ -58,7 +64,7 @@ export const Locations: React.FC = () => {
                             location={location.city}
                             imgUrl={imageSrc}
                             id={location.id}
-                            url="./"
+                            url={redirectUrl}
                         />
                     );
                 })}

@@ -19,8 +19,10 @@
 }
 
 .ss-payments-container__payment-information {
+  @include flex-column-justify-align(100%, auto, center, center);
+
   border-radius: 8px;
-  background-color: white;
+  // background-color: white;
   padding: 25px;
   margin-top: 25px;
   margin-bottom: 25px;
@@ -42,6 +44,7 @@
   @include flex-column-justify-align(100%, 100%, center, center);
   gap: 10px;
   padding: 10px;
+  
   input {
     @include flex-column-justify-align(100%, 80%, center, center);
     border-radius: 8px;
@@ -59,4 +62,17 @@
 
 .tool-tip{
   font-size: .5em;
+}
+
+
+@media screen and (max-width:800px) {
+  .ss-payments-container__payment-information {
+    @include flex-column-justify-align(100%, 70%, center, center);
+
+    border-radius: 8px;
+    padding: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  
 }
