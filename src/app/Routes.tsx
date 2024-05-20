@@ -35,11 +35,11 @@ export const Routes = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/industry-invite" element={<IndustryInvite />} />
             <Route path="/industry-info" element={<IndustryInfo />} />
-            <Route path="/user-dashboard" element={<UserDashboard />} />
+            {/* <Route path="/user-dashboard" element={<UserDashboard />} /> */}
             <Route path="/edit" element={<PrivateRoutes component={<Edit />} />} />
-            <Route path="/locations" element={<PrivateRoutes component={<Locations />} />} />
+            {/* <Route path="/locations" element={<PrivateRoutes component={<Locations />} />} /> */}
 
-            {/* <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard/>}/>} /> */}
+            <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard/>}/>} />
         </Router>
     )
 }
