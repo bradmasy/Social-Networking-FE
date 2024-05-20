@@ -122,8 +122,8 @@ export const UserDashboard: React.FC = () => {
             await apiService.get_square_credentials()
                 .then((response: any) => {
                     const data = response.data;
-                    // setAppId(data['authData']['square']['productionAppId'])
-                    setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
+                    setAppId(data['authData']['square']['productionAppId'])
+                    // setAppId(data['authData']['square']['sandboxAppId']) // for sandbox
                     setLocationId(data['authData']['location']['id'])
                     setCardLoaded(true)
                 })
