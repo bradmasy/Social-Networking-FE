@@ -1,30 +1,58 @@
-@import "../../global-styles/mixins.scss";
-
+@import "../../global-styles/index.scss";
 .ss-header {
-//   @include flex-row-justify-align(10%, 100%, center, center);
-//   min-height: 100px;
-//   border:solid red 1px;
-@include flex-row-justify(150px, 100%, center);
-align-items: center;
-
-
+  //   @include flex-row-justify-align(10%, 100%, center, center);
+  //   min-height: 100px;
+  //   border:solid red 1px;
+  @include flex-row-justify(150px, 100%, center);
+  align-items: center;
 }
 
-.ss-header__logo-container{
-    @include flex-row-justify-align(100%, 80px, center, center);
+.ss-header__logo-container {
+  @include flex-row-justify-align(100%, 80px, center, center);
 
-    // max-height: 100px;
+  // max-height: 100px;
 
-    img{
-        @include flex-row-justify-align(100px, 55px, center, center);
-        // border:solid orange 1px;
-        max-height: 125px;
-        min-width: 50px;
+  img {
+    @include flex-row-justify-align(100px, 55px, center, center);
+    // border:solid orange 1px;
+    max-height: 125px;
+    min-width: 50px;
+  }
+}
 
+.ss-header__text {
+  font-weight: 100;
+  letter-spacing: 5px;
+}
+
+.ss-header-link-container {
+  @include flex-row-justify-align(auto, 15%, center, center);
+  padding: 20px;
+  font-size: 0.75em;
+  //   border-bottom:solid white 1px;
+
+  .ss-header-link-container__links {
+    @include flex-row-justify-align(auto, 100%, space-around, center);
+    gap: 20px;
+    a {
+      transition: 0.25s ease-in-out;
+      border-bottom: solid $main-background 1px;
+      text-decoration: none;
+      color: white;
+      letter-spacing: 1px;
     }
+    a:hover {
+      color: $main-blue;
+      cursor: pointer;
+      border-bottom: solid $main-blue 1px;
+    }
+  }
 }
 
-.ss-header__text{
-    font-weight: 100;
-    letter-spacing: 5px;
+.start {
+  justify-content: start;
+}
+
+.end {
+  justify-content: end!important;
 }

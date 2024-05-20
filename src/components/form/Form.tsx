@@ -25,9 +25,10 @@ interface FormProps {
     formInputs: Input[];
     selectInputs?: SelectOption[];
     buttonProps: ButtonProps;
+    setSubmitClicked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInputs, buttonProps }) => {
+export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInputs, buttonProps, setSubmitClicked }) => {
     const initialFormData: FormData = formInputs.reduce((acc, input) => {
         acc[input.name] = input.value || "";
         return acc;
@@ -94,7 +95,13 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
                 </div>
             ))}
             <div className="ss-form-container__submit-button">
-                <Button type={buttonProps.type} text={buttonProps.text} />
+                {setSubmitClicked ? (
+                    <Button type={buttonProps.type} text={buttonProps.text} click={() => {
+                        setSubmitClicked(true);
+                    }} />
+                ) : (
+                    <Button type={buttonProps.type} text={buttonProps.text} />
+                )}
             </div>
         </form>
     );

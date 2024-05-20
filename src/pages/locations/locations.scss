@@ -2,10 +2,11 @@
 
 .ss-locations{
     @include flex-row-justify-align(calc(100vh - 150px),100%,space-around,center);
-    border:solid red 1px;
+    // border:solid red 1px;
 }
 
 .ss-locations__location-container{
     @include flex-column-justify-align(50%,24%,center,center);
-    border:solid red 1px;
+    // border:solid red 1px;
 }
+
