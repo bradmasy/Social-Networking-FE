@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthorizationContext"
 import { Routes as Router, Route, Navigate } from "react-router-dom";
-import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon } from '../pages/index'
+import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon, Bookings } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
 import { Edit } from "../pages/edit/Edit";
@@ -42,6 +42,7 @@ export const Routes = () => {
             <Route path="/locations/:id/spaces" element={<PrivateRoutes component={<Spaces />} />} />
             <Route path="/locations/:id/spaces/:space" element={<PrivateRoutes component={<SpaceDetails />} />} />
             <Route path="/locations/:id/events" element={<PrivateRoutes component={<ComingSoon/>} />} />
+            {/* <Route path="/locations/:id/bookings" element={<PrivateRoutes component={<Bookings/>} />} /> */}
 
             <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon/>} />} />
 

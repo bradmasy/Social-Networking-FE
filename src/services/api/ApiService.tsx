@@ -23,7 +23,7 @@ export class ApiService {
     createHeader = () => {
         const headers: { [key: string]: string } = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:4200', // or specific origin as needed
+   //         'Access-Control-Allow-Origin': 'http://localhost:3000', // or specific origin as needed
         };
 
         if (this.retrieveAuth()) {
@@ -35,7 +35,6 @@ export class ApiService {
     // USER
     get_user_data = (): Promise<any> => {
         const headers = this.createHeader();
-        console.log(headers)
         return axios.get(`${API_BASE_URL}/users`, { headers });
     };
 
@@ -46,7 +45,6 @@ export class ApiService {
 
     update_user = (data: { [key: string]: string | null }): Promise<any> => {
         const headers = this.createHeader();
-        console.log(data)
         return axios.patch(`${API_BASE_URL}/users`, data, { headers })
     }
 
@@ -54,8 +52,7 @@ export class ApiService {
     login = (data: { [key: string]: string }): Promise<any> => {
         const headers = this.createHeader();
         const body = { username: data.username, password: data.password };
-
-        return axios.post(`${API_BASE_URL}/login`, body, { headers });
+        return axios.post(`${API_BASE_URL}/login`, body);
     };
 
     signup = (data: { [key: string]: string }): Promise<any> => {

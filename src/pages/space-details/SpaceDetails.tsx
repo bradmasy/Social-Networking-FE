@@ -5,32 +5,30 @@ import { useEffect, useState } from "react";
 import { Space } from "../location-details/LocationDetails";
 
 
-export const SpaceDetails:React.FC =() => {
+export const SpaceDetails: React.FC = () => {
     const navigate = useNavigate();
     const apiService = useApiService();
-    let {space} = useParams();
+    let { space } = useParams();
 
-    const [spaceInfo,setSpaceInfo] = useState<Space | null>(null);
+    const [spaceInfo, setSpaceInfo] = useState<Space | null>(null);
 
-    useEffect( () => {
-        console.log(space)
-        if(space){
+    useEffect(() => {
+        if (space) {
             apiService.get_space_by_id(space)
-            .then((space) => {
-                console.log(space.data["data"])
-                setSpaceInfo(space.data["data"])
-            })
-            
+                .then((space) => {
+                    setSpaceInfo(space.data["data"])
+                })
+
         }
-    },[apiService])
+    }, [apiService])
 
     return (
         <>
-        <NavBar/>
+            <NavBar />
 
-        <section className="ss-space-details">
+            <section className="ss-space-details">
 
-        </section>
+            </section>
         </>
     )
 }

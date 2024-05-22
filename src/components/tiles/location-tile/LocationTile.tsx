@@ -12,8 +12,7 @@ export interface LocationTileProps {
     imgUrl?: string;
     id?: number;
     url: string;
-    hover?:boolean;
-
+    hover?: boolean;
 }
 
 
@@ -30,7 +29,7 @@ export const LocationTile: React.FC<LocationTileProps> = (props) => {
         }
     }, [props.imgUrl]);
 
-    
+
     const onHover = () => {
         if (backgroundImgRef.current) {
             backgroundImgRef.current.style.opacity = '0.2';

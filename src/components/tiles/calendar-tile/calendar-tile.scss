@@ -1,0 +1,30 @@
+@import "../../../global-styles//index.scss";
+
+
+  .ss-calendar-tile__container {
+    @include flex-column-justify-align(calc(100% / 5), 100%, center, center);
+    
+     border: 1px white solid;
+    // flex-grow: 0.95;
+    // flex-basis: 0;
+    // transition: 0.5s ease-in-out;
+
+    .ss-calendar-tile__container__date {
+      @include flex-row-justify-align(25%, 90%, left, center);
+      //border:solid red 1px;
+    }
+  }
+
+
+.no-border {
+  border: none !important;
+}
+
+.passed {
+  border: red 1px solid!important;
+}
+
+:host:hover {
+  cursor: pointer;
+  scale: 1.025;
+}

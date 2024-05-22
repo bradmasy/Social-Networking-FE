@@ -51,7 +51,6 @@ export const MobileNavBar: React.FC<MobileNavProps> = ({ setMobileState, mobileS
 
 
     const openMobileMenu = () => {
-        console.log('clicked')
         !mobileState ? setMobileState(true) : setMobileState(false);
         !mobileState ? setFade(false) : setFade(true);
     }

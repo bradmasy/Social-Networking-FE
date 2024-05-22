@@ -15,6 +15,7 @@ export interface Space {
     name: string;
     location: number;
     selected?: boolean;
+    photo?:string;
 }
 
 export interface Location {

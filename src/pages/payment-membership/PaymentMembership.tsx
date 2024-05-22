@@ -214,7 +214,6 @@ export const PaymentMembership: React.FC = () => {
                                 // applicationId={`${env.SQUARE_PROD_APP_ID}`}
 
                                 cardTokenizeResponseReceived={async (token: any, buyer: any) => {
-                                    console.log(buyer)
                                     if (isMonthlyChecked) {
                                         setLoaded(true)
                                         setAmount("$277");

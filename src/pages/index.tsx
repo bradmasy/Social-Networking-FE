@@ -15,3 +15,4 @@ export { LocationDetails } from "./location-details/LocationDetails";
 export { Spaces } from "./spaces/Spaces";
 export { SpaceDetails } from "./space-details/SpaceDetails";
 export { ComingSoon } from "./coming-soon/ComingSoon";
+export { Bookings } from "./bookings/Bookings";
