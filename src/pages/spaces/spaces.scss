@@ -19,8 +19,42 @@
 
 @media screen and (max-width:800px) {
     .ss-spaces{
-        @include flex-column-justify-align(auto, 100%,center,center);
-        padding:50px 0px;
-        gap:50px;
+        @include flex-column-justify-align(
+        auto,
+        100%,
+        space-around,
+        center
+      );
+      gap:20px;
+      padding:50px 0px;
+    }
+
+    .ss-spaces__title{
+        @include flex-row-justify-align(auto, 90%, center, center);
+
+    }
+    .ss-space__spaces{
+        @include flex-column-justify-align(22%, 90%, center, center);
+        gap:20px;
+
+    
     }
 }
+
+@media screen and (max-width: 800px) {
+    .ss-locations {
+      @include flex-column-justify-align(
+        auto,
+        100%,
+        space-around,
+        center
+      );
+      gap:20px;
+      padding:50px 0px;
+    }
+    .ss-locations__location-container {
+      @include flex-column-justify-align(22%, 90%, center, center);
+      border:solid red 1px;
+
+    }
+  }
