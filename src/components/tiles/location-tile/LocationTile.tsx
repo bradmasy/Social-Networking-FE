@@ -6,36 +6,14 @@ import "./location-tile.scss";
 
 export interface LocationTileProps {
     // click: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    redirect: string;
+    redirect?: string;
     title: string;
-    location: string;
-    imgUrl: string;
-    id: number;
+    location?: string;
+    imgUrl?: string;
+    id?: number;
     url: string;
-
+    hover?: boolean;
 }
-
-
-// export const LocationTile: React.FC<LocationTileProps> = (props) => {
-
-//     const navigate = useNavigate();
-
-//     const redirect = (url:string) => {
-//         navigate(url)
-//     }
-
-//     return (
-//         <>
-//             <div onClick={() => {
-//                 redirect(props.redirect)
-//             }} className="ss-location-tile">
-
-//             </div>
-//         </>
-//     )
-// }
-
-
 
 
 
@@ -43,13 +21,14 @@ export const LocationTile: React.FC<LocationTileProps> = (props) => {
     const [isHovered, setIsHovered] = useState(false);
     const tileRef = useRef(null);
     const backgroundImgRef = useRef<HTMLDivElement | null>(null);
-    // const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (backgroundImgRef.current) {
             backgroundImgRef.current.style.backgroundImage = `url(${props.imgUrl})`;
         }
     }, [props.imgUrl]);
+
 
     const onHover = () => {
         if (backgroundImgRef.current) {
@@ -68,7 +47,7 @@ export const LocationTile: React.FC<LocationTileProps> = (props) => {
     };
 
     const routeToLocation = () => {
-        // history.push(props.url);
+        navigate(props.url)
     };
 
     return (

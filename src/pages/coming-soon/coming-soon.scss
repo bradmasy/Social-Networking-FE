@@ -1,0 +1,12 @@
+
+
+@import "../../global-styles/index.scss";
+
+.ss-coming-soon{
+    @include flex-column-justify-align(calc(100vh - 150px), 100%, center,center);
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    font-size: 2em;
+}

@@ -56,3 +56,10 @@
 .end {
   justify-content: end!important;
 }
+
+
+@media screen and (max-width: 800px) {
+.ss-header{
+  display: none;
+}
+}

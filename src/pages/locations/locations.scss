@@ -1,12 +1,33 @@
 @import "../../global-styles/index.scss";
 
-.ss-locations{
-    @include flex-row-justify-align(calc(100vh - 150px),100%,space-around,center);
-    // border:solid red 1px;
+.ss-locations {
+  @include flex-row-justify-align(
+    calc(100vh - 150px),
+    100%,
+    space-around,
+    center
+  );
+  // border:solid red 1px;
 }
 
-.ss-locations__location-container{
-    @include flex-column-justify-align(50%,24%,center,center);
-    // border:solid red 1px;
+.ss-locations__location-container {
+  @include flex-column-justify-align(50%, 24%, center, center);
+  // border:solid red 1px;
 }
 
+@media screen and (max-width: 800px) {
+  .ss-locations {
+    @include flex-column-justify-align(
+      auto,
+      100%,
+      space-around,
+      center
+    );
+    gap:20px;
+    padding:50px 0px;
+  }
+  .ss-locations__location-container {
+    @include flex-column-justify-align(22%, 90%, center, center);
+    border:solid red 1px;
+  }
+}

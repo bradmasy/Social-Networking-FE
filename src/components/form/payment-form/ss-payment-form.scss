@@ -18,3 +18,12 @@
     font-weight:200;
 
 }
+
+@media screen and (max-width:800px) {
+    .ss-payment-form-container{
+        @include flex-column-justify-align(100%, 100%, center, center);
+
+      
+    }
+
+}

@@ -1,0 +1,60 @@
+
+@import "../../global-styles//index.scss";
+
+.ss-spaces{
+    @include flex-column-justify-align(calc(100vh - 150px), 100%,space-around,center);
+}
+
+
+.ss-spaces__title{
+    @include flex-row-justify-align(auto,auto,center,center);
+    font-size:1.5em;
+    padding:20px 0px;
+}
+
+.ss-space__spaces{
+    @include flex-row-justify-align(calc(100vh - 150px - 40px), 100%,space-around,center);
+
+}
+
+@media screen and (max-width:800px) {
+    .ss-spaces{
+        @include flex-column-justify-align(
+        auto,
+        100%,
+        space-around,
+        center
+      );
+      gap:20px;
+      padding:50px 0px;
+    }
+
+    .ss-spaces__title{
+        @include flex-row-justify-align(auto, 90%, center, center);
+
+    }
+    .ss-space__spaces{
+        @include flex-column-justify-align(22%, 90%, center, center);
+        gap:20px;
+
+    
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .ss-locations {
+      @include flex-column-justify-align(
+        auto,
+        100%,
+        space-around,
+        center
+      );
+      gap:20px;
+      padding:50px 0px;
+    }
+    .ss-locations__location-container {
+      @include flex-column-justify-align(22%, 90%, center, center);
+      border:solid red 1px;
+
+    }
+  }

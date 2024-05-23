@@ -73,12 +73,9 @@ export const SSPaymentForm: React.FC<SSPaymentFormProps> = (props) => {
                         setEnableButton(true);
                         apiService.make_payment(body)
                             .then((response) => {
-                                console.log(response)
                                 props.setDisplay(true);
                             })
                             .catch((error) => {
-                                console.log(error);
-                                console.log(error.data)
                                 props.setErrorDisplay(true);
                             })
                             .finally(() => {

@@ -1,0 +1,60 @@
+@import "../../global-styles//index.scss";
+
+.ss-calendar__tile-container__calendar-view {
+  @include flex-row-justify(100%, 20%, start);
+  border: solid white 1px;
+  border-radius: 12px;
+}
+
+.ss-calendar__tile-container {
+  @include flex-column-justify(100%, 90%, start);
+  border: solid red 1px;
+}
+.ss-calendar__toolbar {
+  @include flex-row-justify-align(10%, 100%, center, center);
+}
+.ss-calendar__toolbar__month {
+  @include flex-row-justify-align(100%, auto, center, center);
+  padding-left: 25px;
+  padding-right: 25px;
+  @include font_styling($main-blue, 1.25em, 200, 1.1);
+}
+
+.ss-calendar__tile-container__day-column {
+  @include flex-row-justify(100%, 100%, center);
+
+  border: solid red 1px;
+}
+.ss-calendar__tile-container__day-column__day {
+  @include flex-column-justify-align(100%, 100%, start, center);
+  @include font_styling($main-blue, 1em, 200, 1.1);
+  flex: 0 0 calc(100% / 7);
+}
+
+.ss-calendar__tile-container__day-column__day__label{
+    @include flex-row-justify-align(50px, 100%, center, center);
+
+
+}
+.ss-calendar__tile-container__day-column__day__tiles{
+    border: solid yellow 1px;
+    @include flex-column-justify-align(calc(100% - 50px), 100%, start, center);
+
+}
+
+.ss-calendar__tile-container__tiles {
+  @include flex-row-justify(100%, 100%, start);
+  border: solid white 1px;
+  flex-wrap: wrap;
+}
+//   .ss-calendar__day-title {
+//     @include flex-row-justify-align(8%, 100%, center, center);
+
+//     @include font_styling($main-blue, 1.25em, 200, 1.1);
+//   }
+//   .ss-calendar__day-tiles-container {
+//     @include flex-column-justify(100%, 100%, start);
+//     flex: 0 0 calc(100% / 5);
+//   }
+
+// }

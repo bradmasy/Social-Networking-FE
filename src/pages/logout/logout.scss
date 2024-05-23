@@ -1,0 +1,17 @@
+@import "../../global-styles/index.scss";
+
+.ss-logout-section {
+  @include flex-column-justify-align(calc(100vh - 150px), 100%, center, center);
+  // border:solid red 1px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 20px;
+}
+
+.ss-logout-section__copy {
+  @include flex-column-justify-align(auto, 80%, center, center);
+  letter-spacing: 2px;
+  font-size: 1.5em;
+}

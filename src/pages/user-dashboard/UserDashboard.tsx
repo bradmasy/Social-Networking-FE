@@ -403,11 +403,12 @@ export const UserDashboard: React.FC = () => {
                         {/* Render membership section if state is MEMBERSHIP */}
                         {state === BILLING && (
                             <>
-                                <main className="ss-user-dashboard_billing">
+                            COMING SOON
+                                {/* <main className="ss-user-dashboard_billing">
                                     <div className="ss-user-dashboard__billing__container">
 
                                     </div>
-                                </main>
+                                </main> */}
                             </>
                         )}
                         {state === PAYMENTS && (

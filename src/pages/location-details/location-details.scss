@@ -1,0 +1,43 @@
+
+
+@import "../../global-styles//index.scss";
+
+
+.ss-location-details{
+    @include flex-column-justify-align(calc(100vh - 150px),100%,center,center);
+    // border:solid red 1px;
+    // gap:50px;
+}
+
+.ss-location-details__location-name{
+    @include flex-row-justify-align(auto,auto,center,center);
+    font-size:1.5em;
+    padding:20px 0px;
+}
+
+.ss-location-details__tiles{
+    @include flex-row-justify-align(calc(100vh - 150px - 40px),100%,center,center);
+    // border:solid red 1px;
+    gap:50px;
+}
+
+
+@media screen and (max-width:800px) {
+    .ss-location-details{
+        @include flex-column-justify-align(auto,100%,center,center);
+        padding:50px 0px;
+        // gap:50px;
+    }
+    
+    .ss-location-details__location-name{
+        @include flex-column-justify-align(auto,auto,center,center);
+        font-size:1.5em;
+        padding:20px 0px;
+    }
+    
+    .ss-location-details__tiles{
+        @include flex-column-justify-align(auto,100%,center,center);
+        gap:50px;
+    }
+    
+}

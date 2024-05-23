@@ -73,39 +73,33 @@
 }
 
 @media screen and (max-width: $tablet) {
-  :host {
-    width: 375px;
-    height: 375px;
-    // flex-wrap: wrap;
-    // width: 100%;
-    .ss-tile__wrapper {
-      @include flex-row-justify-align(100%, 100%, center, center);
+  .ss-tile__wrapper {
+    @include flex-row-justify-align(300px, 90%, center, center);
+    position: relative;
+    border: solid $main-white $border-md;
+    transition: 2s ease-in-out;
+
+    .ss-tile__overlay {
+      @include flex-column-justify-align(100%, 100%, center, center);
+      opacity: 0.1;
+      position: absolute;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+
+    .ss-tile__container {
       position: relative;
-      border: solid $main-white $border-md;
-      transition: 2s ease-in-out;
+      z-index: 1;
+    }
+    .ss-tile__container__location-name {
+      font-size: 0.75em;
+    }
 
-      .ss-tile__overlay {
-        @include flex-column-justify-align(100%, 100%, center, center);
-        opacity: 0.1;
-        position: absolute;
-        background-size: cover;
-        background-position: center;
-        z-index: 0;
-      }
+    .ss-tile__container__location {
+      font-size: 0.5em;
 
-      .ss-tile__container {
-        position: relative;
-        z-index: 1;
-      }
-      .ss-tile__container__location-name {
-        font-size: 0.75em;
-      }
-
-      .ss-tile__container__location {
-        font-size: 0.5em;
-
-        p {
-        }
+      p {
       }
     }
   }
