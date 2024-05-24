@@ -3,7 +3,7 @@
   //   @include flex-row-justify-align(10%, 100%, center, center);
   //   min-height: 100px;
   //   border:solid red 1px;
-  @include flex-row-justify(150px, 100%, center);
+  @include flex-row-justify($nav-bar-hgt, 100%, center);
   align-items: center;
 }
 
@@ -13,10 +13,10 @@
   // max-height: 100px;
 
   img {
-    @include flex-row-justify-align(100px, 55px, center, center);
-    // border:solid orange 1px;
-    max-height: 125px;
-    min-width: 50px;
+    @include flex-row-justify-align(80px,40px, center, center);
+    //  border:solid orange 1px;
+    // max-height: 125px;
+    min-width: 45px;
   }
 }
 

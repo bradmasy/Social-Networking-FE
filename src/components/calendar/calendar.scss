@@ -8,7 +8,7 @@
 
 .ss-calendar__tile-container {
   @include flex-column-justify(100%, 90%, start);
-  border: solid red 1px;
+  // border: solid red 1px;
 }
 .ss-calendar__toolbar {
   @include flex-row-justify-align(10%, 100%, center, center);
@@ -23,7 +23,7 @@
 .ss-calendar__tile-container__day-column {
   @include flex-row-justify(100%, 100%, center);
 
-  border: solid red 1px;
+  // border: solid red 1px;
 }
 .ss-calendar__tile-container__day-column__day {
   @include flex-column-justify-align(100%, 100%, start, center);
@@ -37,8 +37,9 @@
 
 }
 .ss-calendar__tile-container__day-column__day__tiles{
-    border: solid yellow 1px;
-    @include flex-column-justify-align(calc(100% - 50px), 100%, start, center);
+    // border: solid yellow 1px;
+    // background-color: blue;
+    @include flex-column-justify-align(100%, 100%, space-around, center);
 
 }
 
@@ -47,14 +48,4 @@
   border: solid white 1px;
   flex-wrap: wrap;
 }
-//   .ss-calendar__day-title {
-//     @include flex-row-justify-align(8%, 100%, center, center);
 
-//     @include font_styling($main-blue, 1.25em, 200, 1.1);
-//   }
-//   .ss-calendar__day-tiles-container {
-//     @include flex-column-justify(100%, 100%, start);
-//     flex: 0 0 calc(100% / 5);
-//   }
-
-// }

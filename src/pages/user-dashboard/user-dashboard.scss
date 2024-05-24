@@ -1,7 +1,7 @@
 @import "../../global-styles/index.scss";
 
 .ss-user-dashboard {
-  @include flex-row-justify-align(calc(100vh - 150px), 100%, center, center);
+  @include flex-row-justify-align(calc(100vh - $nav-bar-hgt), 100%, center, center);
 }
 
 .ss-user-dashboard-content {

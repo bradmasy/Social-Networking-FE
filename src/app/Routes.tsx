@@ -42,7 +42,7 @@ export const Routes = () => {
             <Route path="/locations/:id/spaces" element={<PrivateRoutes component={<Spaces />} />} />
             <Route path="/locations/:id/spaces/:space" element={<PrivateRoutes component={<SpaceDetails />} />} />
             <Route path="/locations/:id/events" element={<PrivateRoutes component={<ComingSoon/>} />} />
-            {/* <Route path="/locations/:id/bookings" element={<PrivateRoutes component={<Bookings/>} />} /> */}
+            <Route path="/locations/:id/bookings" element={<PrivateRoutes component={<Bookings/>} />} />
 
             <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon/>} />} />
 

@@ -31,22 +31,30 @@ export const CalendarTile: React.FC<CalendarTileProps> = ({ date, month, day, ye
         }
 
         if (past && date !== '') {
+
             setDatePassed(true);
         }
     }, [date, past]);
 
     const navigateToBooking = () => {
-        if (date !== '' && date !== undefined) {
+        if (!datePassed && date !== '' && date !== undefined) {
             navigate(`${location.pathname}/date?month=${month?.toLowerCase()}&day=${date}&year=${year}`);
         }
     };
 
     return (
-        <div
-            className={`ss-calendar-tile__container ${datePassed ? 'passed' : ''} ${!hasBorder ? 'no-border' : ''}`}
-            onClick={navigateToBooking}
-        >
-            <div className="ss-calendar-tile__container__date">{date}</div>
+        <div className='ss-calendar-tile__tile-container'>
+            <div
+                className={`ss-calendar-tile__container ${datePassed ? 'passed' : ''} ${!hasBorder ? 'no-border' : ''}`}
+
+                // className={`ss-calendar-tile__container`}
+                onClick={navigateToBooking}
+                style={{ cursor: datePassed ? 'not-allowed' : 'pointer' }} // Change cursor style if date is passed
+
+            >
+                <div className="ss-calendar-tile__container__date">{date}</div>
+            </div>
         </div>
+
     );
 };
