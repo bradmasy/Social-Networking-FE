@@ -6,12 +6,20 @@ export interface FormData {
     [key: string]: string | null;
 }
 
+export interface Option {
+    value: string;
+    label: string;
+    default:boolean;
+}
+
 export interface Input {
     name: string;
     type: string;
     label: string;
     icon?: string;
     value?: string | null;
+    options?: Option[];
+    disabled?:boolean;
 }
 
 export interface SelectOption {
@@ -36,10 +44,11 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
 
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
-
+    
     const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>, inputName: string) => {
         const { value } = event.target;
         setFormData(prevState => ({ ...prevState, [inputName]: value }));
+        
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -51,8 +60,12 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
         setShowPassword(prevState => ({ ...prevState, [inputName]: !prevState[inputName] }));
     }
 
+
     useEffect(() => {
-        setFormData(initialFormData);
+        console.log(formData)
+
+        setFormData({...initialFormData,...formData}); // ensures old values are carried over so entire form doesnt clear.
+
     }, [formInputs]);
 
     return (
@@ -64,7 +77,15 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
                         <select
                             className="ss-form__input"
                             onChange={(event) => handleChange(event, input.name)}
-                        >
+                            disabled={input.disabled}
+                           value={formData[input.name] || ''}
+                        >{
+                                input?.options?.map((option, index) => (
+                                    <option value={option.value} key={index} >
+                                        {option.label}
+                                    </option>
+                                ))
+                            }
                             {selectInputs?.map((option, index) => (
                                 <option value={option.value} key={index}>
                                     {option.name}

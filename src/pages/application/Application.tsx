@@ -125,11 +125,19 @@ export const Application: React.FC = () => {
     }
 
 
-    useEffect(() => {
-        if (Object.keys(formData).length !== 0) {
+    useEffect(()=>{
+        console.log(formData)
+        sendFormData(formData);
+    },[formData])
+    
+    // useEffect(() => {
+        const apply = () => {
+            console.log('clicked')
+            console.log(formData)
             if (ValidationService.validateForm(formData)) {
                 apiService.apply(formData).then((res: any) => {
                     setDisplayOverlay(true);
+                    sendFormData({});
                 }).catch((error: Error) => {
                     setDisplayOverlayError(true);
                 })
@@ -140,11 +148,12 @@ export const Application: React.FC = () => {
                         <span>PLEASE FILL OUT EACH FIELD<br /></span>
                         <span>IN THE FORM AND RE-SUBMIT<br /></span>
                     </>)
+                console.log(formData)
+              //  sendFormData({...formData})
                 setDisplayOverlayError(true);
             }
-        }
+    }
 
-    }, [apiService, formData, displayOverlayError])
 
     const successMessage = (
         <>
@@ -179,7 +188,7 @@ export const Application: React.FC = () => {
                             {formDialogue}
                         </p>
                     </div>
-                    <Form buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
+                    <Form setSubmitClicked={apply} buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
                 </main>
             </section>
         </>

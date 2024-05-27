@@ -18,11 +18,8 @@ const getFirstDayOfMonth = (currentDate: Date): number => {
 };
 
 const getLastDayOfMonth = (year: number, month: number): number => {
-    console.log(month)
     const nextMonthFirstDay: Date = new Date(year, month + 1, 1);
-    console.log(nextMonthFirstDay)
     const lastDayOfMonth: Date = new Date(nextMonthFirstDay.getTime() - 1);
-    console.log(lastDayOfMonth)
     return lastDayOfMonth.getDate();
 };
 
@@ -48,16 +45,34 @@ export const Calendar: React.FC<CalendarComponentProps> = () => {
         setDaysInMonth(getDaysInMonth(year, month));
         setFirstDayOfTheMonthIndex(getFirstDayOfMonth(new Date(year, month, 1)));
         setLastDayOfTheMonthIndex(getLastDayOfMonth(year, month));
+        const nextMonth = (month + 1) % 12;
+        const nextYear = nextMonth === 0 ? year + 1 : year;
+        setMonth(nextMonth);
+        setYear(nextYear);
 
         // setCalendarArrays([])
 
     };
 
     const previousMonth = (): void => {
-        setMonth((prevMonth) => (prevMonth - 1 + 12) % 12);
-        setDaysInMonth(getDaysInMonth(year, month));
-        setLastDayOfTheMonthIndex(getLastDayOfMonth(year, month));
-        setFirstDayOfTheMonthIndex(getFirstDayOfMonth(new Date(year, month, 1)));
+        // Get the previous month
+        const prevMonth = (month - 1 + 12) % 12;
+        // Check if it's January of the current year
+        const currentRealYear = new Date().getFullYear();
+        if (prevMonth === 11 && year === currentRealYear) {
+            return; // Return without updating state
+        }
+    
+        // Update state for previous month
+        setMonth(prevMonth);
+        setDaysInMonth(getDaysInMonth(year, prevMonth));
+        setLastDayOfTheMonthIndex(getLastDayOfMonth(year, prevMonth));
+        setFirstDayOfTheMonthIndex(getFirstDayOfMonth(new Date(year, prevMonth, 1)));
+    
+        // Check if it's going to the previous year
+        if (prevMonth === 11 && year > currentRealYear) {
+            setYear(year - 1);
+        }
     };
 
     const isPastDay = (day: number): boolean => {
@@ -113,16 +128,16 @@ export const Calendar: React.FC<CalendarComponentProps> = () => {
     useEffect(() => {
         setFirstDayOfTheMonthIndex(getFirstDayOfMonth(new Date(year, month, 1)));
     }, [month, year]);
-    
+
     useEffect(() => {
-        console.log('running!!!')
-        console.log(`current month: ${months[month]}`);
-        console.log(`last day of month: ${lastDayOfTheMonthIndex}`)
+        // console.log('running!!!')
+        // console.log(`current month: ${months[month]}`);
+        // console.log(`last day of month: ${lastDayOfTheMonthIndex}`)
         const daysInMonth = getDaysInMonth(year, month);
 
         const weekArrays = createDateArrays(daysOfTheWeek, firstDayOfTheMonthIndex, daysInMonth);
-        console.log(weekArrays);
-        
+        // console.log(weekArrays);
+
         setCalendarArrays(weekArrays);
 
 

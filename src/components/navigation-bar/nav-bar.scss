@@ -26,13 +26,14 @@
 }
 
 .ss-header-link-container {
-  @include flex-row-justify-align(auto, 15%, center, center);
+  @include flex-row-justify-align(auto, 500px, center, center);
   padding: 20px;
   font-size: 0.75em;
-  //   border-bottom:solid white 1px;
+  // border:solid white 1px;
+
 
   .ss-header-link-container__links {
-    @include flex-row-justify-align(auto, 100%, space-around, center);
+    @include flex-row-justify-align(auto, 300px, space-between, center);
     gap: 20px;
     a {
       transition: 0.25s ease-in-out;
@@ -48,14 +49,15 @@
     }
   }
 }
-
 .start {
-  justify-content: start;
+  justify-content: start!important;
 }
 
 .end {
   justify-content: end!important;
 }
+
+
 
 
 @media screen and (max-width: 800px) {
