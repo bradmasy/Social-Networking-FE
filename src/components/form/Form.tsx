@@ -34,21 +34,23 @@ interface FormProps {
     selectInputs?: SelectOption[];
     buttonProps: ButtonProps;
     setSubmitClicked?: React.Dispatch<React.SetStateAction<boolean>>;
+    formDataDictionary?:FormData;
 }
 
-export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInputs, buttonProps, setSubmitClicked }) => {
+export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, formInputs, selectInputs, buttonProps, setSubmitClicked }) => {
     const initialFormData: FormData = formInputs.reduce((acc, input) => {
         acc[input.name] = input.value || "";
         return acc;
     }, {} as FormData);
 
-    const [formData, setFormData] = useState<FormData>(initialFormData);
+    const [formData, setFormData] = useState<FormData>(formDataDictionary || initialFormData);
     const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
     
     const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>, inputName: string) => {
         const { value } = event.target;
+        sendFormData(prevState => ({ ...prevState, [inputName]: value }));
         setFormData(prevState => ({ ...prevState, [inputName]: value }));
-        
+
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -62,9 +64,7 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formInputs, selectInpu
 
 
     useEffect(() => {
-        console.log(formData)
-
-        setFormData({...initialFormData,...formData}); // ensures old values are carried over so entire form doesnt clear.
+        setFormData(formData); // ensures old values are carried over so entire form doesnt clear.
 
     }, [formInputs]);
 

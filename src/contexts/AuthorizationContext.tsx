@@ -27,7 +27,8 @@ const initialValue = {
     logout: () => { },
     retrieveAuth: () => false,
     // retrieveIndustry: () => Promise.resolve(false)
-    retrieveIndustry: () => false
+    retrieveIndustry: () => false,
+    getMembership:() => Promise.resolve(false),
 
 }
 
@@ -81,6 +82,13 @@ const AuthProvider = ({ children }: AuthProps) => {
         })
     }
 
+    const getMembership = () => {
+        apiService.get_user_data()
+        .then((userData) => {
+            // need to check for membership before allowing them to proceed
+        })
+    }
+
     // const retrieveIndustry = async () => {
     //     const token = Cookies.get("IAuth") ?? "";
 
@@ -97,6 +105,8 @@ const AuthProvider = ({ children }: AuthProps) => {
     //         return false; 
     //     }
     // };
+
+
 
     const retrieveIndustry =  () => {
         const token = Cookies.get("IAuth")

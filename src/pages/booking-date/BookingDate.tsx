@@ -223,7 +223,6 @@ export const BookingDate: React.FC = () => {
                                             style={{ width: `${100 / spaces.length}%` }}
                                         >
                                             {Array.from({ length: MINUTES_IN_BLOCK / TIME_BLOCK_MINS }, (_, blockIndex) => blockIndex * 30).map(block => {
-                                                console.log(block);
                                                 return (
                                                     <div
                                                         key={`${hour}-${block}`}

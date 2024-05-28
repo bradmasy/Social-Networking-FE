@@ -3,7 +3,7 @@ import "./booking-detail.scss";
 
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useActionData, useLocation, useNavigate } from 'react-router-dom';
-import { Button, ButtonProps, Form, Input, NavBar } from "../../components";
+import { ApplyOverlay, Button, ButtonProps, Form, Input, NavBar } from "../../components";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import { Space } from "../../pages/location-details/LocationDetails";
 import { Location } from "../locations/Locations";
@@ -58,11 +58,22 @@ export const BookingDetail: React.FC = () => {
     const [loaded, setLoaded] = useState(false);
     const [dataFetched, setDataFetched] = useState(false);
     const [endHourBlockOptions, setEndHourBlockOptions] = useState<Option[]>();
+    const [displayOverlayError, setDisplayOverlayError] = useState(false);
+    const [displayOverlay, setDisplayOverlay] = useState(false);
+    const [params, setParams] = useState<{ [key: string]: string }>();
+
+    const [errorMessage, setErrorMessage] = useState(
+        <>
+            <div>PLEASE FILL OUT</div>
+            <div>ALL FIELDS IN</div>
+            <div>THE FORM BEFORE</div>
+            <div>SUBMITTING</div>
+        </>
+    )
 
     const locationRouter = useLocation();
 
     useEffect(() => {
-
         getLocationIdFromUrl();
     }, []);
 
@@ -72,19 +83,46 @@ export const BookingDetail: React.FC = () => {
         }
     }, [locationId]);
 
+
+    useEffect(() => {
+        if (spaces.length >= 1) {
+            setTimeBlocks();
+        }
+    }, [spaces, params]);
+
     useEffect(() => {
         if (dataFetched) {
             setLoaded(true);
+            console.log("INITIALIZING")
             setFormData(initialFormData())
         }
 
-    }, [dataFetched])
+    }, [dataFetched]);
 
-    // useEffect(() => {
-    //     setEndHourBlockOptions(createTimeHourBlocks(END_HOUR, startTime, false));
-    //     const endTimeMinOptions = createTimeMinBlocks((formData as BookingFormData)['start_time_minutes'] as string);
-    //     setEndTimeMinutes(endTimeMinOptions);
-    // }, [formData]);
+    const setTimeBlocks = () => {
+        if (params) {
+            const startTimeHour = parseInt(params["block"]);
+            const startTimeMins = params["time"];
+            const startTimes = createTimeHourBlocks(END_HOUR, startTimeHour);
+
+            setStartTime(startTimeHour);
+            setStartTimeOptions(startTimes);
+
+            const startTimeMinOptions = createTimeMinBlocks(startTimeMins);
+
+            setStartTimeMinuteOptions(startTimeMinOptions);
+
+            const endTimeHourBlocks = createTimeHourBlocks(END_HOUR, startTimeHour, false);
+
+            setEndHourBlockOptions(endTimeHourBlocks);
+
+            const endTimeMinOptions = createTimeMinBlocks("030"); // default is always 0 - 30 not 30 - 60
+
+            setEndTimeMinutes(endTimeMinOptions);
+
+            setDataFetched(true);
+        }
+    };
 
     const getLocationIdFromUrl = () => {
         const locationString = locationRouter.pathname.search(/location/i);
@@ -123,7 +161,7 @@ export const BookingDetail: React.FC = () => {
 
             }
         })
-    }
+    };
 
     const createTimeMinBlocks = (timeMins: string) => {
         const splitMins = timeMins.length === 4 ? [timeMins.slice(0, 2), timeMins.slice(2)]
@@ -138,49 +176,31 @@ export const BookingDetail: React.FC = () => {
                 default: value === splitMins[0]
             }
         })
-    }
+    };
+
     const fetchSpacesByLocation = () => {
         const params = new URLSearchParams(locationRouter.search);
         const queryParams = Object.fromEntries(params.entries())
-        console.log(queryParams)
+
+        setParams(queryParams);
+
         setBookingDate(`${queryParams["month"].toUpperCase()} ${queryParams["day"].toUpperCase()} ${queryParams["year"].toUpperCase()}`)
         apiService.get_spaces_by_location(locationId)
             .then((spaceData) => {
 
                 const spacesByLoc = spaceData.data["Spaces"];
-                const spaceOptionsfromSpaces = spacesByLoc.map((space: Space) => ({
-                    value: space.id.toString(),
-                    label: space.name,
-                    default: queryParams["space"] === space.id.toString()
+                const spaceOptionsfromSpaces = spacesByLoc.map((space: Space) => {
 
-                }));
+                    return {
+                        value: space.id.toString(),
+                        label: space.name,
+                        default: queryParams["space"] === space.id.toString()
+
+                    }
+                });
 
                 setSpaceOptions(spaceOptionsfromSpaces);
                 setSpaces(spacesByLoc);
-
-                const startTimeHour = parseInt(queryParams["block"]);
-                const startTimeMins = queryParams["time"];
-                const startTimes = createTimeHourBlocks(END_HOUR, startTimeHour);
-
-                setStartTime(startTimeHour);
-                setStartTimeOptions(startTimes);
-
-                const startTimeMinOptions = createTimeMinBlocks(startTimeMins);
-
-                setStartTimeMinuteOptions(startTimeMinOptions);
-
-                const endTimeHourBlocks = createTimeHourBlocks(END_HOUR, startTimeHour, false);
-
-                setEndHourBlockOptions(endTimeHourBlocks);
-
-                const endTimeMinOptions = createTimeMinBlocks("030"); // default is always 0 - 30 not 30 - 60
-
-                setEndTimeMinutes(endTimeMinOptions);
-
-                // signal to load page
-                setDataFetched(true);
-
-
             })
             .catch(error => {
                 console.error('Error fetching spaces:', error);
@@ -188,52 +208,41 @@ export const BookingDetail: React.FC = () => {
             });
     };
 
+    const submit = () => {
 
-    // const submit = () => {
-    useEffect(() => {
-        console.log(formData)
 
         if (ValidationService.validateForm(formData)) {
-            console.log(bookingDate)
-            const updatedFormData = {
-                ...formData,
-                location: location?.locationName || '',
-                date: bookingDate
-            };
 
-            const bookingIndex = locationRouter.pathname.search(/booking/i);
-            const url = locationRouter.pathname.substring(0, bookingIndex + "booking".length);
-
-            apiService.create_booking(updatedFormData)
+            apiService.create_booking(formData)
                 .then((booking) => {
-                    console.log(booking)
+                    const bookingIndex = locationRouter.pathname.search(/booking/i);
+                    const url = locationRouter.pathname.substring(0, bookingIndex + "booking".length);
+
                     const bookingId = booking.data["data"];
                     navigate(`${url}/confirmation/${bookingId.id}`);
 
                 })
                 .catch((error) => {
-                    console.log(error)
+                    const errorMessage = error['response']['data']['error']
+                    setErrorMessage(<>
+                        <div>{errorMessage}</div>
+
+                    </>)
+                    setDisplayOverlayError(true);
+                    console.log(formData)
                 })
+        } else {
+            setErrorMessage(
+                <>
+                    <div>PLEASE FILL OUT</div>
+                    <div>ALL FIELDS IN</div>
+                    <div>THE FORM BEFORE</div>
+                    <div>SUBMITTING</div>
+                </>
+            )
+            setDisplayOverlayError(true);
         }
-
-    }, [formData])
-
-    const handleFormDataChange = (updatedFormData: FormData) => {
-        setFormData(updatedFormData);
     };
-
-    const handleSubmit = () => {
-        const updatedFormData = {
-            ...formData,
-            location: location?.locationName || '',
-            date: bookingDate
-        };
-    }
-
-
-
-
-
 
     const inputs: Input[] = [
         {
@@ -280,23 +289,37 @@ export const BookingDetail: React.FC = () => {
             options: endTimeMinutes
         },
 
-    ]
+    ];
 
     const buttonProps: ButtonProps = {
         type: "submit",
         text: "BOOK",
-    }
+    };
 
     const initialFormData = (): FormData => {
-        return inputs.reduce((acc, input: Input) => {
-            console.log(input)
-            acc[input.name] = input.value || "";
-            return acc;
-        }, {} as FormData);
-    }
+        const initialState =
+            inputs.reduce((acc, input: Input) => {
+                acc[input.name] = input.value || "";
+                return acc;
+            }, {} as FormData);
+
+        return {
+            ...initialState,
+            location: location?.locationName || '',
+            date: bookingDate
+        };
+    };
 
     return (
+
         <div>
+            <ApplyOverlay
+                errorMessage={errorMessage}
+                setDisplay={setDisplayOverlay}
+                errorDisplay={displayOverlayError}
+                display={displayOverlay}
+                setErrorDisplay={setDisplayOverlayError} />
+
             <NavBar />
             {!loaded ? (
                 <>
@@ -309,9 +332,7 @@ export const BookingDetail: React.FC = () => {
                         <div>{bookingDate}</div>
                     </div>
                     <div className="ss-booking-detail__container__form">
-                        <Form formInputs={inputs} buttonProps={buttonProps} sendFormData={setFormData} />
-
-
+                        <Form formDataDictionary={formData} setSubmitClicked={submit} formInputs={inputs} buttonProps={buttonProps} sendFormData={setFormData} />
                     </div>
                 </div>
             </>)}

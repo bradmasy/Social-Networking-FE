@@ -126,15 +126,12 @@ export const Application: React.FC = () => {
 
 
     useEffect(()=>{
-        console.log(formData)
         sendFormData(formData);
     },[formData])
     
     // useEffect(() => {
         const apply = () => {
-            console.log('clicked')
-            console.log(formData)
-            if (ValidationService.validateForm(formData)) {
+             if (ValidationService.validateForm(formData)) {
                 apiService.apply(formData).then((res: any) => {
                     setDisplayOverlay(true);
                     sendFormData({});
@@ -148,8 +145,6 @@ export const Application: React.FC = () => {
                         <span>PLEASE FILL OUT EACH FIELD<br /></span>
                         <span>IN THE FORM AND RE-SUBMIT<br /></span>
                     </>)
-                console.log(formData)
-              //  sendFormData({...formData})
                 setDisplayOverlayError(true);
             }
     }

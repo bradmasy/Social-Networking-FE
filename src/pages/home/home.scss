@@ -11,12 +11,12 @@
 
 .ss-home-container__main {
   @include flex-column-justify-align(20%, 80%, center, center);
-  border:solid red 1px;
+  border: solid red 1px;
   p {
     @include flex-column-justify-align(auto, auto, center, center);
 
     font-size: 1.75em;
-  //  font-weight: 300;
+    //  font-weight: 300;
     letter-spacing: $letter-xsm;
   }
   // position: absolute;
@@ -27,8 +27,7 @@
 
 .highlight {
   color: $main-blue;
- // font-weight: 300;
-
+  // font-weight: 300;
 }
 
 .title-text {
@@ -52,8 +51,8 @@
   border: none;
   outline: none;
   background-color: white;
-   border: solid red 1px;
-   overflow:hidden;
+  //  border: solid red 1px;
+  overflow: hidden;
   // outline: 10px solid white;
   // outline-offset: -4px;
 }
@@ -68,7 +67,7 @@
   // outline: 10px solid white;
   outline-offset: -4px;
   border: none;
-    outline: none;
+  outline: none;
   video {
     border: none !important;
     outline: none !important;
@@ -76,7 +75,7 @@
 }
 
 video {
-  border: solid red 1px;
+  // border: solid red 1px;
   outline: none;
 }
 
@@ -85,19 +84,18 @@ source {
 }
 
 @media screen and (max-width: 800px) {
-  
-.title-text {
-  color: $main-blue;
+  .title-text {
+    color: $main-blue;
 
-  font-size: 1.25em;
-}
+    font-size: 1.25em;
+  }
   .ss-home-container {
     @include flex-column-justify-align(100vh, 100%, start, center);
   }
   .ss-home-container__animation {
     @include flex-column-justify-align(70%, 100vw, center, center);
     overflow: hidden;
-  
+
     border: none;
     outline: none;
   }

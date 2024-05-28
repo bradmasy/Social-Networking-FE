@@ -26,14 +26,14 @@
 }
 
 .ss-header-link-container {
-  @include flex-row-justify-align(auto, 500px, center, center);
+  @include flex-row-justify-align(auto, 200px, center, center);
   padding: 20px;
   font-size: 0.75em;
   // border:solid white 1px;
 
 
   .ss-header-link-container__links {
-    @include flex-row-justify-align(auto, 300px, space-between, center);
+    @include flex-row-justify-align(auto, 200px, space-between, center);
     gap: 20px;
     a {
       transition: 0.25s ease-in-out;
