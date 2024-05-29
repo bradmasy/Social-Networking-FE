@@ -19,7 +19,6 @@ export const Signup: React.FC = () => {
     const [displayOverlayError, setDisplayOverlayError] = useState(false);
     const [displayOverlay, setDisplayOverlay] = useState(false);
     const [loading, setLoading] = useState(false);
-    
     const [errorMessage, setErrorMessage] = useState(
         <>
             <div>PLEASE FILL OUT</div>
@@ -28,47 +27,42 @@ export const Signup: React.FC = () => {
             <div>SUBMITTING</div>
         </>
     )
-    useEffect(() => {
-        const fieldsWritten = Object.keys(formData).length;
+    const submit = () => {
 
-        if (fieldsWritten > 0) {
-            if (ValidationService.validateForm(formData)) {
-                setLoading(true);
-                apiService.signup(formData)
-                    .then((response: any) => {
-                        authService.setAuthenticationToken(response.data)
-                        navigate('/payment/membership')
-                    })
-                    .catch((err: { [key: string]: any }) => {
-                        setErrorMessage(
-                            <>
-                                <p>{err.response.data.error}</p>
-                                <p>{err.response.data.message}</p>
+        if (ValidationService.validateForm(formData)) {
+            setLoading(true);
+            apiService.signup(formData)
+                .then((response: any) => {
+                    authService.setAuthenticationToken(response.data)
+                    navigate('/payment/membership')
+                })
+                .catch((err: { [key: string]: any }) => {
+                    setErrorMessage(
+                        <>
+                            <p>{err.response.data.error}</p>
+                            <p>{err.response.data.message}</p>
 
-                            </>
-                        );
+                        </>
+                    );
 
-                        sendFormData({});
-                        setLoading(false);
-                        setDisplayOverlayError(true);
-                    })
-            } else {
-                sendFormData({});
-                setErrorMessage(
-                    <>
-                        <div>PLEASE FILL OUT</div>
-                        <div>ALL FIELDS IN</div>
-                        <div>THE FORM BEFORE</div>
-                        <div>SUBMITTING</div>
-                    </>
-                )
-                setDisplayOverlayError(true);
-            }
+                    sendFormData({});
+                    setLoading(false);
+                    setDisplayOverlayError(true);
+                })
+        } else {
+            sendFormData({});
+            setErrorMessage(
+                <>
+                    <div>PLEASE FILL OUT</div>
+                    <div>ALL FIELDS IN</div>
+                    <div>THE FORM BEFORE</div>
+                    <div>SUBMITTING</div>
+                </>
+            )
+            setDisplayOverlayError(true);
         }
 
-
-
-    }, [apiService, authService, formData, navigate])
+    }
 
     const inputs: Input[] = [
         {
@@ -151,7 +145,7 @@ export const Signup: React.FC = () => {
                         {message}
                     </div>
                 </div>
-                <Form buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
+                <Form setSubmitClicked={submit} buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
             </div>
         </>
     )

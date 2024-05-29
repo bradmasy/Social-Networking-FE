@@ -22,8 +22,15 @@ export const IndustryInvite: React.FC = () => {
     const [display, setDisplay] = useState(false);
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(<>
+        <div>ERROR</div>
+        <div>INVALID PASSCODE</div>
+        <div>ENSURE THE CODE IS CORRECT</div>
+        <div>AND TRY AGAIN</div>
 
-    useEffect(() => {
+    </>)
+
+    const submit = () => {
         if (ValidationService.validateForm(formData)) {
             setLoading(true)
             apiService.industryInvite(formData)
@@ -41,9 +48,15 @@ export const IndustryInvite: React.FC = () => {
                     sendFormData({}); // reset the form data so they can re-submit0
                     setErrorDisplay(true);
                 })
+        } else {
+            setErrorMessage(
+                <>
+                    <div>PLEASE ENTER A VALUE</div>
+                    <div>IN THE FORM</div>
+                </>)
+            setErrorDisplay(true);
         }
-
-    }, [apiService, auth, errorDisplay, formData, navigate])
+    }
 
     const industry = (
         <>
@@ -73,32 +86,24 @@ export const IndustryInvite: React.FC = () => {
         text: "ENTER"
     }
 
-    const errorMessage = (
-        <>
-            <div>ERROR</div>
-            <div>INVALID PASSCODE</div>
-            <div>ENSURE THE CODE IS CORRECT</div>
-            <div>AND TRY AGAIN</div>
-
-        </>
-    )
 
     return (
         <>
             <Spinner display={loading} />
-            <ApplyOverlay 
-                display={display} 
-                errorDisplay={errorDisplay} 
-                errorMessage={errorMessage} 
+            <ApplyOverlay
+                display={display}
+                errorDisplay={errorDisplay}
+                errorMessage={errorMessage}
                 setDisplay={setDisplay}
-                setErrorDisplay={setErrorDisplay} 
-                />
+                setErrorDisplay={setErrorDisplay}
+            />
             <Header />
             <section className="ss-industry-invite">
                 <div className="ss-industry-invite__password-message">
                     {industry}
                 </div>
                 <Form
+                    setSubmitClicked={submit}
                     formInputs={formInputs}
                     sendFormData={sendFormData}
                     buttonProps={buttonProps}

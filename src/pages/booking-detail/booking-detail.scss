@@ -1,0 +1,52 @@
+@import "../../global-styles/index.scss";
+
+
+:host {
+  @include flex-column-justify(100%, 100%, start);
+  // @include font-styling($main-blue, 1.5em, $font-md, 0);
+
+  .ss-booking-detail__container {
+    @include flex-column-justify(100%, 100%, start);
+
+    // @include flex-column-justify-align(100%, 100%, start, center);
+    @include font_styling($main-blue, 1.25em, 200, 1.1);
+    gap: 50px;
+
+    .ss-booking-detail__container__title {
+      @include flex-column-justify-align(5%, 35%, center, center);
+      border-radius: $radius-md;
+      padding: 25px 50px;
+    }
+    .ss-booking-detail__container__form {
+      @include flex-column-justify(50%, 35%, start);
+      border: solid $main-blue 1px;
+      padding: 50px;
+      border-radius: $radius-md;
+      .ss-booking-detail__container__form__input-field {
+        @include flex-row-justify-align(15%, 100%, start, center);
+        gap: 20px;
+
+        label {
+          @include flex-row-justify-align(100%, 50%, start, center);
+        }
+        .ss-booking-detail__container__form__input-field__select {
+          @include flex-row-justify-align(100%, 40%, end, center);
+
+          select {
+            @include font_styling(black!important, 1em, 200, 1.1);
+            outline: none;
+            option {
+              border: solid red 1px;
+              @include font_styling(black!important, 1em, 200, 1.1);
+            }
+          }
+        }
+      }
+
+      .ss-booking-detail__container__form__buttons {
+        @include flex-row-justify-align(25%, 100%, center, center);
+        gap: 20px;
+      }
+    }
+  }
+}

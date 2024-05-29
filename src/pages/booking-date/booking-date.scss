@@ -1,0 +1,94 @@
+@import "../../global-styles/index.scss";
+
+.ss-booking-date__main {
+  @include flex-column-justify(auto, 100%, start);
+
+  @include font_styling($main-blue, 1.25em, 200, 1.1);
+}
+.ss-booking-date__main__title {
+  @include flex-column-justify-align(auto, 100%, center, center);
+  @include font-styling($main-blue, 1.5em, $font-md, 0);
+  padding: 25px 0px;
+}
+
+.ss-booking-date__main__time-table-container {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  gap: 10px;
+  overflow: hidden hidden;
+  padding: 50px 0px;
+}
+
+.ss-booking-date__main__spaces-title {
+  @include flex-row-justify-align(10%, 100%, center, center);
+  @include font-styling($main-blue, 1em, $font-md, 0);
+  min-height: 75px;
+}
+.ss-booking-date__main__spaces-title__container {
+  @include flex-row-justify-align(100%, 95%, center, center);
+}
+.ss-booking-date__main__spaces-title__container__spacing {
+  @include flex-column-justify-align(100%, 11%, center, center);
+}
+.ss-booking-date__main__spaces-title__title {
+  @include flex-column-justify-align(100%, 10%, center, center);
+  // border-bottom: solid 1px $main-blue;
+  // border-right: solid 1px $main-blue;
+
+  // border-left: solid 1px $main-blue;
+}
+
+//   border: solid red 1px;
+.ss-booking-date__main__time-block {
+  @include flex-row-justify-align(300px, 95%, start, left);
+  min-height: 200px;
+  //   border: solid red 1px;
+}
+.ss-booking-date__main__time-block__hour {
+  @include flex-column-justify-align(100%, 10%, center, center);
+  border-right: solid 1px $main-blue;
+}
+.ss-booking-date__main__time-block__schedule {
+  @include flex-row-justify-align(100%, 90%, center, center);
+  border-bottom: solid 1px $main-blue;
+}
+.ss-booking-date__main__time-block__space {
+  @include flex-column-justify-align(100%, 90%, center, center);
+
+  border-right: $main-blue 1px dashed;
+  height: 100%;
+}
+.ss-booking-date__main__time-block__schedule__block {
+  @include flex-column-justify-align(
+    calc(100% / (60 / 30)),
+    100%,
+    center,
+    center
+  );
+  @include font-styling($main-blue, 0.5em, $font-md, 0);
+  text-align: left;
+  &:last-child {
+    border: none;
+  }
+}
+.ss-booking-date__main__time-block__schedule__block:hover {
+  cursor: pointer;
+  background-color: $main-blue;
+  opacity: 0.2;
+}
+
+.current-time {
+  border-bottom: red 1px solid !important;
+}
+
+@media screen and (max-width: 800px) {
+  .ss-booking-date__main__time-block {
+    @include flex-row-justify-align(50px, 95%, start, left);
+    min-height: 50px;
+    // border: solid red 1px;
+  }
+
+  .ss-booking-date__main__time-block__hour {
+    @include flex-column-justify-align(100%, 10%, center, center);
+    font-size: 0.75em;
+  }
+}

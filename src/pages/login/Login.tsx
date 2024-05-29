@@ -46,42 +46,39 @@ export const Login: React.FC = () => {
     ]
 
 
-    useEffect(() => {
-        const fieldsWritten = Object.keys(formData).length;
-        if (fieldsWritten > 0) {
-            if (ValidationService.validateForm(formData)) {
-                setLoading(true)
-                apiService.login(formData)
-                    .then((response) => {
-                        setAuthenticationToken(response["data"])
-                        setAuthenticated(true)
-                        navigate("/user-dashboard")
-                    })
-                    .catch((error: Error) => {
-                        setLoading(false)
+    const submit = () => {
 
-                        sendFormData({});
-                        setErrorMessage(<>
+        if (ValidationService.validateForm(formData)) {
+            setLoading(true)
+            apiService.login(formData)
+                .then((response) => {
+                    setAuthenticationToken(response["data"])
+                    setAuthenticated(true)
+                    navigate("/user-dashboard")
+                })
+                .catch((error: Error) => {
+                    setLoading(false)
 
-                            <div>INVALID CREDENTIALS</div>
-                            <div>PLEASE TRY AGAIN</div>
+                    sendFormData({});
+                    setErrorMessage(<>
 
-                        </>)
-                        setDisplayOverlayError(true);
-                        console.error(error)
-                    })
-            } else {
-                setErrorMessage(<>
-                    <div>PLEASE FILL IN ALL </div>
-                    <div> FIELDS OF THE FORM</div>
+                        <div>INVALID CREDENTIALS</div>
+                        <div>PLEASE TRY AGAIN</div>
 
-                </>)
-                sendFormData({});
-                setDisplayOverlayError(true);
-            }
+                    </>)
+                    setDisplayOverlayError(true);
+                    console.error(error)
+                })
+        } else {
+            setErrorMessage(<>
+                <div>PLEASE FILL IN ALL </div>
+                <div> FIELDS OF THE FORM</div>
+
+            </>)
+            sendFormData({});
+            setDisplayOverlayError(true);
         }
-    }, [formData, apiService, navigate, setAuthenticated, setAuthenticationToken]);
-
+    }
     const message = (
         <>
             <span>WELCOME BACK TO<br /></span>
@@ -118,7 +115,7 @@ export const Login: React.FC = () => {
                     {message}
                 </p>
             </div>
-            <Form formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} />
+            <Form setSubmitClicked={submit} formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} />
         </>
     )
 }

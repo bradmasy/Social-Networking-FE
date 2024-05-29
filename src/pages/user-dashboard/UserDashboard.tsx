@@ -104,6 +104,10 @@ export const UserDashboard: React.FC = () => {
                 setLoaded(true)
 
             })
+            .catch((error) => {
+                // silently fail right now
+                return apiService.get_user_data()
+            })
     }, [apiService])
 
     useEffect(() => {
@@ -176,7 +180,7 @@ export const UserDashboard: React.FC = () => {
         setErrorDisplay: setOverlayError,
         setDisplay: setDisplay,
         type: "TAB",
-        title:title
+        title: title
 
     }
 
@@ -299,7 +303,7 @@ export const UserDashboard: React.FC = () => {
                                                                 </div>
                                                                 <div className="ss-user-dashboard-content__membership__info__tile__text">
                                                                     {
-                                                                        plan["planType"]
+                                                                        plan["planType"] || "NONE"
                                                                     }
                                                                 </div>
                                                             </div>
@@ -403,7 +407,7 @@ export const UserDashboard: React.FC = () => {
                         {/* Render membership section if state is MEMBERSHIP */}
                         {state === BILLING && (
                             <>
-                            COMING SOON
+                                COMING SOON
                                 {/* <main className="ss-user-dashboard_billing">
                                     <div className="ss-user-dashboard__billing__container">
 

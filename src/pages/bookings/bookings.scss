@@ -1,8 +1,9 @@
 @import "../../global-styles/index.scss";
 
 .ss-bookings{
-    @include flex-row-justify-align(calc(100vh - 150px), 100%, space-around, center);
-    border:solid red 1px;
+    @include flex-row-justify-align(calc(100vh - $nav-bar-hgt), 100%, space-around, center);
+    // border:solid red 1px;
   background-color: $main-background;
+  padding:50px 0px;
 
 }
