@@ -5,8 +5,7 @@ html {
   display: flex;
   flex-direction: column;
   height: auto;
-  width: 100vw;
-  min-width: 100vh;
+  width:100%;
   margin: 0;
   padding: 0;
   background-color: $main-background;
@@ -22,7 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   height:auto;//100%;// 95%;
-  width: 100vw;//95%;
+  width: 100%;//95%;
   margin: 0;
   padding: 0;
   overflow: hidden auto;

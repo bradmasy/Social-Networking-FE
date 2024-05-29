@@ -11,16 +11,8 @@ function App() {
 
   const menuItems = [
     {
-      url: "/login",
-      caption: "LOGIN"
-    },
-    {
       url: "/logout",
       caption: "LOGOUT"
-    },
-    {
-      url: "/",
-      caption: "HOME"
     },
     {
       url: "/user-dashboard",

@@ -26,8 +26,6 @@ Cypress.Commands.add('login', (email, password) => {
     cy.get('.ss-button-container').click();
 
     cy.url().should('include', '/user-dashboard');
-
-
 })
 
 //
