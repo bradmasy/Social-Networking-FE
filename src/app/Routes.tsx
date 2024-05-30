@@ -42,19 +42,19 @@ export const Routes = () => {
             <Route path="/locations/:id/spaces" element={<PrivateRoutes component={<Spaces />} />} />
             <Route path="/locations/:id/spaces/:space" element={<PrivateRoutes component={<SpaceDetails />} />} />
             <Route path="/locations/:id/events" element={<PrivateRoutes component={<ComingSoon />} />} />
-            <Route path="/locations/:id/bookings" element={<PrivateRoutes component={<ComingSoon />} />} />
-            {/* <Route
+            <Route path="/locations/:id/bookings" element={<PrivateRoutes component={<Bookings />} />} />
+            <Route
                 path={`/locations/:id/bookings/date`}
                 element={<PrivateRoutes component={<BookingDate />} />}
-            /> */}
-            {/* <Route
+            />
+            <Route
                 path={`/locations/:id/bookings/detail`}
                 element={<PrivateRoutes component={<BookingDetail />} />}
             />
               <Route
                 path={`/locations/:id/bookings/confirmation/:id`}
                 element={<PrivateRoutes component={<BookingConfirmation />} />}
-            /> */}
+            />
             <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon />} />} />
 
             <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard />} />} />
