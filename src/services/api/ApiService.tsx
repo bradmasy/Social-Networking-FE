@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = 'https://seven-api-44af44123dfd.herokuapp.com';
-// const API_BASE_URL = 'http://127.0.0.1:8000';
+// const API_BASE_URL = 'https://seven-api-44af44123dfd.herokuapp.com';
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
 
 export class ApiService {
@@ -89,6 +89,9 @@ export class ApiService {
         return axios.get(`${API_BASE_URL}/space?id=${id}`, { headers: this.createHeader() })
     }
 
+    get_all_spaces = ():Promise<any> => {
+        return axios.get(`${API_BASE_URL}/space`, { headers: this.createHeader() })
+    }
     // Bookings API Calls for Calendar
 
     get_bookings_by_date = (month: string, day: string, year: string): Promise<any> => {
@@ -114,6 +117,14 @@ export class ApiService {
 
     }
 
+    get_booking_by_id = (bookingId:string): Promise<any> => {
+        return axios.get(`${API_BASE_URL}/booking?id=${bookingId}`, { headers: this.createHeader() })
+    }
+
+    edit_booking = (data:{[key:string]:string}, bookingId:string): Promise<any> => {
+        return axios.patch(`${API_BASE_URL}/booking/${bookingId}`, data, { headers: this.createHeader() })
+
+    }
 
     // SQUARE OATH
 

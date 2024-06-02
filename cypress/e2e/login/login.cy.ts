@@ -1,6 +1,3 @@
-
-
-
 describe("LOGIN - TEST", () => {
     beforeEach(() => {
         const user = {

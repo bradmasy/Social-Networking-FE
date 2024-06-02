@@ -6,6 +6,7 @@ import { NavBar } from '../../components';
 
 import "./booking-date.scss";
 import { LoadingOverlay } from '../../components/overlays/loading-overlay/LoadingOverlay';
+import { Location, Space } from '../location-details/LocationDetails';
 
 const TIME_BLOCK_MINS = 30;
 const MINUTES_IN_BLOCK = 60;
@@ -16,8 +17,8 @@ const START_TIME = 9;
 export interface Booking {
     id: number;
     date: Date;
-    location: number;
-    space: number;
+    location: number | Location;
+    space: number | Space;
     startTime: string;
     endTime: string;
     userId: number;
@@ -74,13 +75,11 @@ export const BookingDate: React.FC = () => {
 
     const createBlockReferences = (refs: React.MutableRefObject<Record<string, HTMLDivElement>>) => {
         bookingsForCurrentDate.forEach(booking => {
-            const bookingSpaceId = booking.space;
+            const bookingSpaceId = (booking.space as Space).id;
             const bookingStartTimeArray = getBookingTimeHourAndMinutes(booking.startTime);
             const bookingEndTimeArray = getBookingTimeHourAndMinutes(booking.endTime);
             const blockIdStringsArray = getBlockIdStrings(bookingStartTimeArray[0], bookingEndTimeArray[0]);
-            console.log(bookingEndTimeArray)
-            console.log(bookingStartTimeArray)
-            console.log(blockIdStringsArray)
+            
 
             const startingBlockQueryString = `hour-${bookingStartTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingStartTimeArray[1] === '30' ? 30 : 0}-${bookingStartTimeArray[1] === '30' ? 60 : 30}`
             const endBlockQueryString = `hour-${bookingEndTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingEndTimeArray[1] === '30' ? 30 : 0}-${bookingEndTimeArray[1] === '30' ? 60 : 30}`
@@ -101,8 +100,10 @@ export const BookingDate: React.FC = () => {
             let i = 0;
             let gatherBlocks = false;
 
-            while (true) {
+
+            while (i < keys.length) {
                 const key = keys[i];
+                console.log(key)
                 const splitKey = key.split('-');
                 const hour = splitKey[1];
                 const space = splitKey[3];
@@ -115,7 +116,7 @@ export const BookingDate: React.FC = () => {
                 }
                 // end the loop
                 if (key === endBlockQueryString) {
-                    elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
+                  //  elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
                     break;
                 }
 
@@ -233,11 +234,13 @@ export const BookingDate: React.FC = () => {
         const id = (event.target as HTMLDivElement).id;
 
         const blockId = (event.target as HTMLDivElement).id;
+        console.log(blockId)
         const timeBlock = blockId.split('-');
 
-
+        console.log(timeBlock)
         const url = path.slice(0, -4);
-        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[2] + timeBlock[3]}`)
+
+        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[timeBlock.length -2] + timeBlock[timeBlock.length-1]}`)
     };
 
     return (

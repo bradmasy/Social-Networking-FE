@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { ApplyOverlay, Button, NavBar } from "../../components";
+import { ApplyOverlay, Button, NavBar, UserDashboardBookingProps, UserDashboardBookings } from "../../components";
 import { UserDashboardMenu } from "../../components/menus";
 import { useApiService } from "../../contexts/ApiServiceContext";
 import cardImg from "../../assets/images/card-black.png";
@@ -8,6 +8,9 @@ import { SSPaymentForm, SSPaymentFormProps } from "../../components/form/payment
 import { LoadingOverlay } from "../../components/overlays/loading-overlay/LoadingOverlay";
 
 import "./user-dashboard.scss";
+import { Booking } from "../booking-date/BookingDate";
+import { Location, Space } from "../location-details/LocationDetails";
+import { ConfirmationDialog } from "../../components/dialogs/confirmation-dialog/ConfirmationDialog";
 
 export interface Plan {
     id: string;
@@ -47,6 +50,7 @@ export const TAB = "tab";
 export const REFERRAL = "referral";
 export const MEMBERSHIP = "membership";
 export const PAYMENTS = "payment"
+export const BOOKINGS = "booking"
 
 
 export const UserDashboard: React.FC = () => {
@@ -69,6 +73,8 @@ export const UserDashboard: React.FC = () => {
     const [cardLoaded, setCardLoaded] = useState(false);
     const [display, setDisplay] = useState(false)
     const [overlayError, setOverlayError] = useState(false);
+    const [bookings, setBookings] = useState<Booking[]>([]);
+    const [spaces, setSpaces] = useState<Space[]>([]);
 
     useEffect(() => {
 
@@ -117,7 +123,17 @@ export const UserDashboard: React.FC = () => {
                 const location_data = locations_api.data["Locations"].filter((each: { [key: string]: string }) =>
                     locations.includes(each["id"])
                 )
-                setLocationData(location_data)
+                setLocationData(location_data);
+                return apiService.get_all_spaces()
+                    .then((spaceData) => {
+                        setSpaces(spaceData.data["data"])
+                        return apiService.get_my_bookings();
+
+                    })
+            }).then((userBookings) => {
+                const bookings = userBookings.data['results'];
+                setBookings(bookings);
+
             })
     }, [apiService, locations])
 
@@ -143,11 +159,6 @@ export const UserDashboard: React.FC = () => {
 
     })
 
-    const editButtonStyles = {
-        // border:"solid red 1px",
-        // height:"",
-        // padding: "2px 10px"
-    }
 
     const editPassword = () => {
         navigate("/edit?type=password")
@@ -188,6 +199,22 @@ export const UserDashboard: React.FC = () => {
         <div>PAYMENT SUCCESSFUL</div>
     </>)
 
+    const bookingsProps: UserDashboardBookingProps = {
+        bookings: bookings,
+        spaceMaps: spaces.reduce((acc: { [key: string]: string }, obj: Space) => {
+            acc[obj.id] = obj.name;
+            return acc;
+        }, {}),
+        locationMaps: locationData.reduce((acc: { [key: string]: string }, obj) => {
+            acc[obj.id] = obj.locationName;
+            return acc;
+        }, {}),
+    }
+
+    const dialogProps = {
+        title:"DELETE BOOKING?",
+        message:"ARE YOU SURE YOU WANT TO DELETE YOUR BOOKING?"
+    }
     return (
         <>
             <ApplyOverlay
@@ -213,7 +240,7 @@ export const UserDashboard: React.FC = () => {
                                                 <div className="ss-user-dashboard-content__title">
                                                     <p>DETAILS
                                                     </p>
-                                                    <Button text="EDIT" styles={editButtonStyles} type="button" click={editDetails} />
+                                                    <Button text="EDIT"  type="button" click={editDetails} />
 
                                                 </div>
                                                 <div className="ss-user-dashboard__info-snippets">
@@ -398,13 +425,19 @@ export const UserDashboard: React.FC = () => {
                                         </div>
                                     </main>
                                 </>
-                            )}  {/* Render referral section if state is REFERRAL */}
+                            )}
                         {state === REFERRAL && (
                             <>
                                 COMING SOON                        </>
                         )}
 
-                        {/* Render membership section if state is MEMBERSHIP */}
+                        {state === BOOKINGS && (
+                            <>
+                                {/* <ConfirmationDialog {...dialogProps}/> */}
+                                <UserDashboardBookings {...bookingsProps} />
+
+                            </>
+                        )}
                         {state === BILLING && (
                             <>
                                 COMING SOON

@@ -1,0 +1,63 @@
+@import "../../../global-styles/index.scss";
+
+.ss-user-dashboard-bookings{
+    @include flex-column-justify-align(90%,100%,start,center);
+}
+
+.ss-user-dashboard-bookings__container{
+    @include flex-column-justify-align(90%,97.5%,start,center);
+    border:solid white 1px;
+
+}
+
+.ss-user-dashboard-bookings__container__labels{
+    @include flex-row-justify-align(auto,100%,start,center);
+
+    &__label{
+        @include flex-row-justify-align(auto,calc(100% / 7),center,center);
+        
+        p{
+          //  font-size: 1.25em;
+            border-bottom:white 1px solid;
+        }
+    }
+}
+
+.ss-user-dashboard-bookings__container__booking-data{
+    @include flex-column-justify-align(auto,100%,start,center);
+
+    gap:10px;
+    padding:50px 0px;
+    overflow: hidden scroll;
+
+}
+
+/* WebKit browsers (Chrome, Safari) */
+.ss-user-dashboard-bookings__container__booking-data::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Firefox */
+.ss-user-dashboard-bookings__container__booking-data {
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+/* Internet Explorer 10+ */
+.ss-user-dashboard-bookings__container__booking-data {
+    -ms-overflow-style: none; /* Hide scrollbar */
+}
+
+.ss-user-dashboard-bookings__container__booking-data__row{
+    @include flex-row-justify-align(auto,100%,start,center);
+
+
+    &__value{
+        @include flex-column-justify-align(auto,calc(100% /7),start,center);
+        border:solid bluered 1px;
+
+    }
+}
+
+.show-dialog{
+    display: flex!important;
+}
