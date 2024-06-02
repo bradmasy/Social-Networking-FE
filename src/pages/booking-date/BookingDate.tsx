@@ -79,7 +79,7 @@ export const BookingDate: React.FC = () => {
             const bookingStartTimeArray = getBookingTimeHourAndMinutes(booking.startTime);
             const bookingEndTimeArray = getBookingTimeHourAndMinutes(booking.endTime);
             const blockIdStringsArray = getBlockIdStrings(bookingStartTimeArray[0], bookingEndTimeArray[0]);
-            
+
 
             const startingBlockQueryString = `hour-${bookingStartTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingStartTimeArray[1] === '30' ? 30 : 0}-${bookingStartTimeArray[1] === '30' ? 60 : 30}`
             const endBlockQueryString = `hour-${bookingEndTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingEndTimeArray[1] === '30' ? 30 : 0}-${bookingEndTimeArray[1] === '30' ? 60 : 30}`
@@ -101,7 +101,7 @@ export const BookingDate: React.FC = () => {
                 const hour = splitKey[1];
                 const space = splitKey[3];
 
-
+                console.log(`key: ${key} query:${endBlockQueryString}`)
                 if (key === startingBlockQueryString) {
                     gatherBlocks = true;
 
@@ -109,7 +109,7 @@ export const BookingDate: React.FC = () => {
                 }
                 // end the loop
                 if (key === endBlockQueryString) {
-                  //  elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
+                    //  elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
                     break;
                 }
 
@@ -194,7 +194,7 @@ export const BookingDate: React.FC = () => {
         const splitTimeHourMinute = bookingTimeHourMinute[1].split(' ');
         const timeMinute = splitTimeHourMinute[0];
         const amPM = splitTimeHourMinute[1];
-        const timeHour = amPM === "PM" ? (parseInt(bookingTimeHourMinute[0]) + 12).toString() : bookingTimeHourMinute[0];
+        const timeHour = amPM === "PM" ? (parseInt(bookingTimeHourMinute[0])) === 12 ? bookingTimeHourMinute[0] : (parseInt(bookingTimeHourMinute[0]) + 12).toString() : bookingTimeHourMinute[0];
 
         return [timeHour, timeMinute.toString()];
     };
@@ -228,7 +228,7 @@ export const BookingDate: React.FC = () => {
 
         const url = path.slice(0, -4);
 
-        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[timeBlock.length -2] + timeBlock[timeBlock.length-1]}`)
+        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[timeBlock.length - 2] + timeBlock[timeBlock.length - 1]}`)
     };
 
     return (
