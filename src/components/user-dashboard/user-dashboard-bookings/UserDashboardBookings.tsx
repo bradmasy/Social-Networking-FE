@@ -34,16 +34,13 @@ export const UserDashboardBookings: React.FC<UserDashboardBookingProps> = (props
         setBookings(bookings.filter((booking) =>
             booking.id !== bookingId
         ))
-        console.log(displayDialog)
     }
 
     useEffect(() => {
         if (deleteBooking) {
             setLoading(true);
-            console.log("DELETE THE BOOKING")
             apiService.delete_booking_by_id(bookingId)
                 .then((message) => {
-                    console.log(message)
                     setLoading(false)
                     setDeleteBooking(false)
                 })

@@ -65,7 +65,6 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
 
     useEffect(() => {
         setFormData(formData); // ensures old values are carried over so entire form doesnt clear.
-        console.log(formData)
 
     }, [formInputs]);
     return (
@@ -84,7 +83,6 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
                         //    value={formData[input.name] || ''}
                         >{
                                 input?.options?.map((option, index) => {
-                                    console.log(option)
                                     return(
                                     <option value={option.value} key={index}  >
                                         {option.label}

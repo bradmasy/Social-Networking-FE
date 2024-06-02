@@ -93,9 +93,7 @@ export const BookingDetail: React.FC = () => {
     useEffect(() => {
         if (dataFetched) {
             setLoaded(true);
-            console.log("INITIALIZING")
             setFormData(initialFormData())
-            console.log(formData)
         }
 
     }, [dataFetched]);
@@ -108,7 +106,6 @@ export const BookingDetail: React.FC = () => {
 
             setStartTime(startTimeHour);
             setStartTimeOptions(startTimes);
-            console.log(startTimes)
             const startTimeMinOptions = createTimeMinBlocks(startTimeMins);
 
             setStartTimeMinuteOptions(startTimeMinOptions);
@@ -144,7 +141,6 @@ export const BookingDetail: React.FC = () => {
             const hour = startTime + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
-            console.log(hour)
 
             return {
                 value: hour.toString(),
@@ -157,7 +153,6 @@ export const BookingDetail: React.FC = () => {
             const hour = startTime + 1 + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
-            console.log(hour)
             return {
                 value: hour.toString(),
                 label: `${formattedTime} ${period}`,
@@ -216,7 +211,6 @@ export const BookingDetail: React.FC = () => {
 
 
         if (ValidationService.validateForm(formData)) {
-            console.log(formData)
             apiService.create_booking(formData)
                 .then((booking) => {
                     const bookingIndex = locationRouter.pathname.search(/booking/i);
@@ -233,7 +227,6 @@ export const BookingDetail: React.FC = () => {
 
                     </>)
                     setDisplayOverlayError(true);
-                    console.log(formData)
                 })
         } else {
             setErrorMessage(

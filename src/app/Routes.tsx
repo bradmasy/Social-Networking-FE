@@ -7,8 +7,8 @@ import { Edit } from "../pages/edit/Edit";
 
 const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     const auth = useAuth();
-
-    if (!auth.retrieveAuth()) return <Navigate to="/" replace />;
+  
+    if (!auth.retrieveAuth() && !auth.getMembership()) return <Navigate to="/" replace />;
 
     return component;
 }

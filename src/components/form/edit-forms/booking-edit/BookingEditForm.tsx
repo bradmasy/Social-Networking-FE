@@ -84,14 +84,12 @@ export const BookingEditForm: React.FC = () => {
     useEffect(() => {
         if (sendForm) {
             const initialData = initialFormData();
-            console.log(initialData)
             setFormData(initialData)
         }
     }, [sendForm])
 
     useEffect(() => {
         const bookingIdParam = searchParams.get("id")
-        console.log(bookingIdParam)
         setBookingId(bookingIdParam || "");
         if (bookingIdParam) {
             apiService.get_booking_by_id(bookingIdParam)
@@ -108,37 +106,26 @@ export const BookingEditForm: React.FC = () => {
 
                     const pmOrAmAStart = splitStartTime[1].split(' ')[1];
                     const pmOrAmAEnd = splitEndTime[1].split(' ')[1];
-                    console.log(splitEndTime[0])
                     const startTimeHour = pmOrAmAStart === "AM" ? splitStartTime[0] : splitStartTime[0] === '12' ? splitStartTime[0] : parseInt(splitStartTime[0]) + 12
                     const endTimeHour = pmOrAmAEnd === "AM" ? splitEndTime[0] : splitEndTime[0] === '12' ? splitEndTime[0] : parseInt(splitEndTime[0]) + 12
-                    console.log(endHour)
                     const startTimeMins = splitStartTime[1].split(' ')[0] === '00' ? "030" : "3060";
                     const endTimeMins = splitEndTime[1].split(' ')[0] === '00' ? "030" : "3060";;
 
-                    console.log(startTimeMins)
-                    console.log(endTimeMins)
-
                     setStartHour(startTimeHour)
                     setEndHour(endTimeHour)
-                    console.log(endTimeHour)
+
                     const startHourBlocks = createTimeHourBlocks(23, parseInt(startTimeHour), true);
                     const endHourBlocks = createTimeHourBlocks(23, parseInt(endTimeHour), false);
 
                     const startTimeMinBlocks = createTimeMinBlocks(startTimeMins);
                     const endTimeMinBlocks = createTimeMinBlocks(endTimeMins);
 
-                    console.log(startTimeMinBlocks);
-                    console.log(endTimeMinBlocks);
-
                     setStartTimeOptions(startHourBlocks)
                     setEndHourBlockOptions(endHourBlocks)
                     setStartTimeMinuteOptions(startTimeMinBlocks)
                     setEndTimeMinOptions(endTimeMinBlocks)
 
-                    console.log(editBooking)
                     setSendForm(true);
-
-
                 })
         }
 
@@ -157,20 +144,10 @@ export const BookingEditForm: React.FC = () => {
 
             }
         }) : Array.from({ length: 23 - 8 }, (_, index) => {
-            console.log(endTime)
-            // start = 3 or 15
-            // end = 23
-            // hour ==  15 + 0
             const hour = 9 + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
-            console.log(`start time: ${startTime} hour:${hour} ${hour === startTime}`)
-            console.log({
-                value: hour.toString(),
-                label: `${formattedTime} ${period}`,
-                default: hour === startTime
-
-            })
+        
             return {
                 value: hour.toString(),
                 label: `${formattedTime} ${period}`,
@@ -184,7 +161,6 @@ export const BookingEditForm: React.FC = () => {
         const splitMins = timeMins.length === 4 ? [timeMins.slice(0, 2), timeMins.slice(2)]
             : [timeMins.slice(0, 1), timeMins.slice(1)];
 
-        console.log(splitMins)
         return Array.from({ length: 2 }, (_, i) => {
             const value = i === 0 ? splitMins[0] : splitMins[1];
 
@@ -217,7 +193,6 @@ export const BookingEditForm: React.FC = () => {
 
 
         if (ValidationService.validateTimes(startHour, startMin, endHour, endMin)) {
-            console.log('times pass')
             setLoading(true);
             apiService.edit_booking(formData, bookingId)
             setLoading(false);
@@ -225,6 +200,8 @@ export const BookingEditForm: React.FC = () => {
 
         } else {
             // key error 
+            setLoading(false);
+
             setErrorMessage(<>
                 <div>
                     START TIME CANNOT BE LESS
@@ -237,16 +214,14 @@ export const BookingEditForm: React.FC = () => {
                 </div>
             </>)
             setErrorDisplay(true);
-            console.log("BAD TIMES")
+
         }
-        console.log(formData);
         // check the start time is greater than an hour and is not less than the end time
 
     }
 
     const initialFormData = (): { [key: string]: string } => {
         return bookingInputs.reduce((acc: { [key: string]: string }, input: Input) => {
-            console.log(input)
             acc[input.name] = input.value || "";
             return acc;
         }, {});

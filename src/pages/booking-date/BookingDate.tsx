@@ -84,15 +84,9 @@ export const BookingDate: React.FC = () => {
             const startingBlockQueryString = `hour-${bookingStartTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingStartTimeArray[1] === '30' ? 30 : 0}-${bookingStartTimeArray[1] === '30' ? 60 : 30}`
             const endBlockQueryString = `hour-${bookingEndTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingEndTimeArray[1] === '30' ? 30 : 0}-${bookingEndTimeArray[1] === '30' ? 60 : 30}`
 
-            console.log(startingBlockQueryString)
-            console.log(endBlockQueryString)
-            console.log(refs)
-
             const keys = Object.keys(refs.current)
             const amountOfspaceTimeBlocks = keys.length;
-            console.log(amountOfspaceTimeBlocks)
 
-            console.log(keys)
             const elementsBetweenStartAndEnd = [];
 
             let isBetweenStartAndEnd = false;
@@ -103,7 +97,6 @@ export const BookingDate: React.FC = () => {
 
             while (i < keys.length) {
                 const key = keys[i];
-                console.log(key)
                 const splitKey = key.split('-');
                 const hour = splitKey[1];
                 const space = splitKey[3];
@@ -129,7 +122,6 @@ export const BookingDate: React.FC = () => {
                 i++;
             }
 
-            console.log(elementsBetweenStartAndEnd)
 
             elementsBetweenStartAndEnd.forEach((bookedElement) => {
                 bookedElement.style.backgroundColor = '#50B2CA';
@@ -146,7 +138,6 @@ export const BookingDate: React.FC = () => {
     const shadeSpaces = (spaceNodes: ChildNode[]) => {
         spaceNodes.forEach((node: ChildNode) => {
             const spaceNodeDiv = node as HTMLDivElement;
-            console.log(spaceNodeDiv.id);
         })
 
     }
@@ -172,7 +163,6 @@ export const BookingDate: React.FC = () => {
             setCurrentDate(dates.getFullDate(month, day, year));
 
             apiService.get_bookings_by_date(month, day, year).then(apiData => {
-                console.log(apiData)
                 const bookings: Booking[] = apiData.data["Bookings"]
                 setBookingsForCurrentDate(bookings);
             })
@@ -234,10 +224,8 @@ export const BookingDate: React.FC = () => {
         const id = (event.target as HTMLDivElement).id;
 
         const blockId = (event.target as HTMLDivElement).id;
-        console.log(blockId)
         const timeBlock = blockId.split('-');
 
-        console.log(timeBlock)
         const url = path.slice(0, -4);
 
         navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[timeBlock.length -2] + timeBlock[timeBlock.length-1]}`)

@@ -67,10 +67,6 @@ export class ValidationService {
         endTime.setHours(parseInt(endHour));
         endTime.setMinutes(parseInt(endMin));
 
-        console.log(`start time: ${startTime.getTime()}`);
-        console.log(`end time: ${endTime.getTime()}`);
-        console.log((endTime.getTime() - startTime.getTime()) / (60 * 1000))
-
         if (endTime.getTime() <= startTime.getTime()) {
             return false;
         }
