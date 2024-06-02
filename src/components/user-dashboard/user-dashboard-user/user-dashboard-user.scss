@@ -1,0 +1,140 @@
+@import "../../../global-styles/index.scss";
+
+.ss-user-dashboard-content-rows {
+  @include flex-row-justify-align(90%, 100%, space-between, center);
+}
+
+.ss-user-dashboard-content-rows__row {
+  @include flex-column-justify-align(100%, 95%, start, center);
+  gap: 25px;
+}
+
+.ss-user-dashboard-content-rows__column {
+  @include flex-column-justify-align(100%, 95%, space-between, center);
+}
+.ss-user-dashboard-content-rows__row__tile {
+  @include flex-column-justify-align(auto, 95%, center, center);
+  border: white solid 1px;
+  padding-bottom: 25px;
+}
+
+.ss-user-dashboard-content-rows__column__tile {
+  @include flex-row-justify-align(100%, 95%, center, center);
+  border: white solid 1px;
+}
+
+.ss-user-dashboard-content-rows__row__tile__content {
+  @include flex-column-justify-align(95%, 95%, start, center);
+  // min-height: 250px;
+}
+
+.ss-user-dashboard-content__title {
+  @include flex-row-justify-align(auto, 100%, left, center);
+  font-size: 1.5em;
+  font-weight: 200;
+  gap: 25px;
+
+  p {
+    @include flex-row-justify-align(auto, auto, left, center);
+    border-bottom: solid white 1px;
+  }
+}
+
+.ss-user-dashboard-content-rows__column__tile__content {
+  @include flex-column-justify-align(100%, 95%, start, center);
+}
+
+.ss-user-dashboard__info-snippets {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  gap: 10px;
+  min-height: 250px;
+}
+
+.ss-user-dashboard__info-snippets__info-snippet__row {
+  @include flex-row-justify-align(auto, 100%, space-between, center);
+  // font-size:1.25em;
+}
+
+.ss-user-dashboard__info-snippets__info-snippet__key {
+  @include flex-row-justify-align(auto, auto, start, center);
+  color: $main-blue;
+  font-weight: 200;
+  gap: 10px;
+  // border-bottom: 1px solid $main-blue;
+}
+
+.ss-user-dashboard__info-snippets__info-snippet {
+  @include flex-row-justify-align(auto, auto, start, center);
+}
+
+.ss-user-dashboard__edit-password {
+  @include flex-row-justify-align(auto, 100%, start, center);
+  // border:solid red 1px;
+}
+
+.ss-user-dashboard__membership-container {
+  @include flex-column-justify-align(80%, 100%, start, center);
+  // min-height: 00px;
+}
+.ss-user-dashboard__membership-container__card-img {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  padding: 20px;
+  img {
+    border-radius: 8px;
+  }
+}
+.ss-user-dashboard__membership-container__info {
+  @include flex-column-justify-align(80%, 90%, start, center);
+}
+
+.ss-user-dashboard__membership-container__info__row {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
+}
+
+.ss-user-dashboard__membership-container__info__tile {
+  @include flex-column-justify-align(auto, 50%, start, center);
+}
+
+.ss-user-dashboard-content__membership-title {
+  @include flex-row-justify-align(auto, 100%, left, center);
+  font-weight: 200;
+  gap: 25px;
+  color: $main-blue;
+}
+
+.ss-user-dashboard-content__membership__info__tile__text {
+  @include flex-row-justify-align(auto, 100%, start, center);
+}
+
+.ss-user-dashboard-content__membership__info__tile__text-column {
+  @include flex-column-justify-align(auto, 100%, start, start);
+}
+
+@media screen and (max-width: 800px) {
+  .ss-user-dashboard-content-rows {
+    @include flex-column-justify-align(90%, 100%, space-between, center);
+  }
+  .ss-user-dashboard-content-rows__row {
+    @include flex-column-justify-align(100%, 100%, start, center);
+    gap: 25px;
+  }
+  .ss-user-dashboard-content-rows__column {
+    margin-top: 25px;
+    // padding-bottom:10px;
+    width: 100%;
+  }
+  .ss-user-dashboard-content__title {
+    justify-content: center;
+  }
+
+  .ss-user-dashboard__edit-password {
+    justify-content: center;
+  }
+  .ss-user-dashboard-content-rows__column__tile {
+    padding-bottom: 20px;
+  }
+  .ss-user-dashboard-content__membership__info__tile__text-column {
+    // @include flex-column-justify-align(auto, 100%, start, start);
+    text-align: left;
+  }
+}

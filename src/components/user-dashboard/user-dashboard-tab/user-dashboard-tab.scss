@@ -1,0 +1,85 @@
+@import "../../../global-styles/index.scss";
+
+.ss-user-dashboard__tab__container__column {
+  @include flex-column-justify-align(100%, 47.5%, space-between, center);
+}
+// TAB MENU OPTION
+.ss-user-dashboard__tab {
+  @include flex-row-justify-align(90%, 100%, center, center);
+}
+
+.ss-user-dashboard__tab__container {
+  @include flex-row-justify-align(100%, 100%, space-around, center);
+  // border: solid white 1px;
+}
+
+.ss-user-dashboard__tab__container__column {
+  @include flex-column-justify-align(100%, 47.5%, start, center);
+  gap: 25px;
+}
+
+.ss-user-dashboard__tab__container__column-payment-form {
+  @include flex-column-justify-align(100%, 47.5%, start, center);
+  border: solid white 1px;
+}
+
+.ss-user-dashboard__tab__container__column-title {
+  font-size: 1.5em;
+  padding: 25px 0px;
+}
+
+.ss-user-dashboard__tab__container__column__tile {
+  @include flex-column-justify-align(auto, 100%, start, center);
+  padding: 25px 0px;
+  border: solid white 1px;
+}
+
+.ss-user-dashboard__tab__container__column__tile__container {
+  @include flex-column-justify-align(auto, 90%, start, center);
+}
+
+.ss-user-dashboard__tab__container__column__tile__title {
+  @include flex-column-justify-align(auto, 100%, start, start);
+  font-size: 1.5em;
+  font-weight: 200;
+
+  p {
+    border-bottom: solid 1px white;
+  }
+}
+
+.ss-user-dashboard__tab__container__column__tile__content {
+  @include flex-column-justify-align(auto, 100%, start, start);
+  // border:solid white 1px;
+  padding: 10px 0px;
+}
+
+.ss-user-dashboard__tab__container__column__tile__content-receipts {
+  @include flex-column-justify-align(auto, 100%, start, start);
+}
+.ss-user-dashboard__receipt-tab {
+  @include flex-column-justify-align(auto, auto, start, start);
+  padding: 20px;
+  border: solid $main-blue 1px;
+  border-radius: 8px;
+}
+
+.ss-user-dashboard__receipt-tab__date {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
+  gap: 25px;
+  div {
+    label {
+      font-weight: 200;
+    }
+  }
+}
+
+.ss-user-dashboard__receipt-tab__amount {
+  @include flex-row-justify-align(auto, 100%, space-between, start);
+
+  div {
+    label {
+      font-weight: 200;
+    }
+  }
+}

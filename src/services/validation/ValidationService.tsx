@@ -50,7 +50,7 @@ export class ValidationService {
     }
 
     static validatePasswordChange = (formData: any): boolean => {
-        if (formData["retype-password"] !== formData["new-password"]) {
+        if (formData["retype_password"] !== formData["new_password"]) {
             return false;
         }
 
@@ -73,7 +73,7 @@ export class ValidationService {
 
         const differenceInMins = (endTime.getTime() - startTime.getTime()) / (60 * 1000)
 
-        if (differenceInMins < 60 ){
+        if (differenceInMins < 60) {
             return false;
 
         }

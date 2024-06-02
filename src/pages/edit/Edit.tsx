@@ -10,6 +10,7 @@ import "./edit.scss";
 import { object } from "square/dist/types/schema";
 import { Booking } from "../booking-date/BookingDate";
 import { Location, Space } from "../location-details/LocationDetails";
+import { PasswordEditForm } from "../../components/form/edit-forms/password-edit/PasswordEditForm";
 
 export interface PasswordChange {
     oldPassword: string;
@@ -160,26 +161,6 @@ export const Edit: React.FC = () => {
 
     }
 
-    // these are formatted snake case to fit the python backend
-    const formInputs: Input[] = [
-        {
-            name: "old_password",
-            type: "password",
-            label: "OLD PASSWORD",
-            icon: eyeIcon
-        }, {
-            name: "new_password",
-            type: "password",
-            label: "NEW PASSWORD",
-            icon: eyeIcon
-        },
-        {
-            name: "retype_password",
-            type: "password",
-            label: "RETYPED PASSWORD",
-            icon: eyeIcon
-        },
-    ]
 
 
     const formInputsDetails: Input[] = [
@@ -273,15 +254,12 @@ export const Edit: React.FC = () => {
 
             <section className="ss-edit-container">
 
-                {/* {type === "password" && (
+                {type === "password" && (
                     <>
-                        <main className="ss-edit-container__main">
-                            {editPasswordCopy}
-                        </main>
-                        <Form formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} setSubmitClicked={submit} />
+                        <PasswordEditForm/>
                     </>
                 )}
-                {type === "user-details" && (
+                {/* {type === "user-details" && (
                     <> <main className="ss-edit-container__main">
                         {editUserCopy}
                     </main>

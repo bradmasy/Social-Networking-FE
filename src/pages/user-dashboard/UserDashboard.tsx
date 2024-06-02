@@ -12,6 +12,7 @@ import { Booking } from "../booking-date/BookingDate";
 import { Location, Space } from "../location-details/LocationDetails";
 import { ConfirmationDialog } from "../../components/dialogs/confirmation-dialog/ConfirmationDialog";
 import { UserDashboardUser } from "../../components/user-dashboard/user-dashboard-user/UserDashboardUser";
+import { UserDashboardTab } from "../../components/user-dashboard/user-dashboard-tab/UserDashboardTab";
 
 export interface Plan {
     id: string;
@@ -198,17 +199,24 @@ export const UserDashboard: React.FC = () => {
     }
 
     const dialogProps = {
-        title:"DELETE BOOKING?",
-        message:"ARE YOU SURE YOU WANT TO DELETE YOUR BOOKING?"
+        title: "DELETE BOOKING?",
+        message: "ARE YOU SURE YOU WANT TO DELETE YOUR BOOKING?"
     }
 
-    const userDashboardProps={
-        userData:userdata,
-        membership:membership,
-        locationData:locationData,
-        plan:plan
+    const userDashboardProps = {
+        userData: userdata,
+        membership: membership,
+        locationData: locationData,
+        plan: plan
 
     }
+
+    const userDashboardTabProps = {
+        membership: membership,
+        receiptData: receiptData,
+        paymentFormProps: paymentFormProps
+    }
+
     return (
         <>
             <ApplyOverlay
@@ -227,206 +235,17 @@ export const UserDashboard: React.FC = () => {
 
                         {state === ACCOUNT_INFO && (
                             <>
-                                <UserDashboardUser {...userDashboardProps}/>
+                                <UserDashboardUser {...userDashboardProps} />
                             </>
-                            // <>
-                            //     <div className="ss-user-dashboard-content-rows">
-                            //         <div className="ss-user-dashboard-content-rows__row">
-                            //             <div className="ss-user-dashboard-content-rows__row__tile">
-                            //                 <div className="ss-user-dashboard-content-rows__row__tile__content">
-                            //                     <div className="ss-user-dashboard-content__title">
-                            //                         <p>DETAILS
-                            //                         </p>
-                            //                         <Button text="EDIT"  type="button" click={editDetails} />
 
-                            //                     </div>
-                            //                     <div className="ss-user-dashboard__info-snippets">
-                            //                         {
-                            //                             Object.keys(userdata).map((key: string) => (
-                            //                                 <div className="ss-user-dashboard__info-snippets__info-snippet__row" key={`row ${key}`}>
-                            //                                     <div className="ss-user-dashboard__info-snippets__info-snippet__key">
-                            //                                         <div>
-                            //                                             {formatKey(key)}
-                            //                                         </div>
-                            //                                     </div>
-                            //                                     <div className="ss-user-dashboard__info-snippets__info-snippet" key={key}>
-                            //                                         {
-                            //                                             key === 'createdAt' && typeof userdata[key] === 'string'
-                            //                                                 ? new Date(userdata[key]).toLocaleString() // Convert 'createdAt' string to a Date object and format it
-                            //                                                 : typeof userdata[key] === 'object'
-                            //                                                     ? JSON.stringify(userdata[key]) // Convert to JSON string if it's an object
-                            //                                                     : userdata[key] // Render the value directly if it's not an object
-                            //                                         }
-                            //                                     </div>
-                            //                                 </div>
-                            //                             ))
-                            //                         }
-                            //                     </div>
-                            //                 </div>
-
-                            //             </div>
-                            //             <div className="ss-user-dashboard-content-rows__row__tile">
-                            //                 <div className="ss-user-dashboard-content-rows__row__tile__content">
-                            //                     <div className="ss-user-dashboard-content__title">
-                            //                         <p>PASSWORD MANAGEMENT
-                            //                         </p>
-
-                            //                     </div>
-                            //                     <div className="ss-user-dashboard__edit-password">
-                            //                         <Button text="EDIT PASSWORD" type="button" click={editPassword} />
-                            //                     </div>
-                            //                 </div>
-                            //             </div>
-                            //         </div>
-                            //         <div className="ss-user-dashboard-content-rows__column">
-                            //             <div className="ss-user-dashboard-content-rows__column__tile">
-                            //                 <div className="ss-user-dashboard-content-rows__column__tile__content">
-                            //                     <div className="ss-user-dashboard-content__title">
-                            //                         <p>MEMBERSHIP
-                            //                         </p>
-                            //                     </div>
-                            //                     <div className="ss-user-dashboard__membership-container">
-                            //                         <div className="ss-user-dashboard__membership-container__card-img">
-                            //                             <img src={cardImg} alt="card"></img>
-                            //                         </div>
-                            //                         <div className="ss-user-dashboard__membership-container__info">
-                            //                             <div className="ss-user-dashboard__membership-container__info__row">
-                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
-                            //                                     <div className="ss-user-dashboard-content__membership-title">
-                            //                                         <p>STATUS
-                            //                                         </p>
-                            //                                     </div>
-                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
-                            //                                         {
-                            //                                             membership['active'] ? 'ACTIVE' : "INACTIVE"
-                            //                                         }
-                            //                                     </div>
-                            //                                 </div>
-                            //                                 <div className="ss-user-dashboard__membership-container__info__tile" key="location-data">
-                            //                                     <div className="ss-user-dashboard-content__membership-title" key="location-data-title">
-                            //                                         <p key="location-data-text">LOCATIONS</p>
-                            //                                     </div>
-                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text-column">
-                            //                                         {
-                            //                                             locationData.map((eachLocation: { [key: string]: string }, i) => (
-
-                            //                                                 <div key={`location-${i}`}>
-                            //                                                     {eachLocation["locationName"]}
-                            //                                                 </div>
-
-                            //                                             ))
-                            //                                         }
-                            //                                     </div>
-                            //                                 </div>
-                            //                             </div>
-                            //                             <div className="ss-user-dashboard__membership-container__info__row">
-                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
-                            //                                     <div className="ss-user-dashboard-content__membership-title">
-                            //                                         <p>CURRENT PLAN
-                            //                                         </p>
-                            //                                     </div>
-                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
-                            //                                         {
-                            //                                             plan["planType"] || "NONE"
-                            //                                         }
-                            //                                     </div>
-                            //                                 </div>
-                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
-                            //                                     <div className="ss-user-dashboard-content__membership-title">
-                            //                                         <p>NEXT PAYMENT</p>
-                            //                                     </div>
-                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
-                            //                                         {
-                            //                                             membership['renewalDate']
-                            //                                         }
-                            //                                     </div>
-                            //                                 </div>
-                            //                             </div>
-
-                            //                         </div>
-
-                            //                     </div>
-                            //                 </div>
-                            //             </div>
-
-                            //         </div>
-                            //     </div>
-                        //    </>
                         )}{(state === TAB && loaded && membership) && (
-                                <>
-                                    {/* <main className="ss-user-dashboard__tab">
-                                        <div className="ss-user-dashboard__tab__container">
-                                            <div className="ss-user-dashboard__tab__container__column">
-                                                <div className="ss-user-dashboard__tab__container__column__tile">
-                                                    <div className="ss-user-dashboard__tab__container__column__tile__container">
-                                                        <div className="ss-user-dashboard__tab__container__column__tile__title">
-                                                            <p>CURRENT TAB
-                                                            </p>
-                                                        </div>
-                                                        <div className="ss-user-dashboard__tab__container__column__tile__content">
-                                                            {
-                                                                "$" + membership['balance']
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="ss-user-dashboard__tab__container__column__tile">
-                                                    <div className="ss-user-dashboard__tab__container__column__tile__container">
-                                                        <div className="ss-user-dashboard__tab__container__column__tile__title">
-                                                            <p>LAST PAYMENT
-                                                            </p>
-                                                        </div>
-                                                        <div className="ss-user-dashboard__tab__container__column__tile__content-receipts">
-                                                            {
-                                                                <div className="ss-user-dashboard__receipt-tab">
-                                                                    {
-                                                                        receiptData.length > 0 ? (
-                                                                            <>
-                                                                                <div className="ss-user-dashboard__receipt-tab__date">
-                                                                                    <div>
-                                                                                        <label>
-                                                                                            DATE
-                                                                                        </label>
-
-                                                                                    </div>
-                                                                                    {
-
-                                                                                        formatDate(receiptData[0].createdAt)
-                                                                                    }
-                                                                                </div>
-                                                                                <div className="ss-user-dashboard__receipt-tab__amount">
-                                                                                    <div>
-                                                                                        <label>AMOUNT</label>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        {"$" + receiptData[0].amount}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </>
-                                                                        ) : (
-                                                                            <>You have no payments yet</>
-                                                                        )
-                                                                    }
-
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="ss-user-dashboard__tab__container__column-payment-form">
-                                                <div className="ss-user-dashboard__tab__container__column-title">
-                                                    PAY TAB
-                                                </div>
-                                                <SSPaymentForm {...paymentFormProps} />
-                                            </div>
-                                        </div>
-                                    </main> */}
-                                </>
-                            )}
+                            <>
+                                <UserDashboardTab {...userDashboardTabProps} />
+                            </>
+                        )}
                         {state === REFERRAL && (
                             <>
-                                COMING SOON                        </>
+                                COMING SOON </>
                         )}
 
                         {state === BOOKINGS && (
