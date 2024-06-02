@@ -11,6 +11,7 @@ import "./user-dashboard.scss";
 import { Booking } from "../booking-date/BookingDate";
 import { Location, Space } from "../location-details/LocationDetails";
 import { ConfirmationDialog } from "../../components/dialogs/confirmation-dialog/ConfirmationDialog";
+import { UserDashboardUser } from "../../components/user-dashboard/user-dashboard-user/UserDashboardUser";
 
 export interface Plan {
     id: string;
@@ -160,21 +161,6 @@ export const UserDashboard: React.FC = () => {
     })
 
 
-    const editPassword = () => {
-        navigate("/edit?type=password")
-    }
-
-    const editDetails = () => {
-        navigate("/edit?type=user-details")
-
-    }
-
-    function formatKey(key: string): string {
-        const words = key.split(/(?=[A-Z])/);
-        const formattedKey = words.join(' ').toLowerCase();
-        return formattedKey.charAt(0).toUpperCase() + formattedKey.slice(1).toUpperCase();
-    }
-
     const formatDate = (date: string) => {
         const dateString = date.split("T")[0]
         return dateString
@@ -215,6 +201,14 @@ export const UserDashboard: React.FC = () => {
         title:"DELETE BOOKING?",
         message:"ARE YOU SURE YOU WANT TO DELETE YOUR BOOKING?"
     }
+
+    const userDashboardProps={
+        userData:userdata,
+        membership:membership,
+        locationData:locationData,
+        plan:plan
+
+    }
     return (
         <>
             <ApplyOverlay
@@ -233,130 +227,134 @@ export const UserDashboard: React.FC = () => {
 
                         {state === ACCOUNT_INFO && (
                             <>
-                                <div className="ss-user-dashboard-content-rows">
-                                    <div className="ss-user-dashboard-content-rows__row">
-                                        <div className="ss-user-dashboard-content-rows__row__tile">
-                                            <div className="ss-user-dashboard-content-rows__row__tile__content">
-                                                <div className="ss-user-dashboard-content__title">
-                                                    <p>DETAILS
-                                                    </p>
-                                                    <Button text="EDIT"  type="button" click={editDetails} />
+                                <UserDashboardUser {...userDashboardProps}/>
+                            </>
+                            // <>
+                            //     <div className="ss-user-dashboard-content-rows">
+                            //         <div className="ss-user-dashboard-content-rows__row">
+                            //             <div className="ss-user-dashboard-content-rows__row__tile">
+                            //                 <div className="ss-user-dashboard-content-rows__row__tile__content">
+                            //                     <div className="ss-user-dashboard-content__title">
+                            //                         <p>DETAILS
+                            //                         </p>
+                            //                         <Button text="EDIT"  type="button" click={editDetails} />
 
-                                                </div>
-                                                <div className="ss-user-dashboard__info-snippets">
-                                                    {
-                                                        Object.keys(userdata).map((key: string) => (
-                                                            <div className="ss-user-dashboard__info-snippets__info-snippet__row" key={`row ${key}`}>
-                                                                <div className="ss-user-dashboard__info-snippets__info-snippet__key">
-                                                                    <div>
-                                                                        {formatKey(key)}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="ss-user-dashboard__info-snippets__info-snippet" key={key}>
-                                                                    {
-                                                                        key === 'createdAt' && typeof userdata[key] === 'string'
-                                                                            ? new Date(userdata[key]).toLocaleString() // Convert 'createdAt' string to a Date object and format it
-                                                                            : typeof userdata[key] === 'object'
-                                                                                ? JSON.stringify(userdata[key]) // Convert to JSON string if it's an object
-                                                                                : userdata[key] // Render the value directly if it's not an object
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        ))
-                                                    }
-                                                </div>
-                                            </div>
+                            //                     </div>
+                            //                     <div className="ss-user-dashboard__info-snippets">
+                            //                         {
+                            //                             Object.keys(userdata).map((key: string) => (
+                            //                                 <div className="ss-user-dashboard__info-snippets__info-snippet__row" key={`row ${key}`}>
+                            //                                     <div className="ss-user-dashboard__info-snippets__info-snippet__key">
+                            //                                         <div>
+                            //                                             {formatKey(key)}
+                            //                                         </div>
+                            //                                     </div>
+                            //                                     <div className="ss-user-dashboard__info-snippets__info-snippet" key={key}>
+                            //                                         {
+                            //                                             key === 'createdAt' && typeof userdata[key] === 'string'
+                            //                                                 ? new Date(userdata[key]).toLocaleString() // Convert 'createdAt' string to a Date object and format it
+                            //                                                 : typeof userdata[key] === 'object'
+                            //                                                     ? JSON.stringify(userdata[key]) // Convert to JSON string if it's an object
+                            //                                                     : userdata[key] // Render the value directly if it's not an object
+                            //                                         }
+                            //                                     </div>
+                            //                                 </div>
+                            //                             ))
+                            //                         }
+                            //                     </div>
+                            //                 </div>
 
-                                        </div>
-                                        <div className="ss-user-dashboard-content-rows__row__tile">
-                                            <div className="ss-user-dashboard-content-rows__row__tile__content">
-                                                <div className="ss-user-dashboard-content__title">
-                                                    <p>PASSWORD MANAGEMENT
-                                                    </p>
+                            //             </div>
+                            //             <div className="ss-user-dashboard-content-rows__row__tile">
+                            //                 <div className="ss-user-dashboard-content-rows__row__tile__content">
+                            //                     <div className="ss-user-dashboard-content__title">
+                            //                         <p>PASSWORD MANAGEMENT
+                            //                         </p>
 
-                                                </div>
-                                                <div className="ss-user-dashboard__edit-password">
-                                                    <Button text="EDIT PASSWORD" type="button" click={editPassword} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="ss-user-dashboard-content-rows__column">
-                                        <div className="ss-user-dashboard-content-rows__column__tile">
-                                            <div className="ss-user-dashboard-content-rows__column__tile__content">
-                                                <div className="ss-user-dashboard-content__title">
-                                                    <p>MEMBERSHIP
-                                                    </p>
-                                                </div>
-                                                <div className="ss-user-dashboard__membership-container">
-                                                    <div className="ss-user-dashboard__membership-container__card-img">
-                                                        <img src={cardImg} alt="card"></img>
-                                                    </div>
-                                                    <div className="ss-user-dashboard__membership-container__info">
-                                                        <div className="ss-user-dashboard__membership-container__info__row">
-                                                            <div className="ss-user-dashboard__membership-container__info__tile">
-                                                                <div className="ss-user-dashboard-content__membership-title">
-                                                                    <p>STATUS
-                                                                    </p>
-                                                                </div>
-                                                                <div className="ss-user-dashboard-content__membership__info__tile__text">
-                                                                    {
-                                                                        membership['active'] ? 'ACTIVE' : "INACTIVE"
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                            <div className="ss-user-dashboard__membership-container__info__tile" key="location-data">
-                                                                <div className="ss-user-dashboard-content__membership-title" key="location-data-title">
-                                                                    <p key="location-data-text">LOCATIONS</p>
-                                                                </div>
-                                                                <div className="ss-user-dashboard-content__membership__info__tile__text-column">
-                                                                    {
-                                                                        locationData.map((eachLocation: { [key: string]: string }, i) => (
+                            //                     </div>
+                            //                     <div className="ss-user-dashboard__edit-password">
+                            //                         <Button text="EDIT PASSWORD" type="button" click={editPassword} />
+                            //                     </div>
+                            //                 </div>
+                            //             </div>
+                            //         </div>
+                            //         <div className="ss-user-dashboard-content-rows__column">
+                            //             <div className="ss-user-dashboard-content-rows__column__tile">
+                            //                 <div className="ss-user-dashboard-content-rows__column__tile__content">
+                            //                     <div className="ss-user-dashboard-content__title">
+                            //                         <p>MEMBERSHIP
+                            //                         </p>
+                            //                     </div>
+                            //                     <div className="ss-user-dashboard__membership-container">
+                            //                         <div className="ss-user-dashboard__membership-container__card-img">
+                            //                             <img src={cardImg} alt="card"></img>
+                            //                         </div>
+                            //                         <div className="ss-user-dashboard__membership-container__info">
+                            //                             <div className="ss-user-dashboard__membership-container__info__row">
+                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
+                            //                                     <div className="ss-user-dashboard-content__membership-title">
+                            //                                         <p>STATUS
+                            //                                         </p>
+                            //                                     </div>
+                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
+                            //                                         {
+                            //                                             membership['active'] ? 'ACTIVE' : "INACTIVE"
+                            //                                         }
+                            //                                     </div>
+                            //                                 </div>
+                            //                                 <div className="ss-user-dashboard__membership-container__info__tile" key="location-data">
+                            //                                     <div className="ss-user-dashboard-content__membership-title" key="location-data-title">
+                            //                                         <p key="location-data-text">LOCATIONS</p>
+                            //                                     </div>
+                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text-column">
+                            //                                         {
+                            //                                             locationData.map((eachLocation: { [key: string]: string }, i) => (
 
-                                                                            <div key={`location-${i}`}>
-                                                                                {eachLocation["locationName"]}
-                                                                            </div>
+                            //                                                 <div key={`location-${i}`}>
+                            //                                                     {eachLocation["locationName"]}
+                            //                                                 </div>
 
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="ss-user-dashboard__membership-container__info__row">
-                                                            <div className="ss-user-dashboard__membership-container__info__tile">
-                                                                <div className="ss-user-dashboard-content__membership-title">
-                                                                    <p>CURRENT PLAN
-                                                                    </p>
-                                                                </div>
-                                                                <div className="ss-user-dashboard-content__membership__info__tile__text">
-                                                                    {
-                                                                        plan["planType"] || "NONE"
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                            <div className="ss-user-dashboard__membership-container__info__tile">
-                                                                <div className="ss-user-dashboard-content__membership-title">
-                                                                    <p>NEXT PAYMENT</p>
-                                                                </div>
-                                                                <div className="ss-user-dashboard-content__membership__info__tile__text">
-                                                                    {
-                                                                        membership['renewalDate']
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                            //                                             ))
+                            //                                         }
+                            //                                     </div>
+                            //                                 </div>
+                            //                             </div>
+                            //                             <div className="ss-user-dashboard__membership-container__info__row">
+                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
+                            //                                     <div className="ss-user-dashboard-content__membership-title">
+                            //                                         <p>CURRENT PLAN
+                            //                                         </p>
+                            //                                     </div>
+                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
+                            //                                         {
+                            //                                             plan["planType"] || "NONE"
+                            //                                         }
+                            //                                     </div>
+                            //                                 </div>
+                            //                                 <div className="ss-user-dashboard__membership-container__info__tile">
+                            //                                     <div className="ss-user-dashboard-content__membership-title">
+                            //                                         <p>NEXT PAYMENT</p>
+                            //                                     </div>
+                            //                                     <div className="ss-user-dashboard-content__membership__info__tile__text">
+                            //                                         {
+                            //                                             membership['renewalDate']
+                            //                                         }
+                            //                                     </div>
+                            //                                 </div>
+                            //                             </div>
 
-                                                    </div>
+                            //                         </div>
 
-                                                </div>
-                                            </div>
-                                        </div>
+                            //                     </div>
+                            //                 </div>
+                            //             </div>
 
-                                    </div>
-                                </div>
-                            </>)}{(state === TAB && loaded && membership) && (
+                            //         </div>
+                            //     </div>
+                        //    </>
+                        )}{(state === TAB && loaded && membership) && (
                                 <>
-                                    <main className="ss-user-dashboard__tab">
+                                    {/* <main className="ss-user-dashboard__tab">
                                         <div className="ss-user-dashboard__tab__container">
                                             <div className="ss-user-dashboard__tab__container__column">
                                                 <div className="ss-user-dashboard__tab__container__column__tile">
@@ -423,7 +421,7 @@ export const UserDashboard: React.FC = () => {
                                                 <SSPaymentForm {...paymentFormProps} />
                                             </div>
                                         </div>
-                                    </main>
+                                    </main> */}
                                 </>
                             )}
                         {state === REFERRAL && (
@@ -433,9 +431,7 @@ export const UserDashboard: React.FC = () => {
 
                         {state === BOOKINGS && (
                             <>
-                                {/* <ConfirmationDialog {...dialogProps}/> */}
                                 <UserDashboardBookings {...bookingsProps} />
-
                             </>
                         )}
                         {state === BILLING && (

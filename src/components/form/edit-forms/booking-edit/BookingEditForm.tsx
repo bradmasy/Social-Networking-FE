@@ -132,15 +132,15 @@ export const BookingEditForm: React.FC = () => {
     }, [])
 
     const createTimeHourBlocks = (endTime: number, startTime: number, start: boolean = true): Option[] => {
-        return start ? Array.from({ length: endTime - startTime + 1 }, (_, index) => {
+        return start ? Array.from({ length: 15 }, (_, index) => {
 
-            const hour = startTime + index;
+            const hour =  9 + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
             return {
                 value: hour.toString(),
                 label: `${formattedTime} ${period}`,
-                default: index === 0
+                default: hour === startTime
 
             }
         }) : Array.from({ length: 23 - 8 }, (_, index) => {

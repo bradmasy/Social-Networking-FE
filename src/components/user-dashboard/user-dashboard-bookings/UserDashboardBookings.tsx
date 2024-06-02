@@ -6,6 +6,7 @@ import { ConfirmationDialog } from "../../dialogs/confirmation-dialog/Confirmati
 import { useEffect, useState } from "react";
 import { useApiService } from "../../../contexts/ApiServiceContext";
 import { LoadingOverlay } from "../../overlays/loading-overlay/LoadingOverlay";
+import { ApplyOverlay } from "../../overlays";
 
 export interface UserDashboardBookingProps {
     bookings: Booking[];
@@ -23,6 +24,12 @@ export const UserDashboardBookings: React.FC<UserDashboardBookingProps> = (props
     const [loading, setLoading] = useState(false);
     const [bookings, setBookings] = useState<Booking[]>(props.bookings);
 
+    // overlay for booking confirmation
+    const [displayOverlay, setDisplayOveraly] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(<><div>BOOKING SUCCESSFUL</div></>)
+    const [errorMessage,setErrorMessage] = useState(<><div>ERROR MAKING BOOKING</div></>)
+    const [errorDisplay,setErrorDisplay] = useState(false);
+    
     const navigateToEditPage = (id: number) => {
         navigate(`/edit?type=booking&id=${id}`)
     }
@@ -60,6 +67,8 @@ export const UserDashboardBookings: React.FC<UserDashboardBookingProps> = (props
                 <LoadingOverlay />
             ) : (
                 <>
+                   
+
                     <ConfirmationDialog 
                         setDelete={setDeleteBooking} 
                         bookingInfo={bookingId} 

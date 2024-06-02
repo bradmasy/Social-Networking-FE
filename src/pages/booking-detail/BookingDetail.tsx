@@ -70,7 +70,7 @@ export const BookingDetail: React.FC = () => {
             <div>SUBMITTING</div>
         </>
     )
-
+    const [successMessage,setSuccessMessage] = useState(<><div>BOOKING SUCCESSFUL</div></>)
     const locationRouter = useLocation();
 
     useEffect(() => {
@@ -213,11 +213,26 @@ export const BookingDetail: React.FC = () => {
         if (ValidationService.validateForm(formData)) {
             apiService.create_booking(formData)
                 .then((booking) => {
+                    
                     const bookingIndex = locationRouter.pathname.search(/booking/i);
                     const url = locationRouter.pathname.substring(0, bookingIndex + "booking".length);
 
                     const bookingId = booking.data["data"];
-                    navigate(`${url}/confirmation/${bookingId.id}`);
+                    // setSuccessMessage(
+                    //     <>
+                    //         <div>
+                    //             BOOKING SUCCESSFUL
+                    //         </div>
+                    //         <div>
+                    //             BOOKING REFERENCE ID: {bookingId}
+                    //         </div>
+                    //     </>
+                    // )
+                    setDisplayOverlay(true)
+                    setTimeout(()=> {
+
+                    }, 1000) // redirect after 1s 
+                 //   navigate(`${url}/confirmation/${bookingId.id}`);
 
                 })
                 .catch((error) => {
@@ -315,8 +330,9 @@ export const BookingDetail: React.FC = () => {
                 setDisplay={setDisplayOverlay}
                 errorDisplay={displayOverlayError}
                 display={displayOverlay}
-                setErrorDisplay={setDisplayOverlayError} />
-
+                setErrorDisplay={setDisplayOverlayError}
+                successMessage={successMessage} />
+                
             <NavBar />
             {!loaded ? (
                 <>

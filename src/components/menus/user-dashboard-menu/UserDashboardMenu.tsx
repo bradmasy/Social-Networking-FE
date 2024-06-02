@@ -56,6 +56,7 @@ export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
                                 setActive(option.value)
 
                             }}
+                            key={`menu-item-${option.value}-${index}`}
                                 className={`ss-menu-option ${active === option.value ? 'active' : ''}`}
                             >
                                 {option.text}
