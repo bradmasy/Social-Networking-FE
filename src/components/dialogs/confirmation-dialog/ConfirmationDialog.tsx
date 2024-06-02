@@ -7,7 +7,7 @@ export interface DialogProps {
     message: string;
     display: boolean;
     setDisplay: React.Dispatch<React.SetStateAction<boolean>>;
-    bookingInfo:number;
+    bookingInfo:number |null;
     setDelete:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
