@@ -59,7 +59,7 @@ export const Login: React.FC = () => {
                 .catch((error: Error) => {
                     setLoading(false)
 
-                    sendFormData({});
+             //       sendFormData({});
                     setErrorMessage(<>
 
                         <div>INVALID CREDENTIALS</div>
@@ -75,7 +75,7 @@ export const Login: React.FC = () => {
                 <div> FIELDS OF THE FORM</div>
 
             </>)
-            sendFormData({});
+          //  sendFormData({});
             setDisplayOverlayError(true);
         }
     }
