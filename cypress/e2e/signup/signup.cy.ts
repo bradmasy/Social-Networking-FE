@@ -117,7 +117,7 @@ function enterTestUserInfoAndSubmitGoodData(){
     const uniqueArtistName = generateUniqueValue('test-artist-name');
     const uniqueEmail = generateUniqueValue('test') + '@testemail.com';
     const uniquePassword = generateUniqueValue('testpassword1234');
-    const uniquePasswordMistake = generateUniqueValue('testpassword1234mistake');
+    const uniquePasswordMistake = generateUniqueValue('testpassword1234');
     
     cy.get(':nth-child(1) > .ss-form__input').type(uniqueUser);
     cy.get('.ss-form-container > :nth-child(2) > .ss-form__input').type(uniqueLastName);

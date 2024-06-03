@@ -13,7 +13,6 @@ const MINUTES_IN_BLOCK = 60;
 const HOURS_IN_DAY = 15;
 const START_TIME = 9;
 
-
 export interface Booking {
     id: number;
     date: Date;
@@ -294,7 +293,11 @@ export const BookingDate: React.FC = () => {
                                                         key={`${hour}-${block}`}
                                                         id={`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`}
                                                         className="ss-booking-date__main__time-block__schedule__block"
-                                                        onClick={!clickHandlerActive[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`] ? undefined : (event) => bookTime(event, hour, space["id"])}
+                                                        onClick={(event) => {
+                                                            if (clickHandlerActive[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`]) {
+                                                                bookTime(event, hour, space["id"])
+                                                            }
+                                                        }}
                                                         ref={ref => {
                                                             if (ref) {
                                                                 spaceTimeBlocksRef.current[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`] = ref
