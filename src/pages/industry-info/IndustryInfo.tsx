@@ -13,7 +13,7 @@ interface IndustryAttribute {
     discounts: string[];
     bookings: string[];
     rewards: string[];
-    
+
 }
 
 export const IndustryInfo: React.FC = () => {
@@ -32,18 +32,15 @@ export const IndustryInfo: React.FC = () => {
 
     const industryAttributes: IndustryAttribute[] = [
         {
-            access: ["24/7 ACCESS TO THE BEACH HOUSE OR DUNDAS STUDIOS FOR THEIR VISION"],
-            discounts: ["Lots"],
-            bookings: ["Unlimited Bookings"],
-            rewards: ["Access to all pop-ups and events for $0.00",
-                "LAZER QUEST - 1 BOOKING per month",
-                "CREATIVE THERAPY (coming soon)"
-                ,"Featured Artist ZINE (x7 a year)"
+            access: ["24/7 access to THE BEACH HOUSE and DUNDAS STUDIOS for your creative vision.", "Custom BLACK INDUSTRY CARD (coming soon)", "Access to all panels, workshops, and events for $0.00."],
+            discounts: ["TAB OPTION: industry members can pay off monthly by donation instead of the full cost if they need.",
+                "1 MAIN EVENT, weekly panel and workshop opportunity’s. To book main additional events, discounted pricing.", "C2C NON FOR PROFIT: access to grant applications each quarter for each industry. (coming soon)"],
+            bookings: ["full priority access to bookings on calendar for events, workshops & panels.", "Gear rentals, resources, workstations and more. (coming soon)"],
+            rewards: ["COFFEE TAB: show your membership for free coffee & drinks at exclusive partner locations (coming soon)", "Featured Artist ZINE (coming soon)"
+
+                , "Featured Artist ZINE (x7 a year)", "Show your membership and get instant discounts to studio bookings, products, and events with our exclusive creative partners and products. (coming soon)"
             ]
-        //     tab:["industry members can pay off a tab on their profile by connecting the square terminal to the SEVENS SOCIAL account",
-        //      "if they sell products or tickets, they can add to their tab.",
-        //      " Encourages usage and fair trade. Can add additional or pay it forward to other industry members."]
-         }
+        }
     ]
 
     return (

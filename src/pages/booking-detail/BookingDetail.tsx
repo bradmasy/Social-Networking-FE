@@ -230,7 +230,7 @@ export const BookingDetail: React.FC = () => {
                     // )
                     setDisplayOverlay(true)
                     setTimeout(()=> {
-
+                        navigate('/user-dashboard')
                     }, 1000) // redirect after 1s 
                  //   navigate(`${url}/confirmation/${bookingId.id}`);
 
