@@ -70,7 +70,7 @@ export const BookingDetail: React.FC = () => {
             <div>SUBMITTING</div>
         </>
     )
-
+    const [successMessage,setSuccessMessage] = useState(<><div>BOOKING SUCCESSFUL</div></>)
     const locationRouter = useLocation();
 
     useEffect(() => {
@@ -93,7 +93,6 @@ export const BookingDetail: React.FC = () => {
     useEffect(() => {
         if (dataFetched) {
             setLoaded(true);
-            console.log("INITIALIZING")
             setFormData(initialFormData())
         }
 
@@ -102,12 +101,11 @@ export const BookingDetail: React.FC = () => {
     const setTimeBlocks = () => {
         if (params) {
             const startTimeHour = parseInt(params["block"]);
-            const startTimeMins = params["time"];
+            const startTimeMins = params["time"]; // 030 or 3060
             const startTimes = createTimeHourBlocks(END_HOUR, startTimeHour);
 
             setStartTime(startTimeHour);
             setStartTimeOptions(startTimes);
-
             const startTimeMinOptions = createTimeMinBlocks(startTimeMins);
 
             setStartTimeMinuteOptions(startTimeMinOptions);
@@ -143,6 +141,7 @@ export const BookingDetail: React.FC = () => {
             const hour = startTime + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
+
             return {
                 value: hour.toString(),
                 label: `${formattedTime} ${period}`,
@@ -212,14 +211,28 @@ export const BookingDetail: React.FC = () => {
 
 
         if (ValidationService.validateForm(formData)) {
-
             apiService.create_booking(formData)
                 .then((booking) => {
+                    
                     const bookingIndex = locationRouter.pathname.search(/booking/i);
                     const url = locationRouter.pathname.substring(0, bookingIndex + "booking".length);
 
                     const bookingId = booking.data["data"];
-                    navigate(`${url}/confirmation/${bookingId.id}`);
+                    // setSuccessMessage(
+                    //     <>
+                    //         <div>
+                    //             BOOKING SUCCESSFUL
+                    //         </div>
+                    //         <div>
+                    //             BOOKING REFERENCE ID: {bookingId}
+                    //         </div>
+                    //     </>
+                    // )
+                    setDisplayOverlay(true)
+                    setTimeout(()=> {
+                        navigate('/user-dashboard')
+                    }, 1000) // redirect after 1s 
+                 //   navigate(`${url}/confirmation/${bookingId.id}`);
 
                 })
                 .catch((error) => {
@@ -229,7 +242,6 @@ export const BookingDetail: React.FC = () => {
 
                     </>)
                     setDisplayOverlayError(true);
-                    console.log(formData)
                 })
         } else {
             setErrorMessage(
@@ -318,8 +330,9 @@ export const BookingDetail: React.FC = () => {
                 setDisplay={setDisplayOverlay}
                 errorDisplay={displayOverlayError}
                 display={displayOverlay}
-                setErrorDisplay={setDisplayOverlayError} />
-
+                setErrorDisplay={setDisplayOverlayError}
+                successMessage={successMessage} />
+                
             <NavBar />
             {!loaded ? (
                 <>

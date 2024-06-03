@@ -1,13 +1,25 @@
 @import "../../../global-styles/mixins.scss";
 @import "../../../global-styles/colors.scss";
 
+.ss-apply-overlay-container{
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+}
+
 .ss-apply-overlay {
   @include flex-column-justify-align(auto, auto, start, center);
   padding:50px;
   display: none;
   position: absolute;
   color:black;
-  z-index: 1;
+  z-index: 2;
   font-weight: 300;
   font-size: 1.5em;
   min-height: 300px;
@@ -28,6 +40,9 @@
 .display-error {
   display: flex;
   background-color: lightcoral !important;
+}
+.display{
+  display: flex;
 }
 
 .ss-apply-overlay__close-container {

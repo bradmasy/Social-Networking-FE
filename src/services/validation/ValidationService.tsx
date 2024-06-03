@@ -1,3 +1,4 @@
+import { start } from "repl";
 
 const SIGNUP_FIELDS = 9;
 
@@ -49,10 +50,33 @@ export class ValidationService {
     }
 
     static validatePasswordChange = (formData: any): boolean => {
-        if (formData["retype-password"] != formData["new-password"]) {
+        if (formData["retype_password"] !== formData["new_password"]) {
             return false;
         }
 
+        return true;
+    }
+
+    static validateTimes = (startHour: string, startMin: string, endHour: string, endMin: string): boolean => {
+
+        const startTime = new Date();
+        const endTime = new Date();
+        startTime.setHours(parseInt(startHour));
+        startTime.setMinutes(parseInt(startMin));
+
+        endTime.setHours(parseInt(endHour));
+        endTime.setMinutes(parseInt(endMin));
+
+        if (endTime.getTime() <= startTime.getTime()) {
+            return false;
+        }
+
+        const differenceInMins = (endTime.getTime() - startTime.getTime()) / (60 * 1000)
+
+        if (differenceInMins < 60) {
+            return false;
+
+        }
         return true;
     }
 }

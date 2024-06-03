@@ -4,10 +4,11 @@
   @include flex-row-justify-align(
     calc(100vh - 150px),
     100%,
-    space-around,
+    center,
     center
   );
-  // border:solid red 1px;
+  gap:75px;
+ // border:solid red 1px;
 }
 
 .ss-locations__location-container {

@@ -80,6 +80,16 @@
   border-bottom: red 1px solid !important;
 }
 
+
+.booked{
+  background-color: #50b2ca; /* Hover effect */
+
+}
+
+.booked:hover{
+  cursor:not-allowed;
+  opacity: 1;
+}
 @media screen and (max-width: 800px) {
   .ss-booking-date__main__time-block {
     @include flex-row-justify-align(50px, 95%, start, left);

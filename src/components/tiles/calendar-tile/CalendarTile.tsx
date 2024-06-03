@@ -12,11 +12,11 @@ interface CalendarTileProps {
 }
 
 export const CalendarTile: React.FC<CalendarTileProps> = ({ date, month, day, year, past }) => {
-    const [hasBorder, setHasBorder] = useState<boolean>(true);
-    const [datePassed, setDatePassed] = useState<boolean>(false);
-    //   const history = useHistory();
     const navigate = useNavigate()
     let location = useLocation();
+
+    const [hasBorder, setHasBorder] = useState<boolean>(true);
+    const [datePassed, setDatePassed] = useState<boolean>(false);
     const [path, setPath] = useState("");
 
     useEffect(() => {

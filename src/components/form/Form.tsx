@@ -3,13 +3,13 @@ import "./form.scss";
 import { Button, ButtonProps } from "../button/Button";
 
 export interface FormData {
-    [key: string]: string | null;
+    [key: string]: string;
 }
 
 export interface Option {
     value: string;
     label: string;
-    default:boolean;
+    default: boolean;
 }
 
 export interface Input {
@@ -19,7 +19,7 @@ export interface Input {
     icon?: string;
     value?: string | null;
     options?: Option[];
-    disabled?:boolean;
+    disabled?: boolean;
 }
 
 export interface SelectOption {
@@ -34,20 +34,28 @@ interface FormProps {
     selectInputs?: SelectOption[];
     buttonProps: ButtonProps;
     setSubmitClicked?: React.Dispatch<React.SetStateAction<boolean>>;
-    formDataDictionary?:FormData;
+    formDataDictionary?: FormData;
 }
 
 export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, formInputs, selectInputs, buttonProps, setSubmitClicked }) => {
     const initialFormData: FormData = formInputs.reduce((acc, input) => {
-        acc[input.name] = input.value || "";
+        if (input.type === 'select') {
+            const defaultOption = input.options?.find(option => option.default);
+        
+            acc[input.name] = defaultOption ? defaultOption.value : "";
+        } else {
+            acc[input.name] = input.value || "";
+        }
         return acc;
     }, {} as FormData);
 
-    const [formData, setFormData] = useState<FormData>(formDataDictionary || initialFormData);
+    const [formData, setFormData] = useState<FormData>( initialFormData);
     const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
-    
+    const [selectValue,setSelectValue] = useState();
     const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>, inputName: string) => {
         const { value } = event.target;
+        console.log(formData)
+        console.log(value)
         sendFormData(prevState => ({ ...prevState, [inputName]: value }));
         setFormData(prevState => ({ ...prevState, [inputName]: value }));
 
@@ -65,9 +73,8 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
 
     useEffect(() => {
         setFormData(formData); // ensures old values are carried over so entire form doesnt clear.
-
+        
     }, [formInputs]);
-
     return (
         <form className="ss-form-container" onSubmit={handleSubmit}>
             {formInputs.map((input, index) => (
@@ -78,13 +85,17 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
                             className="ss-form__input"
                             onChange={(event) => handleChange(event, input.name)}
                             disabled={input.disabled}
+
+                            // value={input.options?.find(e => e.default)?.value || formData[input.name] || ""}
+
                            value={formData[input.name] || ''}
                         >{
-                                input?.options?.map((option, index) => (
-                                    <option value={option.value} key={index} >
+                                input?.options?.map((option, index) => {
+                                    return(
+                                    <option value={option.value} key={index}  >
                                         {option.label}
-                                    </option>
-                                ))
+                                    </option>)
+                                })
                             }
                             {selectInputs?.map((option, index) => (
                                 <option value={option.value} key={index}>
@@ -110,6 +121,8 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
                                 className={`ss-form__input ${input.type === 'textarea' ? 'textarea-input' : ''}`}
                                 value={formData[input.name] || ''}
                                 onChange={(event) => handleChange(event, input.name)}
+                                disabled={input.disabled}
+
                             />
                         )
                     )}

@@ -5,12 +5,15 @@ export const LoadingOverlay: React.FC = () => {
 
     return (
         <>
-            <div className="ss-loading-overlay-container">
-                <div className="ss-loading-overlay-container__loading" >
-                    <p>{loadingText}</p>
+            <div className="ss-loading-backdrop">
+                <div className="ss-loading-overlay-container">
+                    <div className="ss-loading-overlay-container__loading" >
+                        <p>{loadingText}</p>
+                    </div>
+                    <div className="ss-loading-overlay-container__spinner"></div>
                 </div>
-                <div className="ss-loading-overlay-container__spinner"></div>
             </div>
+
         </>
     )
 }

@@ -62,21 +62,22 @@ export const Calendar: React.FC<CalendarComponentProps> = () => {
         if (prevMonth === 11 && year === currentRealYear) {
             return; // Return without updating state
         }
-    
+
         // Update state for previous month
         setMonth(prevMonth);
         setDaysInMonth(getDaysInMonth(year, prevMonth));
         setLastDayOfTheMonthIndex(getLastDayOfMonth(year, prevMonth));
         setFirstDayOfTheMonthIndex(getFirstDayOfMonth(new Date(year, prevMonth, 1)));
-    
+
         // Check if it's going to the previous year
         if (prevMonth === 11 && year > currentRealYear) {
             setYear(year - 1);
         }
     };
 
-    const isPastDay = (day: number): boolean => {
+    const isPastDay = (year: number, month: number, day: number): boolean => {
         const currentDate: Date = new Date(year, month, day);
+        currentDate.setHours(23, 59, 0, 0); // Set time to 11:59 PM
         const today: Date = new Date();
         return currentDate < today;
     };
@@ -130,17 +131,11 @@ export const Calendar: React.FC<CalendarComponentProps> = () => {
     }, [month, year]);
 
     useEffect(() => {
-        // console.log('running!!!')
-        // console.log(`current month: ${months[month]}`);
-        // console.log(`last day of month: ${lastDayOfTheMonthIndex}`)
-        const daysInMonth = getDaysInMonth(year, month);
 
+        const daysInMonth = getDaysInMonth(year, month);
         const weekArrays = createDateArrays(daysOfTheWeek, firstDayOfTheMonthIndex, daysInMonth);
-        // console.log(weekArrays);
 
         setCalendarArrays(weekArrays);
-
-
 
     }, [month, year, firstDayOfTheMonthIndex]);
 
@@ -173,7 +168,7 @@ export const Calendar: React.FC<CalendarComponentProps> = () => {
                                         }
                                         month={months[month]}
                                         year={year.toString()}
-                                        past={isPastDay(eachDay)}
+                                        past={isPastDay(year, month, eachDay === 0 ? 1 : eachDay)}
                                     />
                                 ))
 

@@ -8,3 +8,5 @@ export * from "./spinner/Spinner";
 export * from "./tiles/index"
 export * from "./navigation-bar/NavBar";
 export * from "./calendar/Calendar";
+export * from "./user-dashboard/index";
+export * from "./form/edit-forms/index";

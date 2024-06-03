@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Dates } from './dates';
 import { ApiService } from '../../services/api/ApiService';
@@ -6,12 +6,22 @@ import { NavBar } from '../../components';
 
 import "./booking-date.scss";
 import { LoadingOverlay } from '../../components/overlays/loading-overlay/LoadingOverlay';
+import { Location, Space } from '../location-details/LocationDetails';
 
 const TIME_BLOCK_MINS = 30;
 const MINUTES_IN_BLOCK = 60;
 const HOURS_IN_DAY = 15;
 const START_TIME = 9;
 
+export interface Booking {
+    id: number;
+    date: Date;
+    location: number | Location;
+    space: number | Space;
+    startTime: string;
+    endTime: string;
+    userId: number;
+}
 export const BookingDate: React.FC = () => {
 
 
@@ -25,8 +35,17 @@ export const BookingDate: React.FC = () => {
     const [searchParams, setSearchParams] = useState('');
     const [spaces, setSpaces] = useState([]);
     const [currentDate, setCurrentDate] = useState(new Date());
-    const hourBlocksRef = useRef([]);
+    const [bookingsForCurrentDate, setBookingsForCurrentDate] = useState<Booking[]>([]);
+    const [spaceNodes, setSpaceNodes] = useState<NodeListOf<ChildNode>>();
+    const [clickHandlerActive, setClickHandlerActive] = useState<{ [key: string]: boolean }>({})
+    const [month, setMonth] = useState<string | null>(null);
+    const [day, setDay] = useState<string | null>(null);
+    const [year, setYear] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    const hourBlocksRef = useRef<(HTMLDivElement | null)[]>([]);
+    const spaceBlocksRef = useRef<Record<string, HTMLDivElement | null>>({});
+    const spaceTimeBlocksRef = useRef<Record<string, HTMLDivElement>>({});
 
     let { id } = useParams();
 
@@ -40,6 +59,114 @@ export const BookingDate: React.FC = () => {
     // Get the formatted date string
     const formattedDate = currentDate.toLocaleDateString('en-US', options);
 
+    const findDOMReferences = (timeSlots: string[]): HTMLDivElement[] => {
+        if (hourBlocksRef.current) {
+            return hourBlocksRef.current.filter(hourBlock => {
+                if (hourBlock?.id) {
+                    return timeSlots.includes(hourBlock.id);
+                }
+                return false;
+            }) as HTMLDivElement[];
+        }
+        return [];
+    };
+
+
+    const createBlockReferences = (refs: React.MutableRefObject<Record<string, HTMLDivElement>>) => {
+        bookingsForCurrentDate.forEach(booking => {
+            const bookingSpaceId = (booking.space as Space).id;
+            const bookingStartTimeArray = getBookingTimeHourAndMinutes(booking.startTime);
+            const bookingEndTimeArray = getBookingTimeHourAndMinutes(booking.endTime);
+            const blockIdStringsArray = getBlockIdStrings(bookingStartTimeArray[0], bookingEndTimeArray[0]);
+
+
+            const startingBlockQueryString = `hour-${bookingStartTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingStartTimeArray[1] === '30' ? 30 : 0}-${bookingStartTimeArray[1] === '30' ? 60 : 30}`
+            const endBlockQueryString = `hour-${bookingEndTimeArray[0]}-space-${bookingSpaceId}-time-block-${bookingEndTimeArray[1] === '30' ? 30 : 0}-${bookingEndTimeArray[1] === '30' ? 60 : 30}`
+
+            const keys = Object.keys(refs.current)
+            const amountOfspaceTimeBlocks = keys.length;
+
+            const elementsBetweenStartAndEnd = [];
+
+            let isBetweenStartAndEnd = false;
+
+            let i = 0;
+            let gatherBlocks = false;
+
+
+            while (i < keys.length) {
+                const key = keys[i];
+                const splitKey = key.split('-');
+                const hour = splitKey[1];
+                const space = splitKey[3];
+
+                console.log(`key: ${key} query:${endBlockQueryString}`)
+                if (key === startingBlockQueryString) {
+                    gatherBlocks = true;
+
+                    elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
+                }
+                // end the loop
+                if (key === endBlockQueryString) {
+                    //  elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
+                    break;
+                }
+
+                if (gatherBlocks && space === bookingSpaceId.toString()) {
+                    elementsBetweenStartAndEnd.push(refs.current[key]) // push the element
+
+                }
+
+
+                i++;
+            }
+
+
+            elementsBetweenStartAndEnd.forEach((bookedElement) => {
+                bookedElement.style.backgroundColor = '#50B2CA';
+                bookedElement.classList.add("booked")
+                //  setClickHandlerActive(prevState => ({
+                //     ...prevState,
+                //     [bookedElement.id]: false
+                // }));
+                clickHandlerActive[bookedElement.id] = false;
+            })
+        })
+    }
+
+    const shadeSpaces = (spaceNodes: ChildNode[]) => {
+        spaceNodes.forEach((node: ChildNode) => {
+            const spaceNodeDiv = node as HTMLDivElement;
+        })
+
+    }
+
+    useEffect(() => {
+        if (spaceNodes && spaceNodes.length > 0) {
+            const mappedNodes: ChildNode[] = []
+            spaceNodes.forEach(e => mappedNodes.push(e));
+            shadeSpaces(mappedNodes);
+        }
+        setLoading(true);
+
+    }, [spaceNodes])
+
+    useLayoutEffect(() => {
+        if (bookingsForCurrentDate.length > 0 && Object.keys(spaceTimeBlocksRef.current).length > 0) {
+            createBlockReferences(spaceTimeBlocksRef);
+        }
+    })
+
+    useEffect(() => {
+        if (month != null && day != null && year != null) {
+            setCurrentDate(dates.getFullDate(month, day, year));
+
+            apiService.get_bookings_by_date(month, day, year).then(apiData => {
+                const bookings: Booking[] = apiData.data["Bookings"]
+                setBookingsForCurrentDate(bookings);
+            })
+        }
+    }, [month, day, year])
 
     useEffect(() => {
 
@@ -54,127 +181,53 @@ export const BookingDate: React.FC = () => {
 
             const queryParams = new URLSearchParams(location.search);
 
-            const month = queryParams.get('month') || '';
-            const day = queryParams.get('day') || '';
-            const year = queryParams.get('year') || '';
+            setMonth(queryParams.get('month') || null);
+            setDay(queryParams.get('day') || null);
+            setYear(queryParams.get('year') || null);
 
-            setCurrentDate(dates.getFullDate(month, day, year));
-            setLoading(true);
-            //     if (month && day && year) {
-            //       apiService.getBookingsByDate(month, day, year).then(apiData => {
-            //         const bookings = apiData["Bookings"];
-
-            //         bookings.forEach(booking => {
-            //           const bookingSpaceId = booking.space;
-            //           const bookingStartTimeArray = getBookingTimeHourAndMinutes(booking.startTime);
-            //           const bookingEndTimeArray = getBookingTimeHourAndMinutes(booking.endTime);
-            //           const blockIdStringsArray = getBlockIdStrings(bookingStartTimeArray[0], bookingEndTimeArray[0]);
-
-            //           blockIdStringsArray.forEach(timeBlockIdString => {
-            //             const queriedBlocks = hourBlocksRef.current.filter(block => block.id === timeBlockIdString);
-
-            //             queriedBlocks.forEach(queriedBlock => {
-            //               const timeframe = queriedBlock.children[1];
-            //               const spaceColumn = Array.from(timeframe.children).find(node => node.id === `space-${bookingSpaceId}`);
-
-            //               if (spaceColumn) {
-            //                 const element = spaceColumn;
-
-            //                 const blockNumberId = parseInt(timeBlockIdString.split('-')[2]);
-            //                 Array.from(element.children).forEach(node => {
-            //                   if (node.nodeType !== Node.COMMENT_NODE) {
-            //                     shadeBookedArea(
-            //                       blockNumberId,
-            //                       parseInt(bookingStartTimeArray[0]),
-            //                       parseInt(bookingStartTimeArray[1]),
-            //                       parseInt(bookingEndTimeArray[0]),
-            //                       parseInt(bookingEndTimeArray[1]),
-            //                       element
-            //                     );
-            //                   }
-            //                 });
-            //               }
-            //             });
-            //           });
-            //         });
-            //       }).catch(error => {
-            //         console.error(error);
-            //       });
-            //     }
         }
     }, []);
 
-    //   const getBookingTimeHourAndMinutes = (bookingTimeString) => {
-    //     const bookingTimeHourMinute = bookingTimeString.split(":");
-    //     const splitTimeHourMinute = bookingTimeHourMinute[1].split(' ');
-    //     const timeMinute = splitTimeHourMinute[0];
-    //     const amPM = splitTimeHourMinute[1];
-    //     const timeHour = amPM === "PM" ? (parseInt(bookingTimeHourMinute[0]) + 12).toString() : bookingTimeHourMinute[0];
+    const getBookingTimeHourAndMinutes = (bookingTimeString: string) => {
+        const bookingTimeHourMinute = bookingTimeString.split(":");
+        const splitTimeHourMinute = bookingTimeHourMinute[1].split(' ');
+        const timeMinute = splitTimeHourMinute[0];
+        const amPM = splitTimeHourMinute[1];
+        const timeHour = amPM === "PM" ? (parseInt(bookingTimeHourMinute[0])) === 12 ? bookingTimeHourMinute[0] : (parseInt(bookingTimeHourMinute[0]) + 12).toString() : bookingTimeHourMinute[0];
 
-    //     return [timeHour, timeMinute.toString()];
-    //   };
+        return [timeHour, timeMinute.toString()];
+    };
 
-    //   const getBlockIdStrings = (startHour, endHour) => {
-    //     const start = parseInt(startHour);
-    //     const end = parseInt(endHour);
+    const getBlockIdStrings = (startHour: string, endHour: string) => {
+        const start = parseInt(startHour);
+        const end = parseInt(endHour);
 
-    //     if (start == end) {
-    //       return [`time-block-${start}`];
-    //     }
+        if (start === end) {
+            return [`time-block-${start}`];
+        }
 
-    //     const range = start > end ? Array.from({ length: end + 13 - start }, (_, index) => start + index) : Array.from({ length: end - start + 1 }, (_, index) => start + index);
-    //     const blockIdStringsMap = range.map(hour => `time-block-${hour}`);
+        // if start is greater than the end time, this is a time slot that spans the morning to the afternoon/night
+        // this adds an extra block BEFORE and AFTER the time slot to allow for teardown/cleanup
+        const range = start > end
+            ? Array.from({ length: end + 13 - start + 1 }, (_, index) => start - 1 + index)
+            : Array.from({ length: end - start + 1 }, (_, index) => start + index);
 
-    //     return blockIdStringsMap;
-    //   };
 
-    //   const shadeBookedArea = (blockNumber, startHours, startMins, endHours, endMins, element) => {
-    //     element.childNodes.forEach(timeBlock => {
-    //       if (timeBlock.nodeType !== Node.COMMENT_NODE) {
-    //         const timeBlockHTML = timeBlock;
-    //         const splitTimeBlockId = timeBlockHTML.id.split("-");
-    //         const blockStartTime = splitTimeBlockId[2];
-    //         const blockEndTime = splitTimeBlockId[3];
+        const blockIdStringsMap = range.map(hour => `time-block-${hour}`);
 
-    //         const bookingStartTime = convertToTime(startHours, startMins);
-    //         const bookingEndTime = convertToTime(endHours, endMins);
-    //         const startblockTime = convertToTime(blockNumber, parseInt(blockStartTime));
-    //         const endBlockTime = convertToTime(blockNumber, parseInt(blockEndTime));
+        return blockIdStringsMap;
+    };
 
-    //         if (startblockTime >= bookingStartTime && endBlockTime <= bookingEndTime) {
-    //           timeBlockHTML.style.backgroundColor = '#50B2CA';
-    //           element.style.opacity = "0.2";
-    //         }
-    //       }
-    //     });
-    //   };
-
-    //   const convertToTime = (start, end) => {
-    //     const time = new Date();
-    //     time.setHours(start);
-    //     time.setMinutes(end);
-    //     return time;
-    //   };
-
-    //   const isCurrentTime = block => {
-    //     const currentHour = new Date().getHours();
-    //     return currentHour === parseInt(block, 10);
-    //   };
 
     const bookTime = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, hourBlock: number, space: number) => {
         const id = (event.target as HTMLDivElement).id;
 
         const blockId = (event.target as HTMLDivElement).id;
         const timeBlock = blockId.split('-');
-        // http://localhost:4200/location/1/booking/detail?month=may&day=18&year=2024&space=17&block=10&time=3060
-        // const bookingIndex = history.location.pathname.search(/booking/i);
-        // const url = history.location.pathname.substring(0, bookingIndex + "booking".length);
-        // const yearIndex = history.location.pathname.search(/year/i);
-        // const dateString = history.location.pathname.substring(bookingIndex + "booking".length + 6, yearIndex + 9);
-        // history.push(`${url}/detail?${dateString}&space=${space.id}&block=${hourBlock}&time=${timeBlock[2] + timeBlock[3]}`);
 
         const url = path.slice(0, -4);
-        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[2] + timeBlock[3]}`)
+
+        navigate(`${url}detail${searchParams}&space=${space}&block=${hourBlock}&time=${timeBlock[timeBlock.length - 2] + timeBlock[timeBlock.length - 1]}`)
     };
 
     return (
@@ -208,8 +261,12 @@ export const BookingDate: React.FC = () => {
                             <div
                                 key={hour}
                                 className="ss-booking-date__main__time-block"
-                            //ref={ref => hourBlocksRef.current[hour] = ref}
-                            >
+                                id={`time-block-${hour}`}
+                                ref={ref => {
+                                    if (ref) {
+                                        hourBlocksRef.current[hour] = ref;
+                                    }
+                                }}                            >
                                 <div className="ss-booking-date__main__time-block__hour">
                                     {hour === 0 || hour === 12 ? 12 : hour % 12}
                                     {hour < 12 ? "AM" : "PM"}
@@ -220,15 +277,32 @@ export const BookingDate: React.FC = () => {
                                             key={space["id"]}
                                             id={`space-${space["id"]}`}
                                             className="ss-booking-date__main__time-block__space"
+                                            ref={ref => {
+                                                if (ref) {
+                                                    spaceBlocksRef.current[`time-block-${hour}-space-${space["id"]}`] = ref
+                                                }
+                                            }}
                                             style={{ width: `${100 / spaces.length}%` }}
                                         >
                                             {Array.from({ length: MINUTES_IN_BLOCK / TIME_BLOCK_MINS }, (_, blockIndex) => blockIndex * 30).map(block => {
+
+                                                clickHandlerActive[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`] = true; //setting everyone to true
+
                                                 return (
                                                     <div
                                                         key={`${hour}-${block}`}
-                                                        id={`time-block-${block}-${block + 30}`}
+                                                        id={`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`}
                                                         className="ss-booking-date__main__time-block__schedule__block"
-                                                        onClick={(event) => bookTime(event, hour, space["id"])}
+                                                        onClick={(event) => {
+                                                            if (clickHandlerActive[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`]) {
+                                                                bookTime(event, hour, space["id"])
+                                                            }
+                                                        }}
+                                                        ref={ref => {
+                                                            if (ref) {
+                                                                spaceTimeBlocksRef.current[`hour-${hour}-space-${space["id"]}-time-block-${block}-${block + 30}`] = ref
+                                                            }
+                                                        }}
                                                     ></div>
                                                 );
                                             })}
@@ -240,7 +314,8 @@ export const BookingDate: React.FC = () => {
                     </div>
                 </main>
             </>
-            )}
+            )
+            }
 
         </>
     );

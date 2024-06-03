@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./user-dashboard-menu.scss";
-import { ACCOUNT_INFO, BILLING, MEMBERSHIP, TAB, REFERRAL, PAYMENTS } from "../../../pages/user-dashboard/UserDashboard";
+import { ACCOUNT_INFO, BILLING, MEMBERSHIP, TAB, REFERRAL, PAYMENTS, BOOKINGS } from "../../../pages/user-dashboard/UserDashboard";
 
 export interface MenuOption {
     text: string;
@@ -16,14 +16,14 @@ export interface UserDashboardMenuProps {
 
 export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
 
-    // const [state, setState] = useState(ACCOUNT_INFO)
+    const [active, setActive] = useState(ACCOUNT_INFO)
 
     const menuOptions: MenuOption[] = [
         {
             text: "ACCOUNT INFORMATION",
             value: ACCOUNT_INFO,
         },
-        
+
         {
             text: "TAB",
             value: TAB,
@@ -35,6 +35,10 @@ export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
         {
             text: "REFERRAL",
             value: REFERRAL,
+        },
+        {
+            text: "BOOKINGS",
+            value: BOOKINGS,
         },
 
     ]
@@ -49,7 +53,12 @@ export const UserDashboardMenu: React.FC<UserDashboardMenuProps> = (props) => {
                         menuOptions.map((option, index) => (
                             <div onClick={() => {
                                 props.setState(option.value);
-                            }} className="ss-menu-option" key={`menu-${index}`} >
+                                setActive(option.value)
+
+                            }}
+                            key={`menu-item-${option.value}-${index}`}
+                                className={`ss-menu-option ${active === option.value ? 'active' : ''}`}
+                            >
                                 {option.text}
                             </div>
                         ))

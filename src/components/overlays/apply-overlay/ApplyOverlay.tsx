@@ -56,6 +56,7 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
 
     return (
         <>
+        <div className={`ss-apply-overlay-container${display? 'display':''} ${errorDisplay ? 'display' : ''}`}>
             <div className={`ss-apply-overlay ${display ? 'display-overlay' : ''} ${errorDisplay ? 'display-error' : ''}`} ref={appOverlay}>
                 <div className="ss-apply-overlay__close-container">
                     <img src={xButton} alt="x-button" onClick={closeOverlay}>
@@ -68,6 +69,7 @@ export const ApplyOverlay: React.FC<AppOverlayProps> = ({ display, errorDisplay,
                 </div>
 
             </div>
+        </div>
         </>
     )
 }
