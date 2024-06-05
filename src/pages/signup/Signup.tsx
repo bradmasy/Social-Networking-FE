@@ -45,12 +45,10 @@ export const Signup: React.FC = () => {
                         </>
                     );
 
-                    sendFormData({});
                     setLoading(false);
                     setDisplayOverlayError(true);
                 })
         } else {
-            sendFormData({});
             setErrorMessage(
                 <>
                     <div>PLEASE FILL OUT</div>
