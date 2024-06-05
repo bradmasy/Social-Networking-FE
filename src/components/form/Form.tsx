@@ -54,8 +54,6 @@ export const Form: React.FC<FormProps> = ({ sendFormData, formDataDictionary, fo
     const [selectValue,setSelectValue] = useState();
     const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLTextAreaElement>, inputName: string) => {
         const { value } = event.target;
-        console.log(formData)
-        console.log(value)
         sendFormData(prevState => ({ ...prevState, [inputName]: value }));
         setFormData(prevState => ({ ...prevState, [inputName]: value }));
 
