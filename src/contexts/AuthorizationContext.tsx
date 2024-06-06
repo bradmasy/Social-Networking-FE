@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import Cookies from 'js-cookie';
 import { useApiService } from "./ApiServiceContext";
+import { Membership } from "../pages/user-dashboard/UserDashboard";
 
 type AuthProps = {
     children?: ReactNode;
@@ -81,12 +82,12 @@ const AuthProvider = ({ children }: AuthProps) => {
         })
     }
 
-    const getMembership = (): Promise<boolean> => {
+    const getMembership = async (): Promise<boolean> => {
         return apiService.get_user_data()
             .then((userData) => {
                 const user = userData.data["user"]
-                
-                if (user.membership) {
+                const membership:Membership = user.membership
+                if (user.membership && user.membership.active) {
                     return true;
 
                 } else {
