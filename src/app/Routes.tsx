@@ -16,17 +16,18 @@ const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
     useEffect(() => {
         const checkAuth = async () => {
             const result = await auth.getMembership(); // Assuming this returns a boolean or membership object
-            if (result) {
-                setIsAuthenticated(true);
-            } else {
-                setIsAuthenticated(false);
-            }
+            (result ? setIsAuthenticated(true) : setIsAuthenticated(false));
+            // if (result) {
+            //     setIsAuthenticated(true);
+            // } else {
+            //     setIsAuthenticated(false);
+            // }
         };
         checkAuth();
     }, [auth]);
 
     if (isAuthenticated === null) {
-        return <LoadingOverlay/>;
+        return <LoadingOverlay />;
     }
 
     return isAuthenticated ? component : <Navigate to="/login" replace />;
@@ -40,6 +41,18 @@ const IndustryRoute = ({ component }: { component: JSX.Element }) => {
 
     return component;
 }
+
+// export const NonMobileRoutes = () => {
+//     return (
+//         <Router>
+
+//             <Route path="" element={<Home />} />
+//             <Route path="/about" element={<About />} />
+//             <Route path="/apply" element={<Application />} />
+//         </Router >
+
+//     )
+// }
 
 export const Routes = () => {
 

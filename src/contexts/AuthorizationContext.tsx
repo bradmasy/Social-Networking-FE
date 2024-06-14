@@ -14,9 +14,9 @@ type IAuthContext = {
     setIndustryAuth: (data: string) => void;
     logout: () => void;
     retrieveAuth: () => boolean;
-    // retrieveIndustry: () => Promise<boolean>;
     retrieveIndustry: () => boolean;
     getMembership: () => Promise<boolean>;
+    hasMembership: () => Promise<boolean>;
 
 }
 
@@ -27,10 +27,9 @@ const initialValue = {
     setIndustryAuth: () => { },
     logout: () => { },
     retrieveAuth: () => false,
-    // retrieveIndustry: () => Promise.resolve(false)
     retrieveIndustry: () => false,
     getMembership: () => Promise.resolve(false),
-
+    hasMembership: () => Promise.resolve(false),
 }
 
 
@@ -86,8 +85,8 @@ const AuthProvider = ({ children }: AuthProps) => {
         return apiService.get_user_data()
             .then((userData) => {
                 const user = userData.data["user"]
-                const membership:Membership = user.membership
-                if (user.membership && user.membership.active) {
+
+                if (user.membership.active) {
                     return true;
 
                 } else {
@@ -101,24 +100,24 @@ const AuthProvider = ({ children }: AuthProps) => {
 
     }
 
-    // const retrieveIndustry = async () => {
-    //     const token = Cookies.get("IAuth") ?? "";
 
-    //     try {
-    //         const body = { passcode: token };
-    //         const response = await apiService.industryInvite(body);
+    const hasMembership = async (): Promise<boolean> => {
+        return apiService.get_user_data()
+            .then((userData) => {
+                const user = userData.data["user"]
+                if (user.membership) {
+                    return true;
 
-    //         if (response.status === 200) {
-    //             return true;
-    //         } else {
-    //             return false; 
-    //         }
-    //     } catch (error) {
-    //         return false; 
-    //     }
-    // };
+                } else {
+                    return false
+                }
+                // need to check for membership before allowing them to proceed
+            })
+            .catch(() => {
+                return false;
+            })
 
-
+    }
 
     const retrieveIndustry = () => {
         const token = Cookies.get("IAuth")
@@ -133,7 +132,17 @@ const AuthProvider = ({ children }: AuthProps) => {
     }
 
     return (
-        <AuthorizationContext.Provider value={{ authenticated, setAuthenticated, setAuthenticationToken, logout, retrieveAuth, retrieveIndustry, setIndustryAuth, getMembership }}>
+        <AuthorizationContext.Provider value={{
+            authenticated, 
+            setAuthenticated, 
+            setAuthenticationToken, 
+            logout, 
+            retrieveAuth, 
+            retrieveIndustry, 
+            setIndustryAuth, 
+            getMembership, 
+            hasMembership 
+        }}>
             {children}
         </AuthorizationContext.Provider>
     )
