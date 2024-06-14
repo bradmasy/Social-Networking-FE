@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import Cookies from 'js-cookie';
 import { useApiService } from "./ApiServiceContext";
+import { Membership } from "../pages/user-dashboard/UserDashboard";
 
 type AuthProps = {
     children?: ReactNode;
@@ -13,9 +14,9 @@ type IAuthContext = {
     setIndustryAuth: (data: string) => void;
     logout: () => void;
     retrieveAuth: () => boolean;
-    // retrieveIndustry: () => Promise<boolean>;
     retrieveIndustry: () => boolean;
     getMembership: () => Promise<boolean>;
+    hasMembership: () => Promise<boolean>;
 
 }
 
@@ -26,10 +27,9 @@ const initialValue = {
     setIndustryAuth: () => { },
     logout: () => { },
     retrieveAuth: () => false,
-    // retrieveIndustry: () => Promise.resolve(false)
     retrieveIndustry: () => false,
     getMembership: () => Promise.resolve(false),
-
+    hasMembership: () => Promise.resolve(false),
 }
 
 
@@ -81,11 +81,30 @@ const AuthProvider = ({ children }: AuthProps) => {
         })
     }
 
-    const getMembership = (): Promise<boolean> => {
+    const getMembership = async (): Promise<boolean> => {
         return apiService.get_user_data()
             .then((userData) => {
                 const user = userData.data["user"]
-                
+
+                if (user.membership.active) {
+                    return true;
+
+                } else {
+                    return false
+                }
+                // need to check for membership before allowing them to proceed
+            })
+            .catch(() => {
+                return false;
+            })
+
+    }
+
+
+    const hasMembership = async (): Promise<boolean> => {
+        return apiService.get_user_data()
+            .then((userData) => {
+                const user = userData.data["user"]
                 if (user.membership) {
                     return true;
 
@@ -100,25 +119,6 @@ const AuthProvider = ({ children }: AuthProps) => {
 
     }
 
-    // const retrieveIndustry = async () => {
-    //     const token = Cookies.get("IAuth") ?? "";
-
-    //     try {
-    //         const body = { passcode: token };
-    //         const response = await apiService.industryInvite(body);
-
-    //         if (response.status === 200) {
-    //             return true;
-    //         } else {
-    //             return false; 
-    //         }
-    //     } catch (error) {
-    //         return false; 
-    //     }
-    // };
-
-
-
     const retrieveIndustry = () => {
         const token = Cookies.get("IAuth")
 
@@ -132,7 +132,17 @@ const AuthProvider = ({ children }: AuthProps) => {
     }
 
     return (
-        <AuthorizationContext.Provider value={{ authenticated, setAuthenticated, setAuthenticationToken, logout, retrieveAuth, retrieveIndustry, setIndustryAuth, getMembership }}>
+        <AuthorizationContext.Provider value={{
+            authenticated, 
+            setAuthenticated, 
+            setAuthenticationToken, 
+            logout, 
+            retrieveAuth, 
+            retrieveIndustry, 
+            setIndustryAuth, 
+            getMembership, 
+            hasMembership 
+        }}>
             {children}
         </AuthorizationContext.Provider>
     )

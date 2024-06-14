@@ -1,17 +1,38 @@
 import { useAuth } from "../contexts/AuthorizationContext"
-import { Routes as Router, Route, Navigate } from "react-router-dom";
+import { Routes as Router, Route, Navigate, useNavigate } from "react-router-dom";
 import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon, Bookings, BookingDate, BookingDetail, BookingConfirmation } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
 import { Edit } from "../pages/edit/Edit";
+import { useEffect, useState } from "react";
+import { Membership } from "../pages/user-dashboard/UserDashboard";
+import { LoadingOverlay } from "../components/overlays/loading-overlay/LoadingOverlay";
 
 const PrivateRoutes = ({ component }: { component: JSX.Element }) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
     const auth = useAuth();
-  
-    if (!auth.retrieveAuth() && !auth.getMembership()) return <Navigate to="/" replace />;
+    const navigate = useNavigate();
 
-    return component;
-}
+    useEffect(() => {
+        const checkAuth = async () => {
+            const result = await auth.getMembership(); // Assuming this returns a boolean or membership object
+            (result ? setIsAuthenticated(true) : setIsAuthenticated(false));
+            // if (result) {
+            //     setIsAuthenticated(true);
+            // } else {
+            //     setIsAuthenticated(false);
+            // }
+        };
+        checkAuth();
+    }, [auth]);
+
+    if (isAuthenticated === null) {
+        return <LoadingOverlay />;
+    }
+
+    return isAuthenticated ? component : <Navigate to="/login" replace />;
+};
+
 
 
 const IndustryRoute = ({ component }: { component: JSX.Element }) => {
@@ -20,6 +41,18 @@ const IndustryRoute = ({ component }: { component: JSX.Element }) => {
 
     return component;
 }
+
+// export const NonMobileRoutes = () => {
+//     return (
+//         <Router>
+
+//             <Route path="" element={<Home />} />
+//             <Route path="/about" element={<About />} />
+//             <Route path="/apply" element={<Application />} />
+//         </Router >
+
+//     )
+// }
 
 export const Routes = () => {
 
@@ -51,7 +84,7 @@ export const Routes = () => {
                 path={`/locations/:id/bookings/detail`}
                 element={<PrivateRoutes component={<BookingDetail />} />}
             />
-              <Route
+            <Route
                 path={`/locations/:id/bookings/confirmation/:id`}
                 element={<PrivateRoutes component={<BookingConfirmation />} />}
             />
