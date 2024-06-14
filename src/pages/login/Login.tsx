@@ -59,11 +59,11 @@ export const Login: React.FC = () => {
                 .catch((error: Error) => {
                     setLoading(false)
 
-             //       sendFormData({});
+                    //       sendFormData({});
                     setErrorMessage(<>
 
-                        <div>INVALID CREDENTIALS</div>
-                        <div>PLEASE TRY AGAIN</div>
+                        <div>WRONG PASSWORD</div>
+                        <div>TRY AGAIN</div>
 
                     </>)
                     setDisplayOverlayError(true);
@@ -75,7 +75,7 @@ export const Login: React.FC = () => {
                 <div> FIELDS OF THE FORM</div>
 
             </>)
-          //  sendFormData({});
+            //  sendFormData({});
             setDisplayOverlayError(true);
         }
     }
@@ -111,11 +111,8 @@ export const Login: React.FC = () => {
                 setErrorDisplay={setDisplayOverlayError} />
             <Header />
             <div className="ss-login-container">
-                <p>
-                    {message}
-                </p>
+                <Form text={message} setSubmitClicked={submit} formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} />
             </div>
-            <Form setSubmitClicked={submit} formInputs={formInputs} buttonProps={buttonProps} sendFormData={sendFormData} />
         </>
     )
 }

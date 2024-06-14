@@ -10,7 +10,7 @@
 
 .ss-application__main-content__main__ad-copy-container {
   @include flex-column-justify-align(100%, 100%, center, center);
-  font-size: 2em;
+  font-size: 1.25em;
   letter-spacing: $letter-md;
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import xButton from "../../../../src/assets/images/icons/x-button-50.png";
+import xButton from "../../../../src/assets/images/icons/x-button-50-blue.png";
 import "./apply-overlay.scss";
 
 interface AppOverlayProps {

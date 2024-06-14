@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthorizationContext"
 import { Routes as Router, Route, Navigate, useNavigate } from "react-router-dom";
-import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon, Bookings, BookingDate, BookingDetail, BookingConfirmation } from '../pages/index'
+import { About, Application, Home, Payment, Signup, Login, PaymentSuccess, UserDashboard, Locations, PaymentMembership, Logout, LocationDetails, Spaces, SpaceDetails, ComingSoon, Bookings, BookingDate, BookingDetail } from '../pages/index'
 import { IndustryInvite } from "../pages/industry-invite/IndustryInvite";
 import { IndustryInfo } from "../pages/industry-info/IndustryInfo";
 import { Edit } from "../pages/edit/Edit";
@@ -42,18 +42,6 @@ const IndustryRoute = ({ component }: { component: JSX.Element }) => {
     return component;
 }
 
-// export const NonMobileRoutes = () => {
-//     return (
-//         <Router>
-
-//             <Route path="" element={<Home />} />
-//             <Route path="/about" element={<About />} />
-//             <Route path="/apply" element={<Application />} />
-//         </Router >
-
-//     )
-// }
-
 export const Routes = () => {
 
 
@@ -83,10 +71,6 @@ export const Routes = () => {
             <Route
                 path={`/locations/:id/bookings/detail`}
                 element={<PrivateRoutes component={<BookingDetail />} />}
-            />
-            <Route
-                path={`/locations/:id/bookings/confirmation/:id`}
-                element={<PrivateRoutes component={<BookingConfirmation />} />}
             />
             <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon />} />} />
 

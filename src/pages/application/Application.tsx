@@ -129,7 +129,7 @@ export const Application: React.FC = () => {
         sendFormData(formData);
     },[formData])
     
-    // useEffect(() => {
+  
         const apply = () => {
              if (ValidationService.validateForm(formData)) {
                 apiService.apply(formData).then((res: any) => {
@@ -173,7 +173,7 @@ export const Application: React.FC = () => {
             <Header />
             <section className="ss-application__main-content">
                 <main className='ss-application__main-content__main'>
-                    <div className='ss-application__main-content__main__ad-copy-container'>
+                    {/* <div className='ss-application__main-content__main__ad-copy-container'>
                         <p>
                             {mainCopy}
                         </p>
@@ -182,8 +182,19 @@ export const Application: React.FC = () => {
                         <p>
                             {formDialogue}
                         </p>
+                    </div> */}
+                    <Form text={
+                        <>   <div className='ss-application__main-content__main__ad-copy-container'>
+                        <p>
+                            {mainCopy}
+                        </p>
                     </div>
-                    <Form setSubmitClicked={apply} buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
+                    <div className="ss-application__form-dialogue">
+                        <p>
+                            {formDialogue}
+                        </p>
+                    </div></>
+                    } setSubmitClicked={apply} buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
                 </main>
             </section>
         </>

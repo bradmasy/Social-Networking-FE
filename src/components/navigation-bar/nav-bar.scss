@@ -1,21 +1,14 @@
 @import "../../global-styles/index.scss";
 .ss-header {
-  //   @include flex-row-justify-align(10%, 100%, center, center);
-  //   min-height: 100px;
-  //   border:solid red 1px;
   @include flex-row-justify($nav-bar-hgt, 100%, center);
   align-items: center;
 }
 
 .ss-header__logo-container {
-  @include flex-row-justify-align(100%, 80px, center, center);
-
-  // max-height: 100px;
+  @include flex-row-justify-align(100%, 100px, center, center);
 
   img {
-    @include flex-row-justify-align(80px,40px, center, center);
-    //  border:solid orange 1px;
-    // max-height: 125px;
+    @include flex-row-justify-align(80px, 40px, center, center);
     min-width: 45px;
   }
 }
@@ -27,20 +20,20 @@
 
 .ss-header-link-container {
   @include flex-row-justify-align(auto, 200px, center, center);
-  padding: 20px;
+  // padding: 20px;
   font-size: 0.75em;
-  // border:solid white 1px;
-
 
   .ss-header-link-container__links {
-    @include flex-row-justify-align(auto, 200px, space-between, center);
-    gap: 20px;
+    @include flex-row-justify-align(auto, 200px, center, center);
+    gap:20px;
     a {
       transition: 0.25s ease-in-out;
       border-bottom: solid $main-background 1px;
       text-decoration: none;
       color: white;
+     // width:50%;
       letter-spacing: 1px;
+
     }
     a:hover {
       color: $main-blue;
@@ -50,18 +43,15 @@
   }
 }
 .start {
-  justify-content: start!important;
+ justify-content: start !important;
 }
 
 .end {
-  justify-content: end!important;
+  justify-content: end !important;
 }
-
-
-
 
 @media screen and (max-width: 800px) {
-.ss-header{
-  display: none;
-}
+  .ss-header {
+    display: none;
+  }
 }
