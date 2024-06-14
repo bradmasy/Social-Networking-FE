@@ -31,11 +31,9 @@ export const PasswordEditForm: React.FC = () => {
     )
     const editPasswordCopy = (
         <>   <div>
-            EDIT YOUR PASSWORD
+            EDIT PASSWORD
         </div>
-            <div>
-                BY ENTERING THE FOLLOWING FIELDS
-            </div>
+          
         </>)
 
     const buttonProps: ButtonProps = {
@@ -113,10 +111,9 @@ export const PasswordEditForm: React.FC = () => {
                 errorMessage={errorMessage}
                 successMessage={successMessage}
             />
-            <main className="ss-edit-container__main">
-                {editPasswordCopy}
-            </main>
+      
             <Form
+                text={editPasswordCopy}
                 formInputs={formInputs}
                 buttonProps={buttonProps}
                 sendFormData={setFormData}
