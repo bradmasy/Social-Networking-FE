@@ -1,8 +1,8 @@
 @import "../../global-styles/index.scss";
 
+
 .ss-login-container {
-  @include flex-column-justify-align(100%, 100%, center, center);
-  padding: 50px 0px;
+  @include flex-column-justify-align(calc(100vh - $nav-bar-hgt), 100%, center, center);
   p {
     font-size: 1.5em;
     letter-spacing: $letter-xsm;

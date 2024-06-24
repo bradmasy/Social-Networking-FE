@@ -5,8 +5,8 @@ export const NavBar: React.FC = () => {
     return (
         <>
             <div className="ss-header">
-                <div className="ss-header-link-container end">
-                    <div className="ss-header-link-container__links">
+                <div className="ss-header-link-container ">
+                    <div className="ss-header-link-container__links end">
                         <a href="/logout">LOGOUT</a>
                         <a href="/user-dashboard">DASHBOARD</a>
                     </div>
@@ -15,7 +15,7 @@ export const NavBar: React.FC = () => {
                     <img src={logoImg} alt='sevens-social'></img>
                 </div>
                 <div className="ss-header-link-container start">
-                    <div className="ss-header-link-container__links">
+                    <div className="ss-header-link-container__links start">
                         <a href="/payment">PAYMENTS</a>
                         <a href="/locations">LOCATIONS</a>
                     </div>

@@ -18,12 +18,12 @@
   padding:50px;
   display: none;
   position: absolute;
-  color:black;
+  color:$main-blue;
   z-index: 2;
   font-weight: 300;
   font-size: 1.5em;
   min-height: 300px;
-  min-width: 300px;
+  min-width: 350px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -34,12 +34,13 @@
 
 .display-overlay {
   display: flex;
-  background-color: $main-blue;
+  background-color: black !important;
 }
 
 .display-error {
   display: flex;
-  background-color: lightcoral !important;
+  background-color: black !important;
+  border:solid $main-blue 1px;
 }
 .display{
   display: flex;

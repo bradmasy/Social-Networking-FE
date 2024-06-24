@@ -70,7 +70,7 @@ export const BookingDetail: React.FC = () => {
             <div>SUBMITTING</div>
         </>
     )
-    const [successMessage,setSuccessMessage] = useState(<><div>BOOKING SUCCESSFUL</div></>)
+    const [successMessage, setSuccessMessage] = useState(<><div>BOOKING SUCCESSFUL</div></>)
     const locationRouter = useLocation();
 
     useEffect(() => {
@@ -213,27 +213,16 @@ export const BookingDetail: React.FC = () => {
         if (ValidationService.validateForm(formData)) {
             apiService.create_booking(formData)
                 .then((booking) => {
-                    
+
                     const bookingIndex = locationRouter.pathname.search(/booking/i);
                     const url = locationRouter.pathname.substring(0, bookingIndex + "booking".length);
 
                     const bookingId = booking.data["data"];
-                    // setSuccessMessage(
-                    //     <>
-                    //         <div>
-                    //             BOOKING SUCCESSFUL
-                    //         </div>
-                    //         <div>
-                    //             BOOKING REFERENCE ID: {bookingId}
-                    //         </div>
-                    //     </>
-                    // )
-                    setDisplayOverlay(true)
-                    setTimeout(()=> {
-                        navigate('/user-dashboard')
-                    }, 1000) // redirect after 1s 
-                 //   navigate(`${url}/confirmation/${bookingId.id}`);
 
+                    setDisplayOverlay(true)
+                    setTimeout(() => {
+                        navigate('/user-dashboard')
+                    }, 1000)
                 })
                 .catch((error) => {
                     const errorMessage = error['response']['data']['error']
@@ -332,7 +321,7 @@ export const BookingDetail: React.FC = () => {
                 display={displayOverlay}
                 setErrorDisplay={setDisplayOverlayError}
                 successMessage={successMessage} />
-                
+
             <NavBar />
             {!loaded ? (
                 <>
@@ -340,12 +329,12 @@ export const BookingDetail: React.FC = () => {
                 </>
             ) : (<>
                 <div className="ss-booking-detail__container">
-                    <div className="ss-booking-detail__container__title">
+                    {/* <div className="ss-booking-detail__container__title">
                         <div>{location && location.locationName}</div>
                         <div>{bookingDate}</div>
-                    </div>
+                    </div> */}
                     <div className="ss-booking-detail__container__form">
-                        <Form formDataDictionary={formData} setSubmitClicked={submit} formInputs={inputs} buttonProps={buttonProps} sendFormData={setFormData} />
+                        <Form text={<><div>{location && location.locationName}</div><div>{bookingDate}</div></>} formDataDictionary={formData} setSubmitClicked={submit} formInputs={inputs} buttonProps={buttonProps} sendFormData={setFormData} />
                     </div>
                 </div>
             </>)}

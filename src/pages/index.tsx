@@ -18,4 +18,3 @@ export { ComingSoon } from "./coming-soon/ComingSoon";
 export { Bookings } from "./bookings/Bookings";
 export { BookingDate } from "./booking-date/BookingDate";
 export { BookingDetail } from "./booking-detail/BookingDetail";
-export { BookingConfirmation } from "./booking-confirmation/BookingConfirmation";

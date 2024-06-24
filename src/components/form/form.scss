@@ -4,23 +4,45 @@
 @import "../../global-styles/colors.scss";
 
 .ss-form-container {
-  @include flex-column-justify-align(auto, auto, start, center);
+  // @include flex-column-justify-align(calc(100vh - $nav-bar-hgt), auto, center, center);
+  @include flex-column-justify-align(auto, auto, center, center);
+
   min-width: 500px;
-  padding: 25px;
   margin-bottom: 25px;
+  margin-top: 25px;
+  font-family: "lexend";
+  &__alignment {
+    @include flex-column-justify-align(auto, 20%, start, center);
+    min-width: 325px;
+    padding: 25px 0px;
+    background-color: white;
+    border-radius: 8px;
+    font-family: "lexend";
+  }
+}
+
+.ss-form-container__message {
+  padding: 15px 10px;
+  color: black;
+  font-weight: 300;
+  letter-spacing: 2px;
+  font-size: 1.25em;
+  margin-bottom: 20px;
+  font-family: "lexend";
 }
 
 .ss-form__input-container {
-  @include flex-column-justify-align(auto, 60%, start, center);
+  @include flex-column-justify-align(auto, 80%, start, center);
   gap: 15px;
   padding: 15px;
-
+  font-family: "lexend";
 }
 
 .ss-form__label {
-  color: $main-blue;
+  color: black; // $main-blue;
   letter-spacing: 2px;
-  font-weight: 100;
+  font-weight: 300;
+  font-family: "lexend";
 }
 
 .ss-form__input {
@@ -33,49 +55,65 @@
   padding: 5px;
   font-weight: 200;
   text-align: center;
+  background-color: rgb(232, 240, 254);
+  font-family: "lexend";
 
-  option{
+  option {
     text-align: center;
     justify-content: center;
+    font-family: "lexend";
   }
 }
 .ss-form__input:after {
   border-radius: 4px;
   outline: none;
+  font-family: "lexend";
+}
+
+select {
+  background-color: rgb(232, 240, 254);
+  border: solid black 1px;
+  outline: black;
+  font-family: "lexend";
 }
 
 .textarea-input {
   @include flex-column-justify-align(auto, 80%, center, center);
   min-height: 75px;
   position: relative;
+  font-family: "lexend";
 }
 
 .ss-form-container__submit-button {
   @include flex-column-justify-align(100px, 100%, center, center);
+  font-family: "lexend";
 }
 
 .ss-input-container__icon {
   @include flex-column-justify-align(auto, 80%, center, center);
-  position: relative;
-  
-  input{
-    @include flex-column-justify-align(auto, 100%, center, center);
+  font-family: "lexend";
 
+  position: relative;
+
+  input {
+    @include flex-column-justify-align(auto, 100%, center, center);
+    font-family: "lexend";
   }
 }
 
 .ss-icon {
-  @include flex-column-justify-align(30px, 30px, center, center);
+  @include flex-column-justify-align(25px, 25px, center, center);
   position: absolute;
   transform: translateY(-50%);
   top: 50%;
-  right:8px;
+  right: 8px;
+  font-family: "lexend";
 }
 
-.ss-icon:hover{
+.ss-icon:hover {
   cursor: pointer;
+  font-family: "lexend";
 }
-
 
 @media screen and (max-width: 800px) {
   .ss-form-container {

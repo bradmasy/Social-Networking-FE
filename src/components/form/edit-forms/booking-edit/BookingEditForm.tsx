@@ -4,10 +4,10 @@ import { ApplyOverlay, Option } from "../../../../components";
 import { ButtonProps } from "../../../button/Button";
 import { useApiService } from "../../../../contexts/ApiServiceContext";
 import { Location, Space } from "../../../../pages/location-details/LocationDetails";
-
-import "../edit-form.scss";
 import { ValidationService } from "../../../../services";
 import { LoadingOverlay } from "../../../overlays/loading-overlay/LoadingOverlay";
+
+import "../edit-form.scss";
 
 
 export const BookingEditForm: React.FC = () => {
@@ -134,7 +134,7 @@ export const BookingEditForm: React.FC = () => {
     const createTimeHourBlocks = (endTime: number, startTime: number, start: boolean = true): Option[] => {
         return start ? Array.from({ length: 15 }, (_, index) => {
 
-            const hour =  9 + index;
+            const hour = 9 + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
             return {
@@ -147,7 +147,7 @@ export const BookingEditForm: React.FC = () => {
             const hour = 9 + index;
             const period = hour < 12 ? 'AM' : 'PM';
             const formattedTime = hour % 12 === 0 ? 12 : hour % 12;
-        
+
             return {
                 value: hour.toString(),
                 label: `${formattedTime} ${period}`,
@@ -244,10 +244,8 @@ export const BookingEditForm: React.FC = () => {
                             errorMessage={errorMessage}
                             successMessage={successMessage}
                         />
-                        <main className="ss-edit-container__main">
-                            {editBookingCopy}
-                        </main>
                         <Form
+                            text={editBookingCopy}
                             formDataDictionary={formData}
                             buttonProps={buttonProps}
                             sendFormData={setFormData}

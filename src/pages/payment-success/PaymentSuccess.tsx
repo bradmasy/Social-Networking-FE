@@ -12,20 +12,10 @@ export const PaymentSuccess: React.FC = () => {
     }
     const message = (
         <>
-            <div className="ss-payment-highlight">CONGRATULATIONS</div>
-            <div>THE PAYMENT WAS SUCCESSFUL</div>
+            <div className="ss-payment-highlight">WELCOME.</div>
+            <div>YOUR PAYMENT WAS SUCCESSFUL.</div>
             <div>YOU ARE NOW AN INDUSTRY MEMBER OF</div>
-            <div>SEVENS SOCIAL</div>
-            <div className="ss-payment-padding">
-                <div>PLEASE USE THE LOGIN BUTTON TO REDIRECT TO THE LOGIN PAGE</div>
-                <div>AND LOGIN</div>
-            </div>
-            <div className="ss-payment-padding">
-                <div>THANK YOU</div>
-                <div className="ss-payment-highlight">- SEVENS SOCIAL -</div>
-            </div>
-
-
+            <div>SEVENS SOCIAL.</div>
         </>
     )
 

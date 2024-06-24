@@ -138,12 +138,7 @@ export const Signup: React.FC = () => {
                     display={displayOverlay}
                     setErrorDisplay={setDisplayOverlayError} />
                 <Header />
-                <div className="ss-signup-container">
-                    <div className="ss-signup-container__message">
-                        {message}
-                    </div>
-                </div>
-                <Form setSubmitClicked={submit} buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
+                <Form text={message} setSubmitClicked={submit} buttonProps={buttonProps} formInputs={inputs} sendFormData={sendFormData} />
             </div>
         </>
     )
