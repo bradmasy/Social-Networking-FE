@@ -121,9 +121,6 @@ export const Signup: React.FC = () => {
         <>
             <span>PLEASE COMPLETE THE FORM PROVIDED AND SUBMIT<br /></span>
             <span>TO CREATE YOUR ACCOUNT<br /></span>
-            <span>THANK YOU<br /></span>
-            <br />
-            <span className="highlight">- SEVENS SOCIAL MANAGEMENT -<br /></span>
         </>
     )
 

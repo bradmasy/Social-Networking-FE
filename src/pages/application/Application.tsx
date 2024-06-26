@@ -125,28 +125,27 @@ export const Application: React.FC = () => {
     }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         sendFormData(formData);
-    },[formData])
-    
-  
-        const apply = () => {
-             if (ValidationService.validateForm(formData)) {
-                apiService.apply(formData).then((res: any) => {
-                    setDisplayOverlay(true);
-                    sendFormData({});
-                }).catch((error: Error) => {
-                    setDisplayOverlayError(true);
-                })
-            }
-            else {
-                setErrorMessage(
-                    <>
-                        <span>PLEASE FILL OUT EACH FIELD<br /></span>
-                        <span>IN THE FORM AND RE-SUBMIT<br /></span>
-                    </>)
+    }, [formData])
+
+
+    const apply = () => {
+        if (ValidationService.validateForm(formData)) {
+            apiService.apply(formData).then((res: any) => {
+                setDisplayOverlay(true);
+            }).catch((error: Error) => {
                 setDisplayOverlayError(true);
-            }
+            })
+        }
+        else {
+            setErrorMessage(
+                <>
+                    <span>PLEASE FILL OUT EACH FIELD<br /></span>
+                    <span>IN THE FORM AND RE-SUBMIT<br /></span>
+                </>)
+            setDisplayOverlayError(true);
+        }
     }
 
 
@@ -173,27 +172,17 @@ export const Application: React.FC = () => {
             <Header />
             <section className="ss-application__main-content">
                 <main className='ss-application__main-content__main'>
-                    {/* <div className='ss-application__main-content__main__ad-copy-container'>
-                        <p>
-                            {mainCopy}
-                        </p>
-                    </div>
-                    <div className="ss-application__form-dialogue">
-                        <p>
-                            {formDialogue}
-                        </p>
-                    </div> */}
                     <Form text={
                         <>   <div className='ss-application__main-content__main__ad-copy-container'>
-                        <p>
-                            {mainCopy}
-                        </p>
-                    </div>
-                    <div className="ss-application__form-dialogue">
-                        <p>
-                            {formDialogue}
-                        </p>
-                    </div></>
+                            <p>
+                                {mainCopy}
+                            </p>
+                        </div>
+                            <div className="ss-application__form-dialogue">
+                                <p>
+                                    {formDialogue}
+                                </p>
+                            </div></>
                     } setSubmitClicked={apply} buttonProps={buttonProps} formInputs={inputs} selectInputs={selectOptions} sendFormData={sendFormData} />
                 </main>
             </section>
