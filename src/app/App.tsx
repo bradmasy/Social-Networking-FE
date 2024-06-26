@@ -26,10 +26,10 @@ function MainContent() {
     {
       url: "/locations",
       caption: "LOCATIONS"
-    }
+    },
   ];
 
-  const pathsWithoutNavBar = ['/', '/about', '/login'];
+  const pathsWithoutNavBar = ['/', '/about', '/login', '/application',];
 
   const shouldRenderNavBar = !pathsWithoutNavBar.includes(location.pathname);
 

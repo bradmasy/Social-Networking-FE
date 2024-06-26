@@ -148,7 +148,7 @@ export class ApiService {
     // APPLICATION
 
     apply = (applicationForm: { [key: string]: string }): Promise<any> => {
-        return axios.post(`${API_BASE_URL}/application`, applicationForm, { headers: this.createHeader() })
+        return axios.post(`${API_BASE_URL}/application`, applicationForm)
     }
 
     // SQUARE - OAUTH
