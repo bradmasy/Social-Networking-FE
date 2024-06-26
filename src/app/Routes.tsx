@@ -42,6 +42,7 @@ const IndustryRoute = ({ component }: { component: JSX.Element }) => {
     return component;
 }
 
+
 export const Routes = () => {
 
 
@@ -73,7 +74,6 @@ export const Routes = () => {
                 element={<PrivateRoutes component={<BookingDetail />} />}
             />
             <Route path="/coming-soon" element={<PrivateRoutes component={<ComingSoon />} />} />
-
             <Route path="/user-dashboard" element={<PrivateRoutes component={<UserDashboard />} />} />
             <Route path="/logout" element={<PrivateRoutes component={<Logout />} />} />
         </Router>
